@@ -1,0 +1,20 @@
+
+MAJOR EKLEMELER 
+
+--- sadece popülasyon üzerine gidip, building leri de daha çok popülasyon oluşturmak gibi bi implementation. 
+yani stone + wood la başka bi building, daha çok pop, sonra metal + stone la bi building vs vs
+
+--- lumber mill gibi bina fikirlerini upgrade e ata, upgrade olarak lumber mill yap başka bi pencerede, wood toplama hızını arttırsın
+
+----meat gereksin popülasyonu doyurmak için
+
+
+
+
+
+
+MINOR EKLEMELER
+
+
+
+----tıklamayı enchance et upgrade lerle.

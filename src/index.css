@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.deneme {
+  font-size: 67px;
+}
+
+.font {
+  font-family: "Caveat", cursive;
+}
+
+.gradient {
+  background: rgb(128, 128, 128);
+  background: linear-gradient(
+    90deg,
+    rgba(128, 128, 128, 1) 0%,
+    rgba(43, 113, 37, 1) 50%,
+    rgba(13, 207, 22, 1) 100%
+  );
+}
+
+.default {
+  background-color: rgba(10, 105, 42, 0.633);
+}
+.transitioned {
+  background-color: green;
+}

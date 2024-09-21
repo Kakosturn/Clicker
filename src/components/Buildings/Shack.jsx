@@ -8,7 +8,9 @@ import { useMainContext } from "../../context/MainContext";
 function Shack() {
   const { state: buildingState } = useBuildingContext();
   const { state: mainState, dispatch: mainDispatch } = useMainContext();
-  const [secsToBuild, setSecsToBuild] = useState(0.5);
+  const [secsToBuild, setSecsToBuild] = useState(
+    buildingState.secsToBuildShack
+  );
   //console.log(new Cost(buildingState.costShack));
   return (
     <>

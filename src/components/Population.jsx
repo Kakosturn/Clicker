@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useMainContext } from "../context/MainContext";
 import { usePopulationContext } from "../context/PopulationContext";
+import Popup from "reactjs-popup";
+import Modal from "./Modal";
 
 function Population() {
   const { state: statePop, dispatch: dispatchPop } = usePopulationContext();
@@ -67,6 +69,11 @@ function Population() {
     <div>
       Population : {statePop.venatrix}
       {statePop.venatrixInjured ? `(${statePop.venatrixInjured} injured)` : ""}
+      <Modal
+        content={
+          "From now on, Venatrix has to be fed in order to function or they will be injured 🤕"
+        }
+      />
     </div>
   );
 }

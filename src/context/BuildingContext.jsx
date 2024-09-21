@@ -24,10 +24,12 @@ const initialState = {
   costCabin: 30,
   costBungalowWood: 10,
   costBungalowStone: 5,
-  costQuarry: 20,
-  shack: 0,
-  cabin: 0,
-  bungalow: 0,
+  shack: 110,
+  secsToBuildShack: 10,
+  cabin: 110,
+  secsToBuildCabin: 12,
+  bungalow: 110,
+  secsToBuildBungalow: 15,
 };
 
 function reducer(state, action) {

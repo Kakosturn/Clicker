@@ -42,9 +42,9 @@ function ArrowsWood() {
 
   function onBlurHandler(e) {
     const inputValue = Number(e.target.value);
-    console.log(
-      `inputValue = ${inputValue} numvenatrix = ${popState.venatrixAtWood} total venatrix(idle) = ${popState.venatrix}`
-    );
+    // console.log(
+    //   `inputValue = ${inputValue} numvenatrix = ${popState.venatrixAtWood} total venatrix(idle) = ${popState.venatrix}`
+    // );
 
     if (inputValue - popState.venatrixAtWood > popState.venatrix) {
       // setWorkingNum(0);

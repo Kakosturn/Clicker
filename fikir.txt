@@ -1,6 +1,7 @@
 
 MAJOR EKLEMELER 
 
+
 --- sadece popülasyon üzerine gidip, building leri de daha çok popülasyon oluşturmak gibi bi implementation. 
 yani stone + wood la başka bi building, daha çok pop, sonra metal + stone la bi building vs vs
 
@@ -18,3 +19,36 @@ MINOR EKLEMELER
 
 
 ----tıklamayı enchance et upgrade lerle.
+
+
+
+
+/////////////////////////////////////////////////////////////////////
+//
+//İLK PLAYTEST 
+//
+
+✔✔✔ --aynı anda iki bina yaparken toplamları gereken resource u geçerse resource eksiye düşüyo. 
+build butonuna bastığın an cost u almalı öyle halledilir
+--meat varkenki consumption süresi ile meat yokken injured a düşme süresi aynı olmalı, yoksa abuse edilmesi kolay.
+-- bungalow un cost u çok az
+-- upgrade leri yapmak için gereken süreyi arttır.
+-- meat hiç sıkıntı çıkarmıyo, zorlaştırılmalı
+-- atanan venatrix lerin çalışmaya başlaması için bi süre konabilir, sonra bu süre upgrade le düşürülebilir.
+-- overall building costlarına bi daha bakılmalı.
+-- collect tuşlarının anlamı kalmıyo, upgrade koy.
+-- oyun çok kolay, zorlaştır biraz.
+
+/////////////////////////////////////////////////////////////////////
+
+
+
+/////////////////////////////////////////////////////////////////////
+//
+//İKİNCİ PLAYTEST 
+//
+
+-- toast ları güzelleştir
+-- daha fazla upgrade
+
+/////////////////////////////////////////////////////////////////////

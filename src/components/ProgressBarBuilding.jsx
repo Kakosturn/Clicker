@@ -8,6 +8,7 @@ import {
 } from "../utils/helper";
 import { usePopulationContext } from "../context/PopulationContext";
 import toast from "react-hot-toast";
+import Notification from "./Notification";
 
 const ProgressBarBuilding = ({
   popIncrease,
@@ -40,7 +41,6 @@ const ProgressBarBuilding = ({
 
         dispatchBuilding(buildingType(type)); // { type: "buildShack" }
         //console.log(type, stateBuilding);
-        dispatchMain(buildingCost(type, stateBuilding));
 
         popDispatch({ type: `venatrixIncrease${popIncrease}` });
       }, 10);
@@ -82,8 +82,15 @@ const ProgressBarBuilding = ({
               //console.log(cost.lte(currentMaterial));
 
               if (cost.lte(currentMaterial)) {
+                dispatchMain(buildingCost(type, stateBuilding));
                 setIsRunning(true);
-              } else toast.error("ERÖR");
+              } else
+                toast.custom(
+                  <Notification
+                    type={"error"}
+                    message={"Not enough material"}
+                  />
+                );
             }}
           >
             {progressButtonTransitionBuilding(progress)}

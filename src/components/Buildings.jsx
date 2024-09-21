@@ -12,10 +12,10 @@ function Buildings() {
   const { state: stateMain, dispatch: dispatchMain } = useMainContext();
   const { state: statePop } = usePopulationContext();
   useEffect(() => {
-    if (stateBuilding.shack >= 5) {
+    if (stateBuilding.shack >= 3) {
       dispatchMain({ type: "firstCabin/1" });
     }
-    if (stateBuilding.cabin >= 5) {
+    if (stateBuilding.cabin >= 4) {
       dispatchMain({ type: "firstBungalow/1" });
     }
   }, [dispatchMain, stateBuilding.shack, stateBuilding.cabin]);

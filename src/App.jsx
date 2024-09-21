@@ -8,7 +8,7 @@ import { beginningCheck } from "./utils/helper";
 import { Toaster } from "react-hot-toast";
 function App() {
   const { state, dispatch } = useMainContext();
-  console.log(state.status);
+
   //console.log(state.venatrix, state.status);
   useEffect(
     function () {
@@ -22,7 +22,7 @@ function App() {
     <Layout>
       {state.status === "ready" && <Initial />}
       {bool && <Beginning />}
-      <Toaster />
+      <Toaster position="top-right" />
     </Layout>
   );
 }

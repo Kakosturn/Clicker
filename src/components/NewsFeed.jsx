@@ -21,7 +21,7 @@ function NewsFeed() {
   useEffect(() => {
     const intervalId = setInterval(
       () => setIndex(between(0, state.randomTexts.length)),
-      2000
+      20000
     );
     return () => clearTimeout(intervalId);
   }, [state.randomTexts.length]);

@@ -2,13 +2,16 @@ import { useState } from "react";
 import Icon from "../../Icon";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
+import ArrowsStone from "./ArrowsStone";
 import { useMainContext } from "./../../../context/MainContext";
 import { useUpgradeContext } from "../../../context/UpgradeContext";
-
+import { amountStoneCollectedOnClick as stoneCollected } from "../../../variables";
 function Stone() {
   const { state: stateMain } = useMainContext();
   const { state: stateUpgrade } = useUpgradeContext();
-  const [secsToObtain, setSecsToObtain] = useState(10);
+  const [secsToObtain, setSecsToObtain] = useState(
+    stateMain.secsToCollectStone
+  );
   return (
     <>
       <Label>
@@ -21,8 +24,9 @@ function Stone() {
         type={"gainedStoneX"}
         secsToObtain={secsToObtain}
         setSecsToObtain={setSecsToObtain}
-        payload={stateUpgrade.selfStoneMultiplier}
+        payload={stoneCollected * stateUpgrade.selfStoneMultiplier}
       />
+      <ArrowsStone />
     </>
   );
 }

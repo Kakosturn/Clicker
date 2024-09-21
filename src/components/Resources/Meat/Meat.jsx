@@ -2,14 +2,15 @@ import { useState } from "react";
 import Icon from "../../Icon";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
+import ArrowsMeat from "./ArrowsMeat";
 import { useMainContext } from "../../../context/MainContext";
 import { useUpgradeContext } from "../../../context/UpgradeContext";
-
+import { amountMeatCollectedOnClick as meatCollected } from "../../../variables";
 function Meat() {
   const { state: stateMain } = useMainContext();
   const { state: stateUpgrade } = useUpgradeContext();
 
-  const [secsToObtain, setSecsToObtain] = useState(1);
+  const [secsToObtain, setSecsToObtain] = useState(stateMain.secsToCollectMeat);
   return (
     <>
       <Label>
@@ -22,8 +23,9 @@ function Meat() {
         type={"gainedMeatX"}
         secsToObtain={secsToObtain}
         setSecsToObtain={setSecsToObtain}
-        payload={stateUpgrade.selfMeatMultiplier}
+        payload={meatCollected * stateUpgrade.selfMeatMultiplier}
       />
+      <ArrowsMeat />
     </>
   );
 }

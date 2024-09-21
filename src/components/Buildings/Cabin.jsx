@@ -8,7 +8,9 @@ import ProgressBarBuilding from "../ProgressBarBuilding";
 function Cabin() {
   const { state: buildingState } = useBuildingContext();
   const { state: mainState, dispatch: mainDispatch } = useMainContext();
-  const [secsToBuild, setSecsToBuild] = useState(0.5);
+  const [secsToBuild, setSecsToBuild] = useState(
+    buildingState.secsToBuildCabin
+  );
 
   return (
     <>

@@ -6,7 +6,7 @@ import { useMainContext } from "../context/MainContext";
 import { upgradeCost } from "../utils/helperUpgrade";
 import toast from "react-hot-toast";
 import { Cost } from "../context/BuildingContext";
-
+import Notification from "./Notification";
 function ProgressBarUpgrades({ type, secsToObtain, cost }) {
   ///STATE
   const secondsToAcquire = secsToObtain;
@@ -69,7 +69,10 @@ function ProgressBarUpgrades({ type, secsToObtain, cost }) {
             console.log(currentMaterial);
             if (currentMaterial.gte(cost)) {
               setIsRunning(true);
-            } else toast.error("Not enough material");
+            } else
+              toast.custom(
+                <Notification type={"error"} message={"Not enough material"} />
+              );
           }}
         >
           {progressButtonUpgrade(progress)}

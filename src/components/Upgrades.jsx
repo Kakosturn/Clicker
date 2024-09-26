@@ -12,8 +12,7 @@ import Upgrade from "./Upgrade";
 import Icon from "./Icon";
 
 function Upgrades() {
-  const { state: stateUpgrade, dispatch: dispatchUpgrade } =
-    useUpgradeContext();
+  const { state: stateUpgrade } = useUpgradeContext();
   const { state: stateBuilding, dispatch: dispatchBuilding } =
     useBuildingContext();
   const { state: stateMain, dispatch: dispatchMain } = useMainContext();

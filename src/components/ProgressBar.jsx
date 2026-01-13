@@ -70,9 +70,9 @@ import { useMainContext } from "../context/MainContext";
 import { progressButtonTransitionMaterial } from "../utils/helper";
 import { useUpgradeContext } from "../context/UpgradeContext";
 
-function ProgressBar({ type, secsToObtain, payload }) {
+function ProgressBar({ type, clicksToObtain, payload, resource }) {
   //type example -- gainedWoodX
-  const secondsToAcquire = secsToObtain;
+
   const [progress, setProgress] = useState(0);
 
   const { state: stateMain, dispatch: dispatchMain } = useMainContext();
@@ -84,11 +84,14 @@ function ProgressBar({ type, secsToObtain, payload }) {
     if (progress >= 100) {
       console.log(type, payload);
       setTimeout(() => {
-        dispatchMain({ type: type, payload: payload });
+        dispatchMain({
+          type: type,
+          payload: { resource: resource, amount: payload },
+        });
         setProgress(0);
       }, 300);
     }
-  }, [dispatchMain, progress, secondsToAcquire, type, payload]);
+  }, [dispatchMain, progress, type, payload, resource]);
   //console.log(timeLeft, secondsToAcquire);
 
   //console.log(progress);
@@ -109,7 +112,8 @@ function ProgressBar({ type, secsToObtain, payload }) {
           className="text-gray-200 w-48"
           disabled={progress >= 100}
           onClick={() => {
-            if (progress <= 100) setProgress((prev) => prev + 10);
+            if (progress <= 100)
+              setProgress((prev) => prev + 100 / clicksToObtain);
           }}
         >
           {progressButtonTransitionMaterial(progress)}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useMainContext } from "../../../context/MainContext";
-import { usePopulationContext } from "../../../context/PopulationContext";
-import { useUpgradeContext } from "../../../context/UpgradeContext";
+import { useMainContext } from "../context/MainContext";
+import { usePopulationContext } from "../context/PopulationContext";
+import { useUpgradeContext } from "../context/UpgradeContext";
 
 function ArrowsStone() {
   // up --- > "venatrixAtWood"
@@ -71,7 +71,7 @@ function ArrowsStone() {
         onSubmit={(e) => e.preventDefault()}
       >
         <input
-          className="w-full text-center bg-[#202020]"
+          className="w-full text-center appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none bg-[#202020]"
           type="number"
           min={0}
           max={popState.venatrix + numOfVenatrix}

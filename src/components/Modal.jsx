@@ -27,8 +27,6 @@ const overlayStyle = {
 function Modal({ content }) {
   const [isOpen, setIsOpen] = useState(true);
 
-  useEffect(() => {}, []);
-
   if (isOpen) {
     return (
       //   <>

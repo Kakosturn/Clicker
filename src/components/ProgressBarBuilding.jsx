@@ -9,7 +9,7 @@ import {
 import { usePopulationContext } from "../context/PopulationContext";
 import toast from "react-hot-toast";
 import Notification from "./Notification";
-
+import { errorToast } from "./Toast";
 const ProgressBarBuilding = ({
   popIncrease,
   type,
@@ -24,10 +24,11 @@ const ProgressBarBuilding = ({
     useBuildingContext();
   const { state: stateMain, dispatch: dispatchMain } = useMainContext();
   const { dispatch: popDispatch } = usePopulationContext();
-  const currentMaterial = new Cost(stateMain.wood, stateMain.stone);
+  const currentMaterial = new Cost(
+    stateMain.resources.wood.amount,
+    stateMain.resources.stone.amount
+  );
 
-  //console.log("rendered");
-  //console.log(type);
   useEffect(() => {
     if (!isRunning) return;
     const intervalId = setInterval(() => {
@@ -38,8 +39,8 @@ const ProgressBarBuilding = ({
 
       setTimeout(() => {
         setTimeLeft(secondsToBuild);
-
-        dispatchBuilding(buildingType(type)); // { type: "buildShack" }
+        dispatchBuilding({ type: "build", payload: type });
+        // dispatchBuilding(buildingType(type)); // { type: "buildShack" }
         //console.log(type, stateBuilding);
 
         popDispatch({ type: `venatrixIncrease${popIncrease}` });
@@ -59,7 +60,7 @@ const ProgressBarBuilding = ({
   ]);
 
   const progress = (1 - timeLeft / secondsToBuild) * 100;
-  //console.log(progress);
+  // console.log(progress);
   return (
     <div>
       <div className="border-2 border-gray-200 w-48 flex rounded-xl bg-[#303030] hover:bg-[#4d4d4d]">
@@ -82,15 +83,13 @@ const ProgressBarBuilding = ({
               //console.log(cost.lte(currentMaterial));
 
               if (cost.lte(currentMaterial)) {
-                dispatchMain(buildingCost(type, stateBuilding));
+                // dispatchMain(buildingCost(type, stateBuilding));
+                dispatchMain({
+                  type: "loseResource",
+                  payload: { cost: cost },
+                });
                 setIsRunning(true);
-              } else
-                toast.custom(
-                  <Notification
-                    type={"error"}
-                    message={"Not enough material"}
-                  />
-                );
+              } else errorToast("not enough material");
             }}
           >
             {progressButtonTransitionBuilding(progress)}

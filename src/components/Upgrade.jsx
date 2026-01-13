@@ -4,7 +4,8 @@ import Icon from "./Icon";
 import ProgressBarUpgrades from "./ProgressBarUpgrades";
 function Upgrade({ secsToObtain, type, name, path, cost, tooltip }) {
   const objectKeys = Object.keys(cost);
-
+  // console.log(cost);
+  // console.log(objectKeys);
   return (
     <div className="flex gap-5 w-max h-max scale-75">
       <div className="flex gap-2">

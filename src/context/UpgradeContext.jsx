@@ -1,20 +1,36 @@
 import { createContext, useContext, useReducer } from "react";
 
 const initialState = {
-  selfWoodMultiplier: 1,
-  selfStoneMultiplier: 1,
-  selfMeatMultiplier: 1,
-  selfGatheringUpgradeCounter: 0,
+  // selfWoodMultiplier: 1,
+  // selfStoneMultiplier: 1,
+  // selfMeatMultiplier: 1,
+  // selfGatheringUpgradeCounter: 0,
+  selfMultiplier: {
+    wood: 1,
+    stone: 1,
+    meat: 1,
+    gatheringUpgradeCounter: 0,
+  },
   upgradesCompleted: [],
-  woodMultiplier: 1,
-  stoneMultiplier: 1,
-  meatMultiplier: 1,
-  lumberMill: false,
-  lumberMillCost: 100,
-  quarry: false,
-  quarryCost: 100,
-  gathering1: false,
-  gathering1Cost: 1000,
+  multiplier: {
+    wood: 1,
+    stone: 1,
+    meat: 1,
+  },
+  cost: {
+    lumberMill: 100,
+    quarry: 100,
+    gathering1: 1000,
+  },
+  // woodMultiplier: 1,
+  // stoneMultiplier: 1,
+  // meatMultiplier: 1,
+  // lumberMillCost: 100,
+  // quarryCost: 100,
+  // gathering1Cost: 1000,
+  //! lumberMill: false, ????? hatırlamıyorum neye yarıyodu
+  //!quarry: false,
+  //!gathering1: false,
 };
 
 const UpgradeContext = createContext();

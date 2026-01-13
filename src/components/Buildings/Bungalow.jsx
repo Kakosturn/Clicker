@@ -5,12 +5,9 @@ import Label from "../Layout/Label";
 import { useMainContext } from "../../context/MainContext";
 import ProgressBarBuilding from "../ProgressBarBuilding";
 
-function Bungalow() {
+function Bungalow({ builtAmount, cost, secsToBuild }) {
   const { state: buildingState } = useBuildingContext();
   const { state: mainState, dispatch: mainDispatch } = useMainContext();
-  const [secsToBuild, setSecsToBuild] = useState(
-    buildingState.secsToBuildBungalow
-  );
 
   return (
     <>
@@ -24,22 +21,15 @@ function Bungalow() {
       <div className="flex flex-col gap-3">
         <ProgressBarBuilding
           type={"bungalow"}
-          cost={
-            new Cost(
-              buildingState.costBungalowWood,
-              buildingState.costBungalowStone
-            )
-          }
+          cost={cost}
           material={"wood"}
           secsToBuild={secsToBuild}
           popIncrease={4}
         />
       </div>
-      <div className="justify-self-center"> {buildingState.bungalow}</div>
+      <div className="justify-self-center"> {builtAmount}</div>
       <div className="justify-self-center self-center">
-        {buildingState.costBungalowWood}{" "}
-        <Icon path={"wood.png"} width="w-1/6" />/
-        {buildingState.costBungalowStone}{" "}
+        {cost.wood} <Icon path={"wood.png"} width="w-1/6" />/{cost.stone}{" "}
         <Icon path={"stone.png"} width="w-1/6" />
       </div>
     </>

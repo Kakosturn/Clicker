@@ -1,3 +1,4 @@
+import ResourceGridBox from "../ResourceComponents/ResourceGridBox";
 import Meat from "../Resources/Meat/Meat";
 import Stone from "../Resources/Stone/Stone";
 import Wood from "../Resources/Wood/Wood";
@@ -5,22 +6,22 @@ import Wood from "../Resources/Wood/Wood";
 function ResourcesByPhase({ phase }) {
   if (phase === "initialPhase")
     return (
-      <div className="grid gap-5 grid-cols-[0.5fr,0.3fr,0.7fr,0.7fr]">
+      <ResourceGridBox>
         <Wood />
-      </div>
+      </ResourceGridBox>
     );
   if (phase === "firstPhase")
     return (
       <>
-        <div className="grid gap-5 grid-cols-[0.5fr,0.3fr,0.7fr,0.7fr]">
+        <ResourceGridBox>
           <Wood />
-        </div>
-        <div className="grid gap-5 grid-cols-[0.5fr,0.3fr,0.7fr,0.7fr]">
+        </ResourceGridBox>
+        <ResourceGridBox>
           <Stone />
-        </div>
-        <div className="grid gap-5 grid-cols-[0.5fr,0.3fr,0.7fr,0.7fr]">
+        </ResourceGridBox>
+        <ResourceGridBox>
           <Meat />
-        </div>
+        </ResourceGridBox>
       </>
     );
   return <div></div>;

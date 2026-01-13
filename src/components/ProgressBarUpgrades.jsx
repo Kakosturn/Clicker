@@ -66,7 +66,6 @@ function ProgressBarUpgrades({ type, secsToObtain, cost }) {
           className="text-gray-200 w-48"
           disabled={isRunning}
           onClick={() => {
-            console.log(currentMaterial);
             if (currentMaterial.gte(cost)) {
               setIsRunning(true);
             } else

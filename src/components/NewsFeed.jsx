@@ -27,7 +27,7 @@ function NewsFeed() {
   }, [state.randomTexts.length]);
 
   return (
-    <div className="text-center border-2 border-gray-200 w-1/2 h-auto ml-auto mr-auto py-10 px-20 rounded-2xl grid grid-cols-1 gap-12 justify-center items-center ">
+    <div className="text-center border-2 border-gray-200 w-1/2 h-auto ml-auto mr-auto py-5 px-10 rounded-2xl grid grid-cols-1 justify-center items-center ">
       <p>
         <TextTransition springConfig={presets.gentle}>
           {newsFeed}

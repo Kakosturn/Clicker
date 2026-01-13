@@ -5,12 +5,9 @@ import Label from "../Layout/Label";
 import { useMainContext } from "../../context/MainContext";
 import ProgressBarBuilding from "../ProgressBarBuilding";
 
-function Cabin() {
+function Cabin({ builtAmount, cost, secsToBuild }) {
   const { state: buildingState } = useBuildingContext();
   const { state: mainState, dispatch: mainDispatch } = useMainContext();
-  const [secsToBuild, setSecsToBuild] = useState(
-    buildingState.secsToBuildCabin
-  );
 
   return (
     <>
@@ -24,15 +21,15 @@ function Cabin() {
       <div className="">
         <ProgressBarBuilding
           type={"cabin"}
-          cost={new Cost(buildingState.costBungalowWood)}
+          cost={cost}
           material={"wood"}
           secsToBuild={secsToBuild}
           popIncrease={2}
         />
       </div>
-      <div className="justify-self-center"> {buildingState.cabin}</div>
+      <div className="justify-self-center"> {builtAmount}</div>
       <div className="justify-self-center self-center">
-        {buildingState.costCabin} <Icon path={"wood.png"} width="w-1/6" />
+        {cost.wood} <Icon path={"wood.png"} width="w-1/6" />
       </div>
     </>
   );

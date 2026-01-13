@@ -8,19 +8,35 @@ import {
 const MainContext = createContext();
 
 const initialState = {
-  secsToCollectWood: 5,
-  secsToCollectStone: 6,
-  secsToCollectMeat: 7,
+  clicksToObtain: {
+    wood: 2,
+    stone: 6,
+    meat: 7,
+    ironOre: 10,
+  },
+  resources: {
+    wood: { amount: 990, total: 0 },
+    stone: { amount: 990, total: 0 },
+    meat: { amount: 990, total: 0 },
+    ironOre: { amount: 990, total: 0 },
+  },
   isRunning: false,
-  wood: 0,
-  totalWoodCollected: 0,
-  stone: 0,
-  totalStoneCollected: 0,
-  meat: 0,
-  totalMeatCollected: 0,
+  // secsToCollectWood: 5,
+  // secsToCollectStone: 6,
+  // secsToCollectMeat: 7,
+  // secsToCollectIronOre: 10,
+  // wood: 99990,
+  // totalWoodCollected: 0,
+  // stone: 99990,
+  // totalStoneCollected: 0,
+  // meat: 99990,
+  // totalMeatCollected: 0,
+  // ironOre: 99990,
+  // totalIronOreCollected: 0,
+
   status: "ready",
   randomTexts: [...firstPhaseTexts],
-  statusArr: ["beginning/0", "firstCabin/1", "firstBungalow/1"],
+  statusArr: ["beginning/0", "firstCabin/1", "firstBungalow/1", "firstHouse"],
 };
 
 function reducer(state, action) {
@@ -44,6 +60,39 @@ function reducer(state, action) {
         ...state,
         status: "firstBungalow/1",
         randomTexts: [...thirdPhaseTexts],
+      };
+    }
+    case "firstHouse": {
+      return { ...state, status: "firstHouse" };
+    }
+    case "gainResource": {
+      const { resource, amount } = action.payload;
+
+      return {
+        ...state,
+        resources: {
+          ...state.resources,
+          [resource]: {
+            amount: state.resources[resource].amount + amount,
+            total: state.resources[resource].total + amount,
+          },
+        },
+      };
+    }
+    case "loseResource": {
+      const { cost } = action.payload;
+      const newResources = { ...state.resources };
+
+      for (const resource of cost._fields) {
+        newResources[resource] = {
+          ...newResources[resource],
+          amount: newResources[resource].amount - cost[resource],
+        };
+      }
+
+      return {
+        ...state,
+        resources: newResources,
       };
     }
     case "venatrixAvailable": {
@@ -114,6 +163,7 @@ function reducer(state, action) {
     case "resourceBarStops": {
       return { ...state, isRunning: false };
     }
+
     default: {
       console.log("default case");
       return { ...state };

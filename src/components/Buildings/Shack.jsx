@@ -5,12 +5,10 @@ import Label from "../Layout/Label";
 import ProgressBarBuilding from "../ProgressBarBuilding";
 import { useMainContext } from "../../context/MainContext";
 
-function Shack() {
+function Shack({ builtAmount, cost, secsToBuild }) {
   const { state: buildingState } = useBuildingContext();
   const { state: mainState, dispatch: mainDispatch } = useMainContext();
-  const [secsToBuild, setSecsToBuild] = useState(
-    buildingState.secsToBuildShack
-  );
+  console.log(cost);
   //console.log(new Cost(buildingState.costShack));
   return (
     <>
@@ -24,15 +22,15 @@ function Shack() {
       <div className="">
         <ProgressBarBuilding
           type={"shack"}
-          cost={new Cost(buildingState.costShack)}
+          cost={cost}
           material={"wood"}
           secsToBuild={secsToBuild}
           popIncrease={1}
         />
       </div>
-      <div className="justify-self-center">{buildingState.shack}</div>
+      <div className="justify-self-center">{builtAmount}</div>
       <div className="justify-self-center self-center">
-        {buildingState.costShack} <Icon path={"wood.png"} />
+        {cost.wood} <Icon path={"wood.png"} />
       </div>
     </>
   );

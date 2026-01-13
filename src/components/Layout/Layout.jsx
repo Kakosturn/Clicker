@@ -1,5 +1,7 @@
+import { useMainContext } from "../../context/MainContext";
+
 function Layout({ children }) {
-  return <div className="bg-[#202020] h-full">{children}</div>;
+  return <div className="bg-[#202020]">{children}</div>;
 }
 
 export default Layout;

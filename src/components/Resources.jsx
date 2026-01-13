@@ -10,9 +10,9 @@ import ResourcesByPhase from "./Layout/ResourcesByPhase";
 function Resources() {
   const { state } = useMainContext();
   const status = state.status;
-
+  console.log(status);
   return (
-    <div className="p-12 border-2 border-[#222] flex flex-col items-center gap-12">
+    <div className="p-6 border-2 border-[#222] flex flex-col items-center gap-12">
       {/* prettier-ignore */}
       <p className="text-5xl">Resources</p>
       <div className="flex flex-col gap-5 items-center justify-center">

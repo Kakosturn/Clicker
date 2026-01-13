@@ -6,8 +6,15 @@ const initialState = {
   venatrixAtWood: 0,
   venatrixAtStone: 0,
   venatrixAtMeat: 0,
-};
+  idle: 5,
+  injured: 0,
 
+  assigned: {
+    wood: 0,
+    stone: 0,
+    meat: 0,
+  },
+};
 const PopulationContext = createContext();
 
 function reducer(state, action) {
@@ -21,6 +28,46 @@ function reducer(state, action) {
     case "venatrixIncrease4": {
       return { ...state, venatrix: state.venatrix + 4 };
     }
+    case "addVenatrix": {
+      return { ...state, idle: state.idle + action.payload };
+    }
+    case "assign": {
+      const resource = action.payload;
+      if (state.idle === 0) return { ...state };
+      return {
+        ...state,
+        idle: state.idle - 1,
+        assigned: {
+          ...state.assigned,
+          [resource]: state.assigned[resource] + 1,
+        },
+      };
+    }
+
+    case "unassign": {
+      const resource = action.payload;
+      if (state.assigned[resource] === 0) return { ...state };
+      return {
+        ...state,
+        idle: state.idle + 1,
+        assigned: {
+          ...state.assigned,
+          [resource]: state.assigned[resource] - 1,
+        },
+      };
+    }
+    case "setAssigned": {
+      const { resource, amount } = action.payload;
+      return {
+        ...state,
+        idle: state.idle - (amount - state.assigned[resource]),
+        assigned: {
+          ...state.assigned,
+          [resource]: amount,
+        },
+      };
+    }
+
     //! yeni resource geldiğinde buranın anası sikilicek.
     case "venatrixInjured": {
       if (state.venatrix > 0) {

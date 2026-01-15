@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import { useBuildingContext } from "../context/BuildingContext";
-import Shack from "./Buildings/Shack";
 import { useMainContext } from "../context/MainContext";
-import Bungalow from "./Buildings/Bungalow";
 import { usePopulationContext } from "../context/PopulationContext";
-import Cabin from "./Buildings/Cabin";
 import Population from "./Population";
 
 function Buildings() {
@@ -14,13 +11,18 @@ function Buildings() {
   // console.log(stateBuilding.buildings);
 
   useEffect(() => {
-    if (stateBuilding.shack >= 3) {
-      dispatchMain({ type: "firstCabin/1" });
-    }
-    if (stateBuilding.cabin >= 4) {
+    if (
+      stateBuilding.buildings.find((el) => el.id === "cabin").builtAmount >= 4
+    ) {
       dispatchMain({ type: "firstBungalow/1" });
     }
-  }, [dispatchMain, stateBuilding.shack, stateBuilding.cabin]);
+    if (
+      stateBuilding.buildings.find((el) => el.id === "bungalow").builtAmount >=
+      5
+    ) {
+      dispatchMain({ type: "firstHouse" });
+    }
+  }, [stateBuilding.buildings, dispatchMain]);
   return (
     <div className="p-6 grid w-full grid-cols-4 grid-rows-[repeat(auto-fill, 2rem)] items-center justify-center border-2 border-[#222]">
       <div className="flex gap-12 text-5xl row-start-1 col-span-full self-start place-self-center items-center">

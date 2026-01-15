@@ -2,7 +2,8 @@ export function beginningCheck(status) {
   if (
     status === "beginning/0" ||
     status === "firstBungalow/1" ||
-    status === "firstCabin/1"
+    status === "firstCabin/1" ||
+    status === "firstHouse"
   )
     return true;
 }

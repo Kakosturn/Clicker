@@ -5,10 +5,11 @@ const initialState = {
   // selfStoneMultiplier: 1,
   // selfMeatMultiplier: 1,
   // selfGatheringUpgradeCounter: 0,
-  selfMultiplier: {
+  multiplierSelf: {
     wood: 1,
     stone: 1,
     meat: 1,
+    ironOre: 1,
     gatheringUpgradeCounter: 0,
   },
   upgradesCompleted: [],
@@ -16,6 +17,7 @@ const initialState = {
     wood: 1,
     stone: 1,
     meat: 1,
+    ironOre: 1,
   },
   cost: {
     lumberMill: 100,

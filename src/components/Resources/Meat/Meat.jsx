@@ -2,11 +2,10 @@ import { useState } from "react";
 import Icon from "../../Icon";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
-import ArrowsMeat from "../../../OldComps/ArrowsMeat";
 import { useMainContext } from "../../../context/MainContext";
 import { useUpgradeContext } from "../../../context/UpgradeContext";
-import { amountMeatCollectedOnClick as meatCollected } from "../../../variables";
 import Arrows from "../Arrows";
+import ResourceGridBox from "../../ResourceComponents/ResourceGridBox";
 function Meat() {
   const { state: stateMain } = useMainContext();
   const { state: stateUpgrade } = useUpgradeContext();
@@ -15,7 +14,7 @@ function Meat() {
     stateMain.clicksToObtain.meat
   );
   return (
-    <>
+    <ResourceGridBox>
       <Label>
         <Icon path={"meat.png"} />
         <p>{"Meat"} : </p>
@@ -28,11 +27,13 @@ function Meat() {
         type={"gainResource"}
         clicksToObtain={clicksToObtain}
         setClicksToObtain={setClicksToObtain}
-        payload={meatCollected * stateUpgrade.selfMeatMultiplier}
+        payload={
+          stateMain.obtainedAmount.meat * stateUpgrade.multiplierSelf.meat
+        }
         resource={"meat"}
       />
       <Arrows resource={"meat"} />
-    </>
+    </ResourceGridBox>
   );
 }
 

@@ -14,13 +14,21 @@ const initialState = {
     meat: 7,
     ironOre: 10,
   },
+  obtainedAmount: {
+    wood: 1,
+    stone: 1,
+    meat: 1,
+    ironOre: 1,
+  },
   resources: {
     wood: { amount: 990, total: 0 },
     stone: { amount: 990, total: 0 },
     meat: { amount: 990, total: 0 },
-    ironOre: { amount: 990, total: 0 },
+    ironOre: { amount: 0, total: 0 },
+    ironBar: { amount: 0, total: 0 },
   },
   isRunning: false,
+  furnaceUnlocked: false,
   // secsToCollectWood: 5,
   // secsToCollectStone: 6,
   // secsToCollectMeat: 7,
@@ -63,7 +71,7 @@ function reducer(state, action) {
       };
     }
     case "firstHouse": {
-      return { ...state, status: "firstHouse" };
+      return { ...state, status: "firstHouse", furnaceUnlocked: true };
     }
     case "gainResource": {
       const { resource, amount } = action.payload;
@@ -80,8 +88,15 @@ function reducer(state, action) {
       };
     }
     case "loseResource": {
-      const { cost } = action.payload;
+      const { cost } = action.payload; // cost {fields:["wood","stone","meat"],wood:0,stone:0,meat:0}
+
       const newResources = { ...state.resources };
+      // {
+      //   wood: { amount: 990, total: 0 },
+      //   stone: { amount: 990, total: 0 },
+      //   meat: { amount: 990, total: 0 },
+      //   ironOre: { amount: 990, total: 0 },
+      // }
 
       for (const resource of cost._fields) {
         newResources[resource] = {

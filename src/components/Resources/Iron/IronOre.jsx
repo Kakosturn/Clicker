@@ -2,38 +2,41 @@ import { useState } from "react";
 import Icon from "../../Icon";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
-import { useMainContext } from "./../../../context/MainContext";
+
+import { useMainContext } from "../../../context/MainContext";
 import { useUpgradeContext } from "../../../context/UpgradeContext";
+
 import Arrows from "../Arrows";
 import ResourceGridBox from "../../ResourceComponents/ResourceGridBox";
-function Stone() {
+function IronOre() {
   const { state: stateMain } = useMainContext();
   const { state: stateUpgrade } = useUpgradeContext();
   const [clicksToObtain, setClicksToObtain] = useState(
-    stateMain.clicksToObtain.stone
+    stateMain.clicksToObtain.ironOre
   );
+  //console.log(clicksToObtain);
   return (
     <ResourceGridBox>
       <Label>
-        <Icon path={"stone.png"} />
-        <p>{"Stone"} : </p>
+        <Icon path={"ironOre.png"} />
+        <p>{"Iron Ore"} : </p>
       </Label>
       <span className="shrink justify-self-center">
-        {stateMain.resources.stone.amount}
+        {stateMain.resources.ironOre.amount}
       </span>
 
       <ProgressBar
         type={"gainResource"}
+        resource={"ironOre"}
         clicksToObtain={clicksToObtain}
         setClicksToObtain={setClicksToObtain}
         payload={
-          stateMain.obtainedAmount.stone * stateUpgrade.multiplierSelf.stone
+          stateMain.obtainedAmount.ironOre * stateUpgrade.multiplierSelf.ironOre
         }
-        resource={"stone"}
       />
-      <Arrows resource="stone" />
+      <Arrows resource="wood" />
     </ResourceGridBox>
   );
 }
 
-export default Stone;
+export default IronOre;

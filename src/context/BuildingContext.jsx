@@ -6,10 +6,11 @@ import Shack from "../components/Buildings/Shack";
 const BuildingContext = createContext();
 
 export class Cost {
-  _fields = ["wood", "stone", "meat"];
-  constructor(wood = 0, stone = 0, meat = 0) {
+  _fields = ["wood", "stone", "meat", "ironOre"];
+  constructor(wood = 0, stone = 0, meat = 0, ironOre = 0) {
     this.wood = wood;
     this.stone = stone;
+    this.ironOre = ironOre;
     this.meat = meat;
   }
   scale(multiplier = {}) {
@@ -126,7 +127,7 @@ function useBuildingContext() {
   //console.log(context);
   if (context === undefined)
     throw new Error(
-      "BuildingContext was used outside of the BuildingContext Provider"
+      "BuildingContext was used outside of the BuildingContext Provider",
     );
   return context;
 }

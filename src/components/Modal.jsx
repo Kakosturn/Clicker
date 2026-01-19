@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const modalStyle = {
-  position: "absolute",
+  position: "fixed",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -24,44 +24,28 @@ const overlayStyle = {
   zIndex: 1000,
 };
 
-function Modal({ content }) {
-  const [isOpen, setIsOpen] = useState(true);
-
-  if (isOpen) {
-    return (
-      //   <>
-      //     <div
-      //       className="fixed inset-0 bg-black bg-opacity-80 z-40"
-      //       onClick={() => console.log("div")}
-      //     ></div>
-      //     <div className="fixed inset-0 flex items-center justify-center z-50">
-      //       <div className="bg-gray-800 border-2 border-black rounded-md shadow-xl p-16 w-3/4 max-w-lg z-50 relative">
-      //         <p>{content}</p>
-      //         <button
-      //           className="absolute top-4 right-4 text-gray-200"
-      //           onClick={() => setIsOpen(false)}
-      //         >
-      //           &times;
-      //         </button>
-      //       </div>
-      //     </div>
-      //   </>
-      <>
-        <div style={overlayStyle} onClick={() => setIsOpen(false)}></div>
-        <div style={modalStyle} className="animate-modalShow">
-          <p>{content}</p>
-          <button
-            style={{ position: "absolute", top: "8px", right: "8px" }}
-            onClick={() => setIsOpen(false)}
-          >
-            &times;
-          </button>
-        </div>
-      </>
-    );
-  }
-
-  return null;
+function Modal({ children, isOpen, setIsOpen }) {
+  return (
+    <div
+      className={
+        isOpen ? "block pointer-events-auto" : "hidden pointer-events-none"
+      }
+    >
+      <div style={overlayStyle} onClick={() => setIsOpen(false)}></div>
+      <div
+        className="animate-modalShow  fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 
+        bg-[#202020] border-2 border-black rounded-[0.625rem] shadow-2xl px-16 py-8 z-[1001]"
+      >
+        {children}
+        <button
+          style={{ position: "absolute", top: "8px", right: "8px" }}
+          onClick={() => setIsOpen(false)}
+        >
+          &times;
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default Modal;

@@ -20,13 +20,13 @@ const PopulationContext = createContext();
 function reducer(state, action) {
   switch (action.type) {
     case "venatrixIncrease1": {
-      return { ...state, venatrix: state.venatrix + 1 };
+      return { ...state, idle: state.idle + 1 };
     }
     case "venatrixIncrease2": {
-      return { ...state, venatrix: state.venatrix + 2 };
+      return { ...state, idle: state.idle + 2 };
     }
     case "venatrixIncrease4": {
-      return { ...state, venatrix: state.venatrix + 4 };
+      return { ...state, idle: state.idle + 3 };
     }
     case "addVenatrix": {
       return { ...state, idle: state.idle + action.payload };
@@ -216,7 +216,7 @@ function usePopulationContext() {
   //console.log(context);
   if (context === undefined)
     throw new Error(
-      "PopulationContext was used outside of the MainContext Provider"
+      "PopulationContext was used outside of the MainContext Provider",
     );
   return context;
 }

@@ -10,6 +10,7 @@ const initialState = {
     goldOre: 0,
     isRunning: false,
   },
+  furnaceLimit: 30,
   smeltResourceInSeconds: {
     iron: 5,
   },
@@ -33,6 +34,16 @@ function reducer(state, action) {
         furnaceInput: {
           ...state.furnaceInput,
           [resource]: state.furnaceInput[resource] + amount,
+        },
+      };
+    }
+    case "emptyFurnace": {
+      return {
+        ...state,
+        furnaceInput: {
+          ironOre: 0,
+          goldOre: 0,
+          isRunning: false,
         },
       };
     }

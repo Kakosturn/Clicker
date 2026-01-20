@@ -37,7 +37,7 @@ const initialState = {
       component: Shack,
       builtAmount: 10,
       cost: new Cost(10, 0, 0),
-      secsToBuild: 1,
+      secsToBuild: 2,
       costMultiplier: { wood: 1.2 },
       unlocked: (buildingState) => true,
     },

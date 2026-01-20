@@ -23,30 +23,70 @@ function ProgressBar({ type, clicksToObtain, payload, resource }) {
     }
   }, [dispatchMain, progress, type, payload, resource]);
 
+  // return (
+  //   <div className="relative w-48 h-10 rounded-xl border-2 border-gray-200 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">
+  //     {/* Fill bar */}
+  //     <div
+  //       className={`
+  //         absolute left-0 top-0 h-full
+  //         transition-[width] duration-300 ease-out
+  //         ${
+  //           progress >= 100
+  //             ? "bg-gradient-to-r from-green-400 to-green-600 shadow-[0_0_12px_rgba(0,255,0,0.7)]"
+  //             : "bg-gradient-to-r from-orange-400 to-yellow-500"
+  //         }
+  //       `}
+  //       style={{ width: `${progress}%` }}
+  //     />
+
+  //     {/* Label / Button overlay */}
+  //     <button
+  //       className="relative z-10 w-full h-full text-gray-200 font-semibold"
+  //       disabled={progress >= 100}
+  //       onClick={() => {
+  //         if (progress < 100) {
+  //           setProgress((prev) => prev + 100 / clicksToObtain);
+  //         }
+  //       }}
+  //     >
+  //       {progressButtonTransitionMaterial(progress)}
+  //     </button>
+  //   </div>
+  // );
   return (
-    <div className="border-2 border-gray-200 w-48 flex rounded-xl bg-[#303030] hover:bg-[#4d4d4d]">
+    <div className="relative w-48 h-10 rounded-xl border-2 border-gray-200 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">
+      {/* Animated fill */}
       <div
-        className={`${progress === 100 ? "transitioned" : "default"}`}
+        className={`
+          absolute left-0 top-0 h-full
+          bg-gradient-to-r from-emerald-500 via-green-400 to-lime-300
+          shadow-[0_0_12px_rgba(120,255,120,0.7)]
+          transition-[width] duration-200 ease-out
+        `}
         style={{
           width: `${progress}%`,
-          height: "100%",
-          //backgroundColor: "rgb(229 231 235)",
-          transition: "all 0.01s",
-          zIndex: 999,
-          borderRadius: "12px",
+        }}
+      />
+
+      {/* Shine only while filling */}
+      {progress > 0 && progress < 100 && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="shine" />
+        </div>
+      )}
+
+      {/* Button */}
+      <button
+        className="relative z-10 w-full h-full font-semibold text-gray-200"
+        disabled={progress >= 100}
+        onClick={() => {
+          if (progress < 100) {
+            setProgress((prev) => prev + 100 / clicksToObtain);
+          }
         }}
       >
-        <button
-          className="text-gray-200 w-48"
-          disabled={progress >= 100}
-          onClick={() => {
-            if (progress <= 100)
-              setProgress((prev) => prev + 100 / clicksToObtain);
-          }}
-        >
-          {progressButtonTransitionMaterial(progress)}
-        </button>
-      </div>
+        {progress >= 100 ? "Success" : "Collect"}
+      </button>
     </div>
   );
 }

@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
-import { useMainContext } from "../context/MainContext";
-import { Cost, useBuildingContext } from "../context/BuildingContext";
-import {
-  buildingCost,
-  buildingType,
-  progressButtonTransitionBuilding,
-} from "../utils/helper";
-import { usePopulationContext } from "../context/PopulationContext";
+import { useState } from "react";
+import { useMainContext } from "../context/MainContext.jsx";
+import { Cost, useBuildingContext } from "../context/BuildingContext.jsx";
+
+import { usePopulationContext } from "../context/PopulationContext.jsx";
 import toast from "react-hot-toast";
 import Notification from "./Notification";
 import { errorToast } from "./Toast";
@@ -18,7 +14,6 @@ const ProgressBarBuilding = ({
   secsToBuild,
 }) => {
   const secondsToBuild = secsToBuild;
-  const [timeLeft, setTimeLeft] = useState(secondsToBuild);
   const [isRunning, setIsRunning] = useState(false);
   const { state: stateBuilding, dispatch: dispatchBuilding } =
     useBuildingContext();
@@ -26,76 +21,54 @@ const ProgressBarBuilding = ({
   const { dispatch: popDispatch } = usePopulationContext();
   const currentMaterial = new Cost(
     stateMain.resources.wood.amount,
-    stateMain.resources.stone.amount
+    stateMain.resources.stone.amount,
   );
+  console.log(isRunning);
 
-  useEffect(() => {
-    if (!isRunning) return;
-    const intervalId = setInterval(() => {
-      setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-    }, 1000);
-    if (timeLeft <= 0) {
-      setIsRunning(false);
-
-      setTimeout(() => {
-        setTimeLeft(secondsToBuild);
-        dispatchBuilding({ type: "build", payload: type });
-        // dispatchBuilding(buildingType(type)); // { type: "buildShack" }
-        //console.log(type, stateBuilding);
-
-        popDispatch({ type: `venatrixIncrease${popIncrease}` });
-      }, 10);
-    }
-    return () => clearInterval(intervalId);
-  }, [
-    timeLeft,
-    isRunning,
-    dispatchBuilding,
-    dispatchMain,
-    stateBuilding,
-    type,
-    secondsToBuild,
-    popDispatch,
-    popIncrease,
-  ]);
-
-  const progress = (1 - timeLeft / secondsToBuild) * 100;
-  // console.log(progress);
   return (
-    <div>
-      <div className="border-2 border-gray-200 w-48 flex rounded-xl bg-[#303030] hover:bg-[#4d4d4d]">
-        <div
-          className={`${progress === 100 ? "transitioned" : "default"}`}
-          style={{
-            width: `${progress}%`,
-            height: "100%",
-            //backgroundColor: "rgb(229 231 235)",
-            transition: "all 0.5s",
-            zIndex: 999,
-            borderRadius: "12px",
-          }}
-        >
-          <button
-            className="text-gray-200 w-48"
-            disabled={isRunning}
-            onClick={() => {
-              //console.log(cost); // {wood : 10, stone : 5}
-              //console.log(cost.lte(currentMaterial));
-
-              if (cost.lte(currentMaterial)) {
-                // dispatchMain(buildingCost(type, stateBuilding));
-                dispatchMain({
-                  type: "loseResource",
-                  payload: { cost: cost },
-                });
-                setIsRunning(true);
-              } else errorToast("not enough material");
-            }}
-          >
-            {progressButtonTransitionBuilding(progress)}
-          </button>
+    <div className="relative w-48 h-10 rounded-xl border-2 border-gray-200 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">
+      <div
+        className={`
+      absolute left-0 top-0 h-full
+      bg-gradient-to-r from-amber-600 via-orange-500 to-yellow-400
+      shadow-[0_0_12px_rgba(255,180,80,0.7)]
+      transition-[width] ease-linear
+    `}
+        style={{
+          width: isRunning ? "100%" : "0%",
+          transition: isRunning ? `width ${secondsToBuild}s linear` : "none",
+        }}
+      />
+      {isRunning && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="building-shine" />
         </div>
-      </div>
+      )}
+      <button
+        className={`
+          relative z-10 w-full h-full font-semibold
+          ${isRunning ? "text-yellow-100" : "text-gray-200"}
+        `}
+        disabled={isRunning}
+        onClick={() => {
+          if (cost.lte(currentMaterial)) {
+            dispatchMain({
+              type: "loseResource",
+              payload: { cost },
+            });
+            setIsRunning(true);
+            setTimeout(() => {
+              dispatchBuilding({ type: "build", payload: type });
+              popDispatch({ type: `venatrixIncrease${popIncrease}` });
+              setIsRunning(false);
+            }, secondsToBuild * 1000);
+          } else {
+            errorToast("Not enough material");
+          }
+        }}
+      >
+        {isRunning ? "Building.." : "Build"}
+      </button>
     </div>
   );
 };

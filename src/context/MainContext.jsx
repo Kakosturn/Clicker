@@ -24,7 +24,7 @@ const initialState = {
     wood: { amount: 990, total: 0 },
     stone: { amount: 990, total: 0 },
     meat: { amount: 990, total: 0 },
-    ironOre: { amount: 10, total: 0 },
+    ironOre: { amount: 100, total: 0 },
     ironBar: { amount: 0, total: 0 },
   },
   isRunning: false,

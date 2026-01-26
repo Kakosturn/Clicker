@@ -23,7 +23,7 @@ const ProgressBarBuilding = ({
     stateMain.resources.wood.amount,
     stateMain.resources.stone.amount,
   );
-  console.log(isRunning);
+  // console.log(isRunning);
 
   return (
     <div className="relative w-48 h-10 rounded-xl border-2 border-gray-200 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">

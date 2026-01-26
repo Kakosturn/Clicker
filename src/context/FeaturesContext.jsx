@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
+import { errorToast } from "../components/Toast";
 
 const FeatureContext = createContext();
 
@@ -12,7 +13,8 @@ const initialState = {
   },
   furnaceLimit: 30,
   smeltResourceInSeconds: {
-    iron: 5,
+    ironOre: 5,
+    goldOre: 10,
   },
 };
 
@@ -44,6 +46,18 @@ function reducer(state, action) {
           ironOre: 0,
           goldOre: 0,
           isRunning: false,
+        },
+      };
+    }
+    case "smelt": {
+      const oreInFurnace = Object.keys(state.furnaceInput).find(
+        (el) => state.furnaceInput[el] > 0,
+      );
+
+      return {
+        ...state,
+        furnaceInput: {
+          ...state.furnaceInput,
         },
       };
     }

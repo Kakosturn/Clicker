@@ -10,7 +10,7 @@ function Beginning() {
       <NewsFeed />
       <Upgrades />
       <FeaturesBar />
-      <div className="grid grid-cols-[1fr,1.2fr] grid-rows-none">
+      <div className="lg:grid lg:grid-cols-[1fr,1fr] lg:grid-rows-none flex flex-col">
         <Resources />
         <Buildings />
       </div>

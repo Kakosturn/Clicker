@@ -2,16 +2,18 @@ import { createContext, useContext, useReducer } from "react";
 import Bungalow from "../components/Buildings/Bungalow";
 import Cabin from "../components/Buildings/Cabin";
 import Shack from "../components/Buildings/Shack";
+import House from "../components/Buildings/House";
 
 const BuildingContext = createContext();
 
 export class Cost {
-  _fields = ["wood", "stone", "meat", "ironOre"];
-  constructor(wood = 0, stone = 0, meat = 0, ironOre = 0) {
+  _fields = ["wood", "stone", "meat", "ironOre", "ironBar"];
+  constructor(wood = 0, stone = 0, meat = 0, ironOre = 0, ironBar = 0) {
     this.wood = wood;
     this.stone = stone;
     this.ironOre = ironOre;
     this.meat = meat;
+    this.ironBar = ironBar;
   }
   scale(multiplier = {}) {
     const next = new Cost();
@@ -58,6 +60,15 @@ const initialState = {
       secsToBuild: 1,
       costMultiplier: { wood: 1.2, stone: 1.2 },
       unlocked: (buildingState) => buildingState.buildings[1].builtAmount >= 4,
+    },
+    {
+      id: "house",
+      component: House,
+      builtAmount: 0,
+      cost: new Cost(10, 0, 0, 0, 10),
+      secsToBuild: 10,
+      costMultiplier: { wood: 1.2, ironBar: 1.2 },
+      unlocked: (buildingState) => buildingState.buildings[2].builtAmount >= 5,
     },
   ],
 };

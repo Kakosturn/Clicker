@@ -3,6 +3,7 @@ import { useMainContext } from "../context/MainContext";
 import { usePopulationContext } from "../context/PopulationContext";
 import Popup from "reactjs-popup";
 import Modal from "./Modal";
+import { Cost } from "../context/BuildingContext";
 
 function Population() {
   const { state: statePop, dispatch: dispatchPop } = usePopulationContext();
@@ -12,20 +13,23 @@ function Population() {
     statePop.idle +
     statePop.assigned.wood +
     statePop.assigned.stone +
-    statePop.assigned.meat;
-  //console.log(totalPop);
-  const meatSpentPerVenatrix = 60000 / totalPop;
+    statePop.assigned.meat +
+    statePop.assigned.ironOre;
+  // console.log(totalPop);
 
+  const meatSpentPerVenatrix = 60000 / totalPop;
+  // console.log("asads");
+  // console.log(stateMain.resources.meat);
   useEffect(() => {
     //
     //Meat var venatrix var besleniyolar.
     //
-    if (stateMain.resources.meat > 0 && totalPop > 0) {
+    if (stateMain.resources.meat.amount > 0 && totalPop > 0) {
       console.log("ilk if");
       const intervalId = setInterval(() => {
         dispatchMain({
           type: "loseResource",
-          payload: { resource: "meat", amount: 1 },
+          payload: { cost: new Cost(0, 0, 1) },
         });
       }, meatSpentPerVenatrix);
 
@@ -34,7 +38,7 @@ function Population() {
     //
     //Meat yok venatrix var, injured
     //
-    if (totalPop > 0 && stateMain.resources.meat === 0) {
+    if (totalPop > 0 && stateMain.resources.meat.amount === 0) {
       console.log("ikinci if");
       const intervalId = setInterval(() => {
         dispatchPop({ type: "venatrixInjured" });
@@ -43,7 +47,7 @@ function Population() {
       return () => clearInterval(intervalId);
     }
   }, [
-    stateMain.resources.meat,
+    stateMain.resources.meat.amount,
     totalPop,
     meatSpentPerVenatrix,
     dispatchMain,
@@ -54,16 +58,24 @@ function Population() {
     //
     //Injured var, meat var, besleniyo recovered, et-
     //
-    if (statePop.injured > 0 && stateMain.resources.meat > 0) {
+    if (statePop.injured > 0 && stateMain.resources.meat.amount > 0) {
       console.log("ücüncü if");
       const intervalId = setInterval(() => {
         dispatchPop({ type: "venatrixRecovered" });
-        dispatchMain({ type: "loseResource", payload: { resource: "meat", amount: 1 } });
+        dispatchMain({
+          type: "loseResource",
+          payload: { cost: new Cost(0, 0, 1) },
+        });
       }, 1000);
 
       return () => clearInterval(intervalId);
     }
-  }, [dispatchMain, stateMain.resources.meat, statePop.injured, dispatchPop]);
+  }, [
+    dispatchMain,
+    stateMain.resources.meat.amount,
+    statePop.injured,
+    dispatchPop,
+  ]);
 
   return (
     <div>

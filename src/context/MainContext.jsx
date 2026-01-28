@@ -25,7 +25,7 @@ const initialState = {
     stone: { amount: 990, total: 0 },
     meat: { amount: 990, total: 0 },
     ironOre: { amount: 100, total: 0 },
-    ironBar: { amount: 0, total: 0 },
+    ironBar: { amount: 110, total: 0 },
   },
   isRunning: false,
 
@@ -44,7 +44,13 @@ const initialState = {
 
   status: "ready",
   randomTexts: [...firstPhaseTexts],
-  statusArr: ["beginning/0", "firstCabin/1", "firstBungalow/1", "firstHouse"],
+  statusArr: [
+    "beginning/0",
+    "firstCabin/1",
+    "firstBungalow/1",
+    "firstHouse",
+    "firstIronBar",
+  ],
 };
 
 function reducer(state, action) {
@@ -73,6 +79,9 @@ function reducer(state, action) {
     case "firstHouse": {
       return { ...state, status: "firstHouse", furnaceUnlocked: true };
     }
+    case "firstIronBar": {
+      return { ...state, status: "firstIronBar" };
+    }
     case "gainResource": {
       const { resource, amount } = action.payload;
 
@@ -89,7 +98,6 @@ function reducer(state, action) {
     }
     case "loseResource": {
       const { cost } = action.payload; // cost {fields:["wood","stone","meat"],wood:0,stone:0,meat:0}
-
       const newResources = { ...state.resources };
       // {
       //   wood: { amount: 990, total: 0 },
@@ -97,7 +105,11 @@ function reducer(state, action) {
       //   meat: { amount: 990, total: 0 },
       //   ironOre: { amount: 990, total: 0 },
       // }
-
+      console.log(cost);
+      if (!cost || !cost._fields) {
+        console.warn("loseResource called without valid cost", action.payload);
+        return { ...state }; // do NOTHING safely
+      }
       for (const resource of cost._fields) {
         newResources[resource] = {
           ...newResources[resource],

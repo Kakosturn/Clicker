@@ -3,7 +3,8 @@ export function beginningCheck(status) {
     status === "beginning/0" ||
     status === "firstBungalow/1" ||
     status === "firstCabin/1" ||
-    status === "firstHouse"
+    status === "firstHouse" ||
+    status === "firstIronBar"
   )
     return true;
 }

@@ -10,7 +10,7 @@ const ProgressBarBuilding = ({
   popIncrease,
   type,
   cost,
-  material,
+
   secsToBuild,
 }) => {
   const secondsToBuild = secsToBuild;
@@ -22,6 +22,9 @@ const ProgressBarBuilding = ({
   const currentMaterial = new Cost(
     stateMain.resources.wood.amount,
     stateMain.resources.stone.amount,
+    stateMain.resources.meat.amount,
+    stateMain.resources.ironOre.amount,
+    stateMain.resources.ironBar.amount,
   );
   // console.log(isRunning);
 
@@ -59,7 +62,7 @@ const ProgressBarBuilding = ({
             setIsRunning(true);
             setTimeout(() => {
               dispatchBuilding({ type: "build", payload: type });
-              popDispatch({ type: `venatrixIncrease${popIncrease}` });
+              popDispatch({ type: "venatrixIncrease", payload: popIncrease });
               setIsRunning(false);
             }, secondsToBuild * 1000);
           } else {

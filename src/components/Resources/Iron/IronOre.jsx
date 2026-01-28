@@ -12,7 +12,7 @@ function IronOre() {
   const { state: stateMain } = useMainContext();
   const { state: stateUpgrade } = useUpgradeContext();
   const [clicksToObtain, setClicksToObtain] = useState(
-    stateMain.clicksToObtain.ironOre
+    stateMain.clicksToObtain.ironOre,
   );
   //console.log(clicksToObtain);
   return (
@@ -34,7 +34,7 @@ function IronOre() {
           stateMain.obtainedAmount.ironOre * stateUpgrade.multiplierSelf.ironOre
         }
       />
-      <Arrows resource="wood" />
+      <Arrows resource="ironOre" />
     </ResourceGridBox>
   );
 }

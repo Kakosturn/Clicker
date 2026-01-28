@@ -22,7 +22,7 @@ function Arrows({ resource }) {
             type: "gainResource",
             payload: { resource: resource, amount: 1 },
           }),
-        secsToGather
+        secsToGather,
       );
 
       return () => clearInterval(intervalId);
@@ -75,7 +75,7 @@ function Arrows({ resource }) {
         onSubmit={(e) => e.preventDefault()}
       >
         <input
-          className="text-center appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none bg-[#202020]"
+          className="text-center w-12 appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none bg-[#202020]"
           type="number"
           min={0}
           max={popState.idle + popState.assigned[resource]}

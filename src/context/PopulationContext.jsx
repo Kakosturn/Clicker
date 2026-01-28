@@ -1,11 +1,11 @@
 import { createContext, useContext, useReducer } from "react";
 
 const initialState = {
-  venatrix: 0,
-  venatrixInjured: 0,
-  venatrixAtWood: 0,
-  venatrixAtStone: 0,
-  venatrixAtMeat: 0,
+  // venatrix: 0,
+  // venatrixInjured: 0,
+  // venatrixAtWood: 0,
+  // venatrixAtStone: 0,
+  // venatrixAtMeat: 0,
   idle: 5,
   injured: 0,
 
@@ -13,22 +13,14 @@ const initialState = {
     wood: 0,
     stone: 0,
     meat: 0,
+    ironOre: 0,
   },
 };
 const PopulationContext = createContext();
 
 function reducer(state, action) {
   switch (action.type) {
-    case "venatrixIncrease1": {
-      return { ...state, idle: state.idle + 1 };
-    }
-    case "venatrixIncrease2": {
-      return { ...state, idle: state.idle + 2 };
-    }
-    case "venatrixIncrease4": {
-      return { ...state, idle: state.idle + 3 };
-    }
-    case "addVenatrix": {
+    case "venatrixIncrease": {
       return { ...state, idle: state.idle + action.payload };
     }
     case "assign": {

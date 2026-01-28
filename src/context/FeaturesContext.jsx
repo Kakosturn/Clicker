@@ -11,8 +11,12 @@ const initialState = {
     goldOre: 0,
     isRunning: false,
   },
-  furnaceLimit: 30,
+  furnaceLimit: 20,
   smeltResourceInSeconds: {
+    ironOre: 0.1,
+    goldOre: 10,
+  },
+  smeltCostFor: {
     ironOre: 5,
     goldOre: 10,
   },
@@ -50,14 +54,12 @@ function reducer(state, action) {
       };
     }
     case "smelt": {
-      const oreInFurnace = Object.keys(state.furnaceInput).find(
-        (el) => state.furnaceInput[el] > 0,
-      );
-
       return {
         ...state,
         furnaceInput: {
-          ...state.furnaceInput,
+          ironOre: 0,
+          goldOre: 0,
+          isRunning: false,
         },
       };
     }

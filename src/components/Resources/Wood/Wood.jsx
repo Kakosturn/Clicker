@@ -10,7 +10,7 @@ function Wood() {
   const { state: stateMain } = useMainContext();
   const { state: stateUpgrade } = useUpgradeContext();
   const [clicksToObtain, setClicksToObtain] = useState(
-    stateMain.clicksToObtain.wood
+    stateMain.clicksToObtain.wood,
   );
   //console.log(clicksToObtain);
   return (

@@ -22,7 +22,6 @@ function Cabin({ builtAmount, cost, secsToBuild }) {
         <ProgressBarBuilding
           type={"cabin"}
           cost={cost}
-          material={"wood"}
           secsToBuild={secsToBuild}
           popIncrease={2}
         />

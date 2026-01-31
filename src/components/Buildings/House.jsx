@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Cost, useBuildingContext } from "../../context/BuildingContext";
+import { useBuildingContext } from "../../context/BuildingContext";
 import Icon from "../Icon";
 import Label from "../Layout/Label";
 import { useMainContext } from "../../context/MainContext";
@@ -14,7 +13,7 @@ function House({ builtAmount, cost, secsToBuild }) {
       <div className="flex flex-col gap-3 items-center justify-center justify-self-start">
         <Label>
           {" "}
-          <Icon path={"cabin.png"} />
+          <Icon path={"house.png"} />
           House
         </Label>
       </div>

@@ -28,7 +28,9 @@ const initialState = {
     ironBar: { amount: 110, total: 0 },
   },
   isRunning: false,
-
+  firstHouse: false,
+  firstBungalow: false,
+  firstIronBar: false,
   // secsToCollectWood: 5,
   // secsToCollectStone: 6,
   // secsToCollectMeat: 7,
@@ -73,14 +75,20 @@ function reducer(state, action) {
       return {
         ...state,
         status: "firstBungalow/1",
+        firstBungalow: true,
         randomTexts: [...thirdPhaseTexts],
       };
     }
     case "firstHouse": {
-      return { ...state, status: "firstHouse", furnaceUnlocked: true };
+      return {
+        ...state,
+        status: "firstHouse",
+        furnaceUnlocked: true,
+        firstHouse: true,
+      };
     }
     case "firstIronBar": {
-      return { ...state, status: "firstIronBar" };
+      return { ...state, status: "firstIronBar", firstIronBar: true };
     }
     case "gainResource": {
       const { resource, amount } = action.payload;

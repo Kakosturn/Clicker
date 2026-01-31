@@ -6,7 +6,7 @@ const initialState = {
   // venatrixAtWood: 0,
   // venatrixAtStone: 0,
   // venatrixAtMeat: 0,
-  idle: 5,
+  idle: 0,
   injured: 0,
 
   assigned: {

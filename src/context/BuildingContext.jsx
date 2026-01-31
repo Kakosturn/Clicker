@@ -66,7 +66,7 @@ const initialState = {
       component: House,
       builtAmount: 0,
       cost: new Cost(10, 0, 0, 0, 10),
-      secsToBuild: 10,
+      secsToBuild: 1,
       costMultiplier: { wood: 1.2, ironBar: 1.2 },
       unlocked: (buildingState) => buildingState.buildings[2].builtAmount >= 5,
     },

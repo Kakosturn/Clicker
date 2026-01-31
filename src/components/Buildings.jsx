@@ -11,21 +11,30 @@ function Buildings() {
   const { state: statePop } = usePopulationContext();
   const { dispatch: dispatchFeatures } = useFeatureContext();
   // console.log(stateBuilding.buildings);
-
+  console.log(stateMain);
   useEffect(() => {
     if (
-      stateBuilding.buildings.find((el) => el.id === "cabin").builtAmount >= 4
+      stateBuilding.buildings.find((el) => el.id === "cabin").builtAmount >=
+        4 &&
+      !stateMain.firstBungalow
     ) {
       dispatchMain({ type: "firstBungalow/1" });
     }
     if (
       stateBuilding.buildings.find((el) => el.id === "bungalow").builtAmount >=
-      5
+        5 &&
+      !stateMain.firstHouse
     ) {
       dispatchMain({ type: "firstHouse" });
       dispatchFeatures({ type: "furnaceUnlocked" });
     }
-  }, [stateBuilding.buildings, dispatchMain, dispatchFeatures]);
+  }, [
+    stateBuilding.buildings,
+    dispatchMain,
+    dispatchFeatures,
+    stateMain.firstBungalow,
+    stateMain.firstHouse,
+  ]);
   return (
     <div className="p-6 grid w-full grid-cols-4 grid-rows-[repeat(auto-fill, 2rem)] items-center justify-center border-2 border-[#222]">
       <div className="flex gap-12 text-5xl row-start-1 col-span-full self-start place-self-center items-center">

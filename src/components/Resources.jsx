@@ -11,7 +11,7 @@ import IronBar from "./Resources/Iron/IronBar";
 function Resources() {
   const { state } = useMainContext();
   const status = state.status;
-
+  console.log(state.status);
   return (
     <div className="p-6 border-2 border-[#222] flex flex-col items-center gap-12">
       {/* prettier-ignore */}

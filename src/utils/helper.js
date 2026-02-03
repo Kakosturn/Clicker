@@ -4,7 +4,8 @@ export function beginningCheck(status) {
     status === "firstBungalow/1" ||
     status === "firstCabin/1" ||
     status === "firstHouse" ||
-    status === "firstIronBar"
+    status === "firstIronBar" ||
+    status === "firstArsenal"
   )
     return true;
 }

@@ -6,13 +6,7 @@ import { usePopulationContext } from "../context/PopulationContext.jsx";
 import toast from "react-hot-toast";
 import Notification from "./Notification";
 import { errorToast } from "./Toast";
-const ProgressBarBuilding = ({
-  popIncrease,
-  type,
-  cost,
-
-  secsToBuild,
-}) => {
+const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
   const secondsToBuild = secsToBuild;
   const [isRunning, setIsRunning] = useState(false);
   const { state: stateBuilding, dispatch: dispatchBuilding } =
@@ -26,17 +20,18 @@ const ProgressBarBuilding = ({
     stateMain.resources.ironOre.amount,
     stateMain.resources.ironBar.amount,
   );
+
   // console.log(isRunning);
 
   return (
-    <div className="relative w-48 h-10 rounded-xl border-2 border-gray-200 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">
+    <div className="relative w-48 h-10 rounded-xl border-2 border-zinc-700 overflow-hidden bg-zinc-800 hover:bg-zinc-600">
       <div
         className={`
-      absolute left-0 top-0 h-full
-      bg-gradient-to-r from-amber-600 via-orange-500 to-yellow-400
-      shadow-[0_0_12px_rgba(255,180,80,0.7)]
-      transition-[width] ease-linear
-    `}
+          absolute left-0 top-0 h-full
+          bg-gradient-to-r from-amber-600 via-orange-500 to-yellow-400
+          shadow-[0_0_12px_rgba(255,180,80,0.7)]
+          transition-[width] ease-linear
+        `}
         style={{
           width: isRunning ? "100%" : "0%",
           transition: isRunning ? `width ${secondsToBuild}s linear` : "none",

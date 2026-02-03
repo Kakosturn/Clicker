@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --upgrades-bg: #090913;
+  --features-bg: #08081a;
+}
+
 .deneme {
   font-size: 67px;
 }

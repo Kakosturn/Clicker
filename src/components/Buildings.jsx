@@ -11,7 +11,7 @@ function Buildings() {
   const { state: statePop } = usePopulationContext();
   const { dispatch: dispatchFeatures } = useFeatureContext();
   // console.log(stateBuilding.buildings);
-  console.log(stateMain);
+
   useEffect(() => {
     if (
       stateBuilding.buildings.find((el) => el.id === "cabin").builtAmount >=
@@ -28,18 +28,65 @@ function Buildings() {
       dispatchMain({ type: "firstHouse" });
       dispatchFeatures({ type: "furnaceUnlocked" });
     }
+    if (
+      stateBuilding.buildings.find((el) => el.id === "arsenal").builtAmount >=
+        1 &&
+      !stateMain.firstArsenal
+    ) {
+      dispatchMain({ type: "firstArsenal" });
+      dispatchFeatures({ type: "armoryUnlocked" });
+    }
   }, [
     stateBuilding.buildings,
     dispatchMain,
     dispatchFeatures,
     stateMain.firstBungalow,
     stateMain.firstHouse,
+    stateMain.firstArsenal,
   ]);
+  // return (
+  //   <div className="p-6 grid w-full grid-cols-4 grid-rows-[repeat(auto-fill, 2rem)] items-center justify-center border-2 border-[#222]">
+  //     <div className="flex gap-12 text-5xl row-start-1 col-span-full self-start place-self-center items-center">
+  //       <p className="">Buildings</p>
+  //       <p className="text-3xl">
+  //         {stateMain.statusArr.slice(1).includes(stateMain.status) ? (
+  //           <Population />
+  //         ) : (
+  //           `Population : ${statePop.venatrix}`
+  //         )}
+  //       </p>
+  //     </div>
+
+  //     <p className="col-start-3 col-end-4 self-center place-self-center">
+  //       Amount
+  //     </p>
+  //     <p className="self-center place-self-center">Cost</p>
+
+  //     <>
+  //       {stateBuilding.buildings
+  //         .filter((building) => building.unlocked(stateBuilding))
+  //         .map((building, i) => {
+  //           // console.log(building);
+  //           const Component = building.component;
+  //           return (
+  //             <Component
+  //               key={i}
+  //               builtAmount={building.builtAmount}
+  //               cost={building.cost}
+  //               secsToBuild={building.secsToBuild}
+  //             />
+  //           );
+  //         })}
+  //     </>
+  //   </div>
+  // );
   return (
-    <div className="p-6 grid w-full grid-cols-4 grid-rows-[repeat(auto-fill, 2rem)] items-center justify-center border-2 border-[#222]">
-      <div className="flex gap-12 text-5xl row-start-1 col-span-full self-start place-self-center items-center">
-        <p className="">Buildings</p>
-        <p className="text-3xl">
+    <div className="p-6 grid w-full grid-cols-4 items-center border border-zinc-700 rounded-md bg-zinc-900 shadow-[0_0_25px_rgba(0,0,0,0.8)] gap-y-6">
+      {/* HEADER ROW */}
+      <div className="col-span-full flex justify-between items-center px-4">
+        <p className="text-4xl text-zinc-100 italic">Buildings</p>
+
+        <p className="text-xl text-zinc-300">
           {stateMain.statusArr.slice(1).includes(stateMain.status) ? (
             <Population />
           ) : (
@@ -48,27 +95,23 @@ function Buildings() {
         </p>
       </div>
 
-      <p className="col-start-3 col-end-4 self-center place-self-center">
-        Amount
-      </p>
-      <p className="self-center place-self-center">Cost</p>
+      {/* COLUMN TITLES */}
+      <p className="col-start-3 text-center text-zinc-300">Amount</p>
+      <p className="col-start-4 text-center text-zinc-300">Cost</p>
 
-      <>
-        {stateBuilding.buildings
-          .filter((building) => building.unlocked(stateBuilding))
-          .map((building, i) => {
-            // console.log(building);
-            const Component = building.component;
-            return (
-              <Component
-                key={i}
-                builtAmount={building.builtAmount}
-                cost={building.cost}
-                secsToBuild={building.secsToBuild}
-              />
-            );
-          })}
-      </>
+      {stateBuilding.buildings
+        .filter((building) => building.unlocked(stateBuilding))
+        .map((building, i) => {
+          const Component = building.component;
+          return (
+            <Component
+              key={i}
+              builtAmount={building.builtAmount}
+              cost={building.cost}
+              secsToBuild={building.secsToBuild}
+            />
+          );
+        })}
     </div>
   );
 }

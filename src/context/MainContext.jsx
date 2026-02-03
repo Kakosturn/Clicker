@@ -4,15 +4,20 @@ import {
   secondPhaseTexts,
   thirdPhaseTexts,
 } from "../utils/newsFeed";
-
+import {
+  clicksToObtainIronOre,
+  clicksToObtainMeat,
+  clicksToObtainStone,
+  clicksToObtainWood,
+} from "../variables";
 const MainContext = createContext();
 
 const initialState = {
   clicksToObtain: {
-    wood: 2,
-    stone: 6,
-    meat: 7,
-    ironOre: 10,
+    wood: clicksToObtainWood,
+    stone: clicksToObtainStone,
+    meat: clicksToObtainMeat,
+    ironOre: clicksToObtainIronOre,
   },
   obtainedAmount: {
     wood: 1,
@@ -31,6 +36,7 @@ const initialState = {
   firstHouse: false,
   firstBungalow: false,
   firstIronBar: false,
+  firstArsenal: false,
   // secsToCollectWood: 5,
   // secsToCollectStone: 6,
   // secsToCollectMeat: 7,
@@ -89,6 +95,9 @@ function reducer(state, action) {
     }
     case "firstIronBar": {
       return { ...state, status: "firstIronBar", firstIronBar: true };
+    }
+    case "firstArsenal": {
+      return { ...state, status: "firstArsenal", firstArsenal: true };
     }
     case "gainResource": {
       const { resource, amount } = action.payload;

@@ -6,7 +6,7 @@ import Upgrades from "../components/Upgrades";
 
 function Beginning() {
   return (
-    <div className="grid grid-cols-1 text-3xl gap-7">
+    <div className="grid grid-cols-1 text-3xl">
       <NewsFeed />
       <Upgrades />
       <FeaturesBar />

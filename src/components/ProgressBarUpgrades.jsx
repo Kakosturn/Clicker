@@ -9,74 +9,71 @@ import { Cost } from "../context/BuildingContext";
 import Notification from "./Notification";
 function ProgressBarUpgrades({ type, secsToObtain, cost }) {
   ///STATE
-  const secondsToAcquire = secsToObtain;
-  const [timeLeft, setTimeLeft] = useState(secondsToAcquire);
+
   const [isRunning, setIsRunning] = useState(false);
 
   const { state: stateUpgrade, dispatch: dispatchUpgrade } =
     useUpgradeContext();
   const { state: stateMain, dispatch: dispatchMain } = useMainContext();
-  const currentMaterial = new Cost(stateMain.wood, stateMain.stone);
+  const currentMaterial = new Cost(
+    stateMain.resources.wood.amount,
+    stateMain.resources.stone.amount,
+    stateMain.resources.meat.amount,
+    stateMain.resources.ironOre.amount,
+    stateMain.resources.ironBar.amount,
+  );
   //console.log(currentMaterial);
   //console.log(type);
 
-  //EFFECT
-  useEffect(() => {
-    if (!isRunning) return;
-    const intervalId = setInterval(() => {
-      setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-    }, 1000);
-    if (timeLeft <= 0) {
-      toast.success("Success");
-      setIsRunning(false);
-
-      setTimeout(() => {
-        setTimeLeft(secondsToAcquire);
-
-        dispatchUpgrade({ type: type });
-        dispatchMain(upgradeCost(type, stateUpgrade));
-      }, 1000);
-    }
-    return () => clearInterval(intervalId);
-  }, [
-    dispatchUpgrade,
-    isRunning,
-    secondsToAcquire,
-    timeLeft,
-    type,
-    dispatchMain,
-    stateUpgrade,
-  ]);
-
-  const progress = (1 - timeLeft / secondsToAcquire) * 100;
   return (
-    <div className="border-2 border-gray-200 w-48 flex rounded-xl bg-[#303030] hover:bg-[#4d4d4d]">
+    <div className="relative w-48 h-10 rounded-xl border-2 border-zinc-700 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">
+      {/* FILL BAR — same logic as buildings */}
       <div
-        className={`${progress === 100 ? "transitioned" : "default"}`}
+        className={`
+          absolute left-0 top-0 h-full
+          bg-gradient-to-r from-amber-600 via-orange-500 to-yellow-400
+          shadow-[0_0_12px_rgba(255,180,80,0.7)]
+          transition-[width] ease-linear
+        `}
         style={{
-          width: `${progress}%`,
-          height: "100%",
-          //backgroundColor: "rgb(229 231 235)",
-          transition: "all 0.5s",
-          zIndex: 999,
-          borderRadius: "12px",
+          width: isRunning ? "100%" : "0%",
+          transition: isRunning ? `width ${secsToObtain}s linear` : "none",
+        }}
+      />
+
+      {/* Shine effect while running */}
+      {isRunning && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="building-shine" />
+        </div>
+      )}
+
+      {/* BUTTON */}
+      <button
+        className={`
+          relative z-10 w-full h-full font-semibold
+          ${isRunning ? "text-yellow-100" : "text-gray-200"}
+        `}
+        disabled={isRunning}
+        onClick={() => {
+          if (!currentMaterial.gte(cost)) {
+            toast.custom(
+              <Notification type="error" message="Not enough material" />,
+            );
+            return;
+          }
+
+          setIsRunning(true);
+
+          setTimeout(() => {
+            dispatchUpgrade({ type });
+            dispatchMain(upgradeCost(type, stateUpgrade));
+            setIsRunning(false);
+          }, secsToObtain * 1000);
         }}
       >
-        <button
-          className="text-gray-200 w-48"
-          disabled={isRunning}
-          onClick={() => {
-            if (currentMaterial.gte(cost)) {
-              setIsRunning(true);
-            } else
-              toast.custom(
-                <Notification type={"error"} message={"Not enough material"} />
-              );
-          }}
-        >
-          {progressButtonUpgrade(progress)}
-        </button>
-      </div>
+        {isRunning ? "Upgrading..." : "Upgrade"}
+      </button>
     </div>
   );
 }

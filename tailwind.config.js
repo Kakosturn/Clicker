@@ -13,6 +13,10 @@ export default {
       animation: {
         modalShow: "modalShow 0.5s ease-out forwards",
       },
+      colors: {
+        upgrades: "var(--upgrades-bg)",
+        features: "var(--features-bg)",
+      },
     },
   },
   plugins: [require("tailwindcss-animated")],

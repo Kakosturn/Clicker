@@ -21,13 +21,13 @@ function NewsFeed() {
   useEffect(() => {
     const intervalId = setInterval(
       () => setIndex(between(0, state.randomTexts.length)),
-      20000
+      20000,
     );
     return () => clearTimeout(intervalId);
   }, [state.randomTexts.length]);
 
   return (
-    <div className="text-center border-2 border-gray-200 w-1/2 h-auto ml-auto mr-auto py-5 px-10 rounded-2xl grid grid-cols-1 justify-center items-center ">
+    <div className="text-center border-2 bg-zinc-900 mb-8 border-zinc-800 w-1/2 h-auto ml-auto mr-auto py-5 px-10 rounded-2xl grid grid-cols-1 justify-center items-center ">
       <p>
         <TextTransition springConfig={presets.gentle}>
           {newsFeed}

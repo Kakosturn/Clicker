@@ -15,7 +15,7 @@ function Shack({ builtAmount, cost, secsToBuild }) {
       <div className="flex flex-col items-center justify-center gap-3 justify-self-start">
         <Label>
           {" "}
-          <Icon path={"shack.png"} />
+          <Icon type="building" path={"shack.png"} />
           Shack
         </Label>
       </div>
@@ -30,7 +30,7 @@ function Shack({ builtAmount, cost, secsToBuild }) {
       </div>
       <div className="justify-self-center">{builtAmount}</div>
       <div className="justify-self-center self-center">
-        {cost.wood} <Icon path={"wood.png"} />
+        {cost.wood} <Icon path={"wood.png"} type="building" />
       </div>
     </>
   );

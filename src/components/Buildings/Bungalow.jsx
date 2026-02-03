@@ -14,7 +14,7 @@ function Bungalow({ builtAmount, cost, secsToBuild }) {
       <div className="flex flex-col gap-3 items-center justify-center justify-self-start">
         <Label>
           {" "}
-          <Icon path={"bungalow.png"} />
+          <Icon type="building" path={"bungalow.png"} />
           Bungalow
         </Label>
       </div>
@@ -28,8 +28,8 @@ function Bungalow({ builtAmount, cost, secsToBuild }) {
       </div>
       <div className="justify-self-center"> {builtAmount}</div>
       <div className="justify-self-center self-center">
-        {cost.wood} <Icon path={"wood.png"} width="w-1/6" />/{cost.stone}{" "}
-        <Icon path={"stone.png"} width="w-1/6" />
+        {cost.wood} <Icon path={"wood.png"} width="w-1/6" type="building" />/
+        {cost.stone} <Icon path={"stone.png"} width="w-1/6" type="building" />
       </div>
     </>
   );

@@ -7,7 +7,7 @@ function Upgrade({ secsToObtain, type, name, path, cost, tooltip }) {
   // console.log(cost);
   // console.log(objectKeys);
   return (
-    <div className="flex gap-5 w-max h-max scale-75">
+    <div className="flex scale-90 gap-12 p-3">
       <div className="flex gap-2">
         <Icon path={path} width="w-10" />
         <div className="relative">
@@ -17,6 +17,7 @@ function Upgrade({ secsToObtain, type, name, path, cost, tooltip }) {
             style={{
               backgroundColor: "#303030",
               color: "rgb(229,231,235)",
+              zIndex: "9999",
             }}
           />
           <img
@@ -38,11 +39,11 @@ function Upgrade({ secsToObtain, type, name, path, cost, tooltip }) {
           cost[el] > 0 ? (
             <span key={i}>
               {" "}
-              {cost[el]} <Icon path={`${el}.png`} />
+              {cost[el]} <Icon type="building" path={`${el}.png`} />
             </span>
           ) : (
-            <p key={i}></p>
-          )
+            <span key={i}></span>
+          ),
         )}
       </div>
     </div>

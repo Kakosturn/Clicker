@@ -20,7 +20,21 @@ function IronBar() {
           <Icon path={"ironBar.png"} />
           <p>{"Iron Bar"} : </p>
         </Label>
-        <span className="shrink justify-self-center">
+        <span
+          className="
+          justify-self-center
+          font-mono
+          text-lg
+          text-emerald-300
+          bg-black/40
+          px-3
+          py-1
+          rounded-md
+          border
+          border-zinc-700
+          shadow-inner
+        "
+        >
           {stateMain.resources.ironBar.amount}
         </span>
       </ResourceGridBox>

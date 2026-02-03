@@ -1,10 +1,11 @@
-import { useBuildingContext } from "../../context/BuildingContext";
+import { useEffect, useState } from "react";
+import { Cost, useBuildingContext } from "../../context/BuildingContext";
 import Icon from "../Icon";
 import Label from "../Layout/Label";
 import { useMainContext } from "../../context/MainContext";
 import ProgressBarBuilding from "../ProgressBarBuilding";
 
-function House({ builtAmount, cost, secsToBuild }) {
+function Arsenal({ builtAmount, cost, secsToBuild }) {
   const { state: buildingState } = useBuildingContext();
   const { state: mainState, dispatch: mainDispatch } = useMainContext();
 
@@ -13,16 +14,16 @@ function House({ builtAmount, cost, secsToBuild }) {
       <div className="flex flex-col gap-3 items-center justify-center justify-self-start">
         <Label>
           {" "}
-          <Icon path={"house.png"} type="building" />
-          House
+          <Icon type="building" path={"arsenal.png"} />
+          Arsenal
         </Label>
       </div>
-      <div className="">
+      <div className="flex flex-col gap-3">
         <ProgressBarBuilding
-          type={"house"}
+          type={"arsenal"}
           cost={cost}
           secsToBuild={secsToBuild}
-          popIncrease={10}
+          popIncrease={0}
         />
       </div>
       <div className="justify-self-center"> {builtAmount}</div>
@@ -35,4 +36,4 @@ function House({ builtAmount, cost, secsToBuild }) {
   );
 }
 
-export default House;
+export default Arsenal;

@@ -3,6 +3,7 @@ import Bungalow from "../components/Buildings/Bungalow";
 import Cabin from "../components/Buildings/Cabin";
 import Shack from "../components/Buildings/Shack";
 import House from "../components/Buildings/House";
+import Arsenal from "../components/Buildings/Arsenal";
 
 const BuildingContext = createContext();
 
@@ -37,7 +38,7 @@ const initialState = {
     {
       id: "shack",
       component: Shack,
-      builtAmount: 10,
+      builtAmount: 100,
       cost: new Cost(10, 0, 0),
       secsToBuild: 2,
       costMultiplier: { wood: 1.2 },
@@ -64,11 +65,20 @@ const initialState = {
     {
       id: "house",
       component: House,
-      builtAmount: 0,
+      builtAmount: 10,
       cost: new Cost(10, 0, 0, 0, 10),
       secsToBuild: 1,
       costMultiplier: { wood: 1.2, ironBar: 1.2 },
       unlocked: (buildingState) => buildingState.buildings[2].builtAmount >= 5,
+    },
+    {
+      id: "arsenal",
+      component: Arsenal,
+      builtAmount: 0,
+      cost: new Cost(10, 0, 0, 0, 20),
+      secsToBuild: 1,
+      costMultiplier: { wood: 1.2, ironBar: 1.2 },
+      unlocked: (buildingState) => buildingState.buildings[3].builtAmount >= 5,
     },
   ],
 };
@@ -93,6 +103,10 @@ function reducer(state, action) {
         }),
       };
     }
+    default: {
+      console.log("default case");
+      return { ...state };
+    }
 
     // case "buildShack": {
     //   return {
@@ -116,10 +130,6 @@ function reducer(state, action) {
     //     costBungalowStone: Math.floor(state.costBungalowStone * 1.2),
     //   };
     // }
-
-    default: {
-      return { ...state };
-    }
   }
 }
 

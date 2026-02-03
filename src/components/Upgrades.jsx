@@ -7,6 +7,7 @@ import {
   requiredMeatForGathering1Upgrade as requiredMeatForGathering1,
   requiredWoodForGathering1Upgrade as requiredWoodForGathering1,
   requiredStoneForGathering1Upgrade as requiredStoneForGathering1,
+  secsForLumberMillUpgrade,
 } from "../variables";
 import Upgrade from "./Upgrade";
 import Icon from "./Icon";
@@ -21,31 +22,42 @@ function Upgrades() {
   //     console.log("asd");
   //   }
   // }, [stateBuilding.shack]);
-
+  const upgradesArray = stateUpgrade.upgradesCompleted.upgrades;
   return (
-    <div className="bg-[#222] w-full h-36 flex justify-evenly">
+    <div className="bg-upgrades w-full h-48 flex justify-between">
+      {/* Completed Upgrades */}
       <div className="w-1/2">
-        {stateUpgrade.upgradesCompleted.map((el, i) => (
-          <Icon key={i} path={`${el}.png`} />
-        ))}
+        {stateUpgrade.upgradesCompleted.upgrades.map((el, i) => {
+          console.log(stateUpgrade.upgradesCompleted[el].tooltip);
+          return (
+            <Icon
+              type="upgrade"
+              key={i}
+              tooltip={stateUpgrade.upgradesCompleted[el].tooltip}
+              path={`${el}.png`}
+            />
+          );
+        })}
       </div>
-      <div className="w-1/2 grid grid-cols-2 gap-y-4 overflow-y-auto">
+      {/* Available Upgrades */}
+      <div className="w-1/2 overflow-y-auto">
         {isUpgradeBuilt(
-          stateBuilding.shack > 10,
-          stateUpgrade.lumberMill === false
+          stateBuilding.buildings.find((el) => el.id === "shack").builtAmount >
+            10,
+          stateUpgrade.upgradesCompleted.lumberMill.completed === false,
         ) && (
           <Upgrade
-            secsToObtain={10}
+            secsToObtain={secsForLumberMillUpgrade}
             type={"upgradeLumberMill"}
             path={"lumberMill.png"}
             name={"Lumber Mill"}
-            cost={new Cost(stateUpgrade.lumberMillCost)}
+            cost={new Cost(stateUpgrade.cost.lumberMill.wood)}
             tooltip={"Increases wood gathering efficiency for venatrix by ANAN"}
           />
         )}
         {isUpgradeBuilt(
           stateBuilding.bungalow > 10,
-          stateUpgrade.quarry === false
+          stateUpgrade.quarry === false,
         ) && (
           <Upgrade
             secsToObtain={10}
@@ -62,7 +74,7 @@ function Upgrades() {
           stateMain.totalWoodCollected > requiredWoodForGathering1 &&
             stateMain.totalMeatCollected > requiredMeatForGathering1 &&
             stateMain.totalStoneCollected > requiredStoneForGathering1,
-          stateUpgrade.gathering1 === false
+          stateUpgrade.gathering1 === false,
         ) && (
           <Upgrade
             secsToObtain={10}

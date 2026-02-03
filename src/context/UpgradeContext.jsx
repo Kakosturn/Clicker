@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-
+import { tooltipLumberMill, tooltipQuarry } from "../variables";
 const initialState = {
   // selfWoodMultiplier: 1,
   // selfStoneMultiplier: 1,
@@ -12,7 +12,17 @@ const initialState = {
     ironOre: 1,
     gatheringUpgradeCounter: 0,
   },
-  upgradesCompleted: [],
+  upgradesCompleted: {
+    upgrades: [],
+    lumberMill: {
+      completed: false,
+      tooltip: tooltipLumberMill,
+    },
+    quarry: {
+      completed: false,
+      tooltip: tooltipQuarry,
+    },
+  },
   multiplier: {
     wood: 1,
     stone: 1,
@@ -20,19 +30,19 @@ const initialState = {
     ironOre: 1,
   },
   cost: {
-    lumberMill: 100,
-    quarry: 100,
+    lumberMill: { wood: 100 },
+    quarry: { stone: 100 },
     gathering1: 1000,
   },
+  lumberMill: false,
+  quarry: false,
+  gathering1: false,
   // woodMultiplier: 1,
   // stoneMultiplier: 1,
   // meatMultiplier: 1,
   // lumberMillCost: 100,
   // quarryCost: 100,
   // gathering1Cost: 1000,
-  //! lumberMill: false, ????? hatırlamıyorum neye yarıyodu
-  //!quarry: false,
-  //!gathering1: false,
 };
 
 const UpgradeContext = createContext();
@@ -42,17 +52,29 @@ function reducer(state, action) {
     case "upgradeLumberMill": {
       return {
         ...state,
-        lumberMill: true,
-        woodMultiplier: 0.8,
-        upgradesCompleted: [...state.upgradesCompleted, "lumberMill"],
+        upgradesCompleted: {
+          ...state.upgradesCompleted,
+          upgrades: [...state.upgradesCompleted.upgrades, "lumberMill"],
+          lumberMill: {
+            ...state.upgradesCompleted.lumberMill,
+            completed: true,
+          },
+        },
+        multiplier: { ...state.multiplier, wood: 1.2 },
       };
     }
     case "upgradeQuarry": {
       return {
         ...state,
-        quarry: true,
-        stoneMultiplier: 0.8,
-        upgradesCompleted: [...state.upgradesCompleted, "quarry"],
+        upgradesCompleted: {
+          ...state.upgradesCompleted,
+          upgrades: [...state.upgradesCompleted.upgrades, "quarry"],
+          quarry: {
+            ...state.upgradesCompleted.quarry,
+            completed: true,
+          },
+        },
+        multiplier: { ...state.multiplier, stone: 1.2 },
       };
     }
     case "upgradeGathering/1": {
@@ -65,10 +87,10 @@ function reducer(state, action) {
         upgradesCompleted: [...state.upgradesCompleted, "muscle"],
       };
     }
-    default:
-      return {
-        ...state,
-      };
+    default: {
+      console.log("default case");
+      return { ...state };
+    }
   }
 }
 
@@ -87,7 +109,7 @@ function useUpgradeContext() {
   //console.log(context);
   if (context === undefined)
     throw new Error(
-      "UpgradeContext was used outside of the UpgradeContext Provider"
+      "UpgradeContext was used outside of the UpgradeContext Provider",
     );
   return context;
 }

@@ -190,6 +190,10 @@ function reducer(state, action) {
         venatrixAtMeat: state.venatrixAtMeat - 1,
       };
     }
+    default: {
+      console.log("default case");
+      return { ...state };
+    }
   }
 }
 

@@ -5,6 +5,7 @@ const FeatureContext = createContext();
 
 const initialState = {
   furnaceUnlocked: false,
+  armoryUnlocked: false,
   furnaceOpen: false,
   furnaceInput: {
     ironOre: 0,
@@ -26,8 +27,8 @@ function reducer(state, action) {
   switch (action.type) {
     case "furnaceUnlocked":
       return { ...state, furnaceUnlocked: true };
-    case "default":
-      return { ...state };
+    case "armoryUnlocked":
+      return { ...state, armoryUnlocked: true };
     case "addToFurnace": {
       const { resource, amount } = action.payload;
 
@@ -62,6 +63,10 @@ function reducer(state, action) {
           isRunning: false,
         },
       };
+    }
+    default: {
+      console.log("default case");
+      return { ...state };
     }
   }
 }

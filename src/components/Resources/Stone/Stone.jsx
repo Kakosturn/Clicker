@@ -10,7 +10,7 @@ function Stone() {
   const { state: stateMain } = useMainContext();
   const { state: stateUpgrade } = useUpgradeContext();
   const [clicksToObtain, setClicksToObtain] = useState(
-    stateMain.clicksToObtain.stone
+    stateMain.clicksToObtain.stone,
   );
   return (
     <ResourceGridBox>
@@ -18,7 +18,21 @@ function Stone() {
         <Icon path={"stone.png"} />
         <p>{"Stone"} : </p>
       </Label>
-      <span className="shrink justify-self-center">
+      <span
+        className="
+          justify-self-center
+          font-mono
+          text-lg
+          text-emerald-300
+          bg-black/40
+          px-3
+          py-1
+          rounded-md
+          border
+          border-zinc-700
+          shadow-inner
+        "
+      >
         {stateMain.resources.stone.amount}
       </span>
 

@@ -11,7 +11,7 @@ function Meat() {
   const { state: stateUpgrade } = useUpgradeContext();
 
   const [clicksToObtain, setClicksToObtain] = useState(
-    stateMain.clicksToObtain.meat
+    stateMain.clicksToObtain.meat,
   );
   return (
     <ResourceGridBox>
@@ -19,7 +19,21 @@ function Meat() {
         <Icon path={"meat.png"} />
         <p>{"Meat"} : </p>
       </Label>
-      <span className="shrink justify-self-center">
+      <span
+        className="
+          justify-self-center
+          font-mono
+          text-lg
+          text-emerald-300
+          bg-black/40
+          px-3
+          py-1
+          rounded-md
+          border
+          border-zinc-700
+          shadow-inner
+        "
+      >
         {stateMain.resources.meat.amount}
       </span>
 

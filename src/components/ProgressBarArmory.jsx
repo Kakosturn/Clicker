@@ -1,20 +1,11 @@
 import { useState } from "react";
-import "./../index.css";
-import { progressButtonUpgrade } from "../utils/helper";
-import { useUpgradeContext } from "../context/UpgradeContext";
-import { useMainContext } from "../context/MainContext";
-import { upgradeCost } from "../utils/helperUpgrade";
-import toast from "react-hot-toast";
-import { Cost } from "../context/MainContext";
-import Notification from "./Notification";
-function ProgressBarUpgrades({ type, secsToObtain, cost }) {
-  ///STATE
-
+import { Cost, useMainContext } from "../context/MainContext";
+import { errorToast } from "../components/Toast";
+import { useArmoryContext } from "../context/ArmoryContext";
+function ProgressBarArmory({ secsToObtain, cost, type }) {
+  const { state: stateArmory, dispatch: dispatchArmory } = useArmoryContext();
+  const { state: stateMain } = useMainContext();
   const [isRunning, setIsRunning] = useState(false);
-
-  const { state: stateUpgrade, dispatch: dispatchUpgrade } =
-    useUpgradeContext();
-  const { state: stateMain, dispatch: dispatchMain } = useMainContext();
   const currentMaterial = new Cost(
     stateMain.resources.wood.amount,
     stateMain.resources.stone.amount,
@@ -22,11 +13,10 @@ function ProgressBarUpgrades({ type, secsToObtain, cost }) {
     stateMain.resources.ironOre.amount,
     stateMain.resources.ironBar.amount,
   );
-  //console.log(currentMaterial);
-  //console.log(type);
-
+  // console.log(type);
+  console.log(stateArmory);
   return (
-    <div className="relative w-48 h-10 rounded-xl border-2 border-zinc-700 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">
+    <div className="relative w-36 h-10 rounded-xl border-2 border-zinc-700 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">
       {/* FILL BAR — same logic as buildings */}
       <div
         className={`
@@ -57,25 +47,30 @@ function ProgressBarUpgrades({ type, secsToObtain, cost }) {
         disabled={isRunning}
         onClick={() => {
           if (!currentMaterial.gte(cost)) {
-            toast.custom(
-              <Notification type="error" message="Not enough material" />,
-            );
+            errorToast("Not enough material");
+            return;
+          }
+          if (
+            stateArmory.amountItemInInventory >= stateArmory.inventory.capacity
+          ) {
+            errorToast("Inventory Full");
             return;
           }
 
           setIsRunning(true);
 
           setTimeout(() => {
-            dispatchUpgrade({ type });
-            dispatchMain(upgradeCost(type, stateUpgrade));
+            dispatchArmory({ type: "craft", payload: type });
+            // dispatchUpgrade({ type });
+            // dispatchMain(upgradeCost(type, stateUpgrade));
             setIsRunning(false);
           }, secsToObtain * 1000);
         }}
       >
-        {isRunning ? "Upgrading..." : "Upgrade"}
+        {isRunning ? "Crafting..." : "Craft"}
       </button>
     </div>
   );
 }
 
-export default ProgressBarUpgrades;
+export default ProgressBarArmory;

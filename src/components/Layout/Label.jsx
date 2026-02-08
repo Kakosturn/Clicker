@@ -1,6 +1,6 @@
 function Label({ children }) {
   return (
-    <p
+    <div
       className="
         flex items-center gap-2
         text-2xl font-semibold
@@ -8,7 +8,7 @@ function Label({ children }) {
       "
     >
       {children}
-    </p>
+    </div>
   );
 }
 

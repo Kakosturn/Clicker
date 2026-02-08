@@ -2,6 +2,7 @@ import { Tooltip } from "react-tooltip";
 
 import Icon from "./Icon";
 import ProgressBarUpgrades from "./ProgressBarUpgrades";
+import Cost from "./Cost";
 function Upgrade({ secsToObtain, type, name, path, cost, tooltip }) {
   const objectKeys = Object.keys(cost);
   // console.log(cost);
@@ -38,8 +39,9 @@ function Upgrade({ secsToObtain, type, name, path, cost, tooltip }) {
         {objectKeys.map((el, i) =>
           cost[el] > 0 ? (
             <span key={i}>
-              {" "}
-              {cost[el]} <Icon type="building" path={`${el}.png`} />
+              {/* {" "}
+              {cost[el]} <Icon type="plain" path={`${el}.png`} /> */}
+              <Cost cost={cost} iconType={"plain"} />
             </span>
           ) : (
             <span key={i}></span>

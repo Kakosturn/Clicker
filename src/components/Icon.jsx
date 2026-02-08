@@ -42,8 +42,9 @@ function Icon({ path, width = "w-1/4", type = "resource", tooltip }) {
       </div>
     );
   }
-  if (type === "building")
+  if (type === "plain")
     return <img src={`./public/${path}`} alt="" className={`inline w-10`} />;
+
   return (
     <div
       className="

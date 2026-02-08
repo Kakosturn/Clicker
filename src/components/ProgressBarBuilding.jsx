@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useMainContext } from "../context/MainContext.jsx";
-import { Cost, useBuildingContext } from "../context/BuildingContext.jsx";
+import { Cost, useMainContext } from "../context/MainContext.jsx";
+import { useBuildingContext } from "../context/BuildingContext.jsx";
 
 import { usePopulationContext } from "../context/PopulationContext.jsx";
 import toast from "react-hot-toast";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMainContext } from "../context/MainContext";
 import { useFeatureContext } from "../context/FeaturesContext";
-import { Cost } from "../context/BuildingContext";
+import { Cost } from "../context/MainContext";
 import { errorToast } from "./Toast";
 function Furnace() {
   const { state: stateMain, dispatch: dispatchMain } = useMainContext();

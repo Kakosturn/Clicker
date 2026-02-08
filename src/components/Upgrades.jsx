@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { Cost, useBuildingContext } from "../context/BuildingContext";
+import { useBuildingContext } from "../context/BuildingContext";
 import { useUpgradeContext } from "../context/UpgradeContext";
 import { isUpgradeBuilt } from "../utils/helperUpgrade";
-import { useMainContext } from "../context/MainContext";
+import { Cost, useMainContext } from "../context/MainContext";
 import {
   requiredMeatForGathering1Upgrade as requiredMeatForGathering1,
   requiredWoodForGathering1Upgrade as requiredWoodForGathering1,

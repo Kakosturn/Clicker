@@ -8,8 +8,8 @@ function FeaturesBar() {
   const { state: stateFeatures } = useFeatureContext();
   const [isFurnaceOpen, setIsFurnaceOpen] = useState(false);
   const [isArmoryOpen, setIsArmoryOpen] = useState(false);
-  console.log(stateFeatures);
-  console.log(stateFeatures.furnaceUnlocked);
+  // console.log(stateFeatures);
+  // console.log(stateFeatures.furnaceUnlocked);
   return (
     <div className="flex bg-features py-8 px-12 gap-24">
       <div>

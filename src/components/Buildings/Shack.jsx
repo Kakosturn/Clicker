@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useBuildingContext, Cost } from "../../context/BuildingContext";
+import { useBuildingContext } from "../../context/BuildingContext";
 import Icon from "../Icon";
 import Label from "../Layout/Label";
 import ProgressBarBuilding from "../ProgressBarBuilding";
 import { useMainContext } from "../../context/MainContext";
+import Cost from "../Cost";
 
 function Shack({ builtAmount, cost, secsToBuild }) {
   const { state: buildingState } = useBuildingContext();
@@ -15,7 +16,7 @@ function Shack({ builtAmount, cost, secsToBuild }) {
       <div className="flex flex-col items-center justify-center gap-3 justify-self-start">
         <Label>
           {" "}
-          <Icon type="building" path={"shack.png"} />
+          <Icon type="plain" path={"shack.png"} />
           Shack
         </Label>
       </div>
@@ -30,7 +31,7 @@ function Shack({ builtAmount, cost, secsToBuild }) {
       </div>
       <div className="justify-self-center">{builtAmount}</div>
       <div className="justify-self-center self-center">
-        {cost.wood} <Icon path={"wood.png"} type="building" />
+        <Cost cost={cost} iconType={"plain"} />
       </div>
     </>
   );

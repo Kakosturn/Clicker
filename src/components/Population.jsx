@@ -3,7 +3,7 @@ import { useMainContext } from "../context/MainContext";
 import { usePopulationContext } from "../context/PopulationContext";
 import Popup from "reactjs-popup";
 import Modal from "./Modal";
-import { Cost } from "../context/BuildingContext";
+import { Cost } from "../context/MainContext";
 
 function Population() {
   const { state: statePop, dispatch: dispatchPop } = usePopulationContext();

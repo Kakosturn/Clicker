@@ -28,16 +28,16 @@ function NewsFeed() {
 
   return (
     <div className="text-center border-2 bg-zinc-900 mb-8 border-zinc-800 w-1/2 h-auto ml-auto mr-auto py-5 px-10 rounded-2xl grid grid-cols-1 justify-center items-center ">
-      <p>
+      <div>
         <TextTransition springConfig={presets.gentle}>
           {newsFeed}
         </TextTransition>
-      </p>
-      <p className="grow-0 shrink">
+      </div>
+      <div className="grow-0 shrink">
         <TextTransition inline springConfig={presets.gentle}>
           {state.randomTexts[index % state.randomTexts.length]}
         </TextTransition>
-      </p>
+      </div>
     </div>
   );
 }

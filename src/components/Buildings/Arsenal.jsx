@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Cost, useBuildingContext } from "../../context/BuildingContext";
+import { useBuildingContext } from "../../context/BuildingContext";
 import Icon from "../Icon";
 import Label from "../Layout/Label";
 import { useMainContext } from "../../context/MainContext";
 import ProgressBarBuilding from "../ProgressBarBuilding";
+import Cost from "../Cost";
 
 function Arsenal({ builtAmount, cost, secsToBuild }) {
   const { state: buildingState } = useBuildingContext();
@@ -11,10 +12,10 @@ function Arsenal({ builtAmount, cost, secsToBuild }) {
 
   return (
     <>
-      <div className="flex flex-col gap-3 items-center justify-center justify-self-start">
+      <div className="flex flex-col gap-3 items-center justify-center justify-self-start ">
         <Label>
           {" "}
-          <Icon type="building" path={"arsenal.png"} />
+          <Icon type="plain" path={"arsenal.png"} />
           Arsenal
         </Label>
       </div>
@@ -28,9 +29,7 @@ function Arsenal({ builtAmount, cost, secsToBuild }) {
       </div>
       <div className="justify-self-center"> {builtAmount}</div>
       <div className="justify-self-center self-center">
-        {cost.wood} <Icon path={"wood.png"} width="w-1/6" type="building" />/
-        {cost.ironBar}{" "}
-        <Icon path={"ironBar.png"} width="w-1/6" type="building" />
+        <Cost cost={cost} iconType={"plain"} />
       </div>
     </>
   );

@@ -15,34 +15,42 @@ import {
 const ArmoryContext = createContext();
 
 const initialState = {
-  equipped: {},
+  equipped: {
+    head: null,
+    shoulders: null,
+    chest: null,
+    gloves: null,
+    legs: null,
+    weapon: null,
+    enhancement: null,
+  },
   amountItemInInventory: 0,
   inventory: {
     capacity: invCapacity,
     weapons: [
-      {
-        id: "ironSword",
-        name: "Iron Sword",
-        amount: 0,
-        damage: dmgIronSword,
-        durability: durIronSword,
-      },
+      // {
+      //   id: "ironSword",
+      //   name: "Iron Sword",
+      //   amount: 0,
+      //   damage: dmgIronSword,
+      //   durability: durIronSword,
+      // },
     ],
     armours: [
-      {
-        id: "woodenChestArmor",
-        name: "Wooden Chest Armor",
-        amount: 0,
-        armor: armorWoodenChestArmor,
-        durability: durWoodenChestArmor,
-      },
-      {
-        id: "woodenLegArmor",
-        name: "Wooden Leg Armor",
-        amount: 0,
-        armor: armorWoodenLegArmor,
-        durability: durWoodenLegArmor,
-      },
+      // {
+      //   id: "woodenChestArmor",
+      //   name: "Wooden Chest Armor",
+      //   amount: 0,
+      //   armor: armorWoodenChestArmor,
+      //   durability: durWoodenChestArmor,
+      // },
+      // {
+      //   id: "woodenLegArmor",
+      //   name: "Wooden Leg Armor",
+      //   amount: 0,
+      //   armor: armorWoodenLegArmor,
+      //   durability: durWoodenLegArmor,
+      // },
     ],
   },
   craftingWindow: {
@@ -53,8 +61,10 @@ const initialState = {
           name: "Iron Sword",
           cost: new Cost(1, 0, 0, 0, 10),
           damage: dmgIronSword,
-          icon: "iron-sword.png",
+          icon: "ironSword.png",
           secsToObtain: secsToObtainIronSword,
+          slot: "weapon",
+          durability: durIronSword,
         },
       ],
       armours: [
@@ -63,16 +73,20 @@ const initialState = {
           name: "Wooden Chest Armor",
           cost: new Cost(20),
           armor: armorWoodenChestArmor,
-          icon: "wooden-chest-armor.png",
+          icon: "woodenChestArmor.png",
           secsToObtain: secsToObtainWoodenChestArmor,
+          slot: "chest",
+          durability: durWoodenChestArmor,
         },
         {
           id: "woodenLegArmor",
           name: "Wooden Leg Armor",
           cost: new Cost(20),
           armor: armorWoodenLegArmor,
-          icon: "wooden-chest-armor.png",
+          icon: "woodenChestArmor.png",
           secsToObtain: secsToObtainWoodenLegArmor,
+          slot: "legs",
+          durability: durWoodenLegArmor,
         },
       ],
     },
@@ -92,23 +106,22 @@ function reducer(state, action) {
           (el) => el.id === id,
         ) ||
         state.craftingWindow.availableCrafts.armours.find((el) => el.id === id);
-      // console.log(craftedItem);
+      console.log(craftedItem);
       if (!craftedItem) return state;
-      const isWeapon = state.inventory.weapons.some((el) => el.id === id);
-      const isArmor = state.inventory.armours.some((el) => el.id === id);
+      const isWeapon = state.craftingWindow.availableCrafts.weapons.some(
+        (el) => el.id === id,
+      );
+      const isArmor = state.craftingWindow.availableCrafts.armours.some(
+        (el) => el.id === id,
+      );
 
       const updatedInventory = {
         ...state.inventory,
         weapons: isWeapon
-          ? state.inventory.weapons.map((item) =>
-              item.id === id ? { ...item, amount: item.amount + 1 } : item,
-            )
+          ? [...state.inventory.weapons, craftedItem]
           : state.inventory.weapons,
-
         armours: isArmor
-          ? state.inventory.armours.map((item) =>
-              item.id === id ? { ...item, amount: item.amount + 1 } : item,
-            )
+          ? [...state.inventory.armours, craftedItem]
           : state.inventory.armours,
       };
 
@@ -116,6 +129,38 @@ function reducer(state, action) {
         ...state,
         inventory: updatedInventory,
         amountItemInInventory: state.amountItemInInventory + 1,
+      };
+    }
+    case "equip": {
+      const item = action.payload;
+      console.log(item);
+      // const correctSlot = Object.keys(state.equipped).find(
+      //   (el) => el === item.slot,
+      // );
+      // const isWeapon = state.craftingWindow.availableCrafts.weapons.some(
+      //   (el) => el.id === item.id,
+      // );
+      // const isArmor = state.craftingWindow.availableCrafts.armours.some(
+      //   (el) => el.id === item.id,
+      // );
+      // console.log(correctSlot, isWeapon, isArmor);
+      // const inventoryUpdated = {
+      //   ...state.inventory,
+      //   weapons: isWeapon
+      //     ? state.inventory.weapons.filter((el) => el.id !== item.id)
+      //     : state.inventory.weapons,
+      //   armours: isArmor
+      //     ? state.inventory.armours.filter((el) => el.id !== item.id)
+      //     : state.inventory.armours,
+      // };
+      return {
+        ...state,
+        equipped: { ...state.equipped, [item.slot]: item },
+        inventory: {
+          ...state.inventory,
+          weapons: state.inventory.weapons.filter((el) => el.id !== item.id),
+          armours: state.inventory.armours.filter((el) => el.id !== item.id),
+        },
       };
     }
     default: {

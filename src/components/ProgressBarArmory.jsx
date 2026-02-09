@@ -14,7 +14,7 @@ function ProgressBarArmory({ secsToObtain, cost, type }) {
     stateMain.resources.ironBar.amount,
   );
   // console.log(type);
-  console.log(stateArmory);
+  // console.log(stateArmory);
   return (
     <div className="relative w-36 h-10 rounded-xl border-2 border-zinc-700 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">
       {/* FILL BAR — same logic as buildings */}

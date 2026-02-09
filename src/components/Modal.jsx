@@ -33,7 +33,7 @@ function Modal({ children, isOpen, setIsOpen }) {
     >
       <div style={overlayStyle} onClick={() => setIsOpen(false)}></div>
       <div
-        className="animate-modalShow  fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 
+        className="animate-modalShow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 
         bg-[#202020] border-2 border-black rounded-2xl shadow-2xl z-[1001]"
       >
         {children}

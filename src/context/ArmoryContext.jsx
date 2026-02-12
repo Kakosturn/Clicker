@@ -11,6 +11,15 @@ import {
   durWoodenChestArmor,
   durWoodenLegArmor,
   durIronSword,
+  armorWoodenHeadArmor,
+  secsToObtainWoodenHeadArmor,
+  durWoodenHeadArmor,
+  armorWoodenShoulderArmor,
+  secsToObtainWoodenShoulderArmor,
+  durWoodenShoulderArmor,
+  armorWoodenGlovesArmor,
+  secsToObtainWoodenGlovesArmor,
+  durWoodenGlovesArmor,
 } from "../variables";
 const ArmoryContext = createContext();
 
@@ -83,10 +92,40 @@ const initialState = {
           name: "Wooden Leg Armor",
           cost: new Cost(20),
           armor: armorWoodenLegArmor,
-          icon: "woodenChestArmor.png",
+          icon: "woodenLegArmor.png",
           secsToObtain: secsToObtainWoodenLegArmor,
           slot: "legs",
           durability: durWoodenLegArmor,
+        },
+        {
+          id: "woodenHeadArmor",
+          name: "Wooden Head Armor",
+          cost: new Cost(30),
+          armor: armorWoodenHeadArmor,
+          icon: "woodenHeadArmor.png",
+          secsToObtain: secsToObtainWoodenHeadArmor,
+          slot: "head",
+          durability: durWoodenHeadArmor,
+        },
+        {
+          id: "woodenShoulderArmor",
+          name: "Wooden Shoulder Armor",
+          cost: new Cost(30),
+          armor: armorWoodenShoulderArmor,
+          icon: "woodenShoulderArmor.png",
+          secsToObtain: secsToObtainWoodenShoulderArmor,
+          slot: "shoulders",
+          durability: durWoodenShoulderArmor,
+        },
+        {
+          id: "woodenGlovesArmor",
+          name: "Wooden Gloves Armor",
+          cost: new Cost(30),
+          armor: armorWoodenGlovesArmor,
+          icon: "woodenGlovesArmor.png",
+          secsToObtain: secsToObtainWoodenGlovesArmor,
+          slot: "gloves",
+          durability: durWoodenGlovesArmor,
         },
       ],
     },
@@ -133,7 +172,7 @@ function reducer(state, action) {
     }
     case "equip": {
       const item = action.payload;
-      console.log(item);
+      // console.log(item);
       // const correctSlot = Object.keys(state.equipped).find(
       //   (el) => el === item.slot,
       // );

@@ -4,7 +4,7 @@ import { errorToast } from "../components/Toast";
 import { useArmoryContext } from "../context/ArmoryContext";
 function ProgressBarArmory({ secsToObtain, cost, type }) {
   const { state: stateArmory, dispatch: dispatchArmory } = useArmoryContext();
-  const { state: stateMain } = useMainContext();
+  const { state: stateMain, dispatch: dispatchMain } = useMainContext();
   const [isRunning, setIsRunning] = useState(false);
   const currentMaterial = new Cost(
     stateMain.resources.wood.amount,
@@ -61,8 +61,8 @@ function ProgressBarArmory({ secsToObtain, cost, type }) {
 
           setTimeout(() => {
             dispatchArmory({ type: "craft", payload: type });
-            // dispatchUpgrade({ type });
-            // dispatchMain(upgradeCost(type, stateUpgrade));
+            dispatchMain({ type: "loseResource", payload: { cost: cost } });
+
             setIsRunning(false);
           }, secsToObtain * 1000);
         }}

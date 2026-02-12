@@ -9,9 +9,10 @@ function Buildings() {
   const { state: stateBuilding } = useBuildingContext();
   const { state: stateMain, dispatch: dispatchMain } = useMainContext();
   const { state: statePop } = usePopulationContext();
-  const { dispatch: dispatchFeatures } = useFeatureContext();
+  const { state: stateFeatures, dispatch: dispatchFeatures } =
+    useFeatureContext();
   // console.log(stateBuilding.buildings);
-
+  console.log(stateFeatures.expeditionUnlocked);
   useEffect(() => {
     if (
       stateBuilding.buildings.find((el) => el.id === "cabin").builtAmount >=
@@ -36,6 +37,13 @@ function Buildings() {
       dispatchMain({ type: "firstArsenal" });
       dispatchFeatures({ type: "armoryUnlocked" });
     }
+    if (
+      stateBuilding.buildings.find((el) => el.id === "arsenal").builtAmount >=
+        10 &&
+      !stateFeatures.expeditionUnlocked
+    ) {
+      dispatchFeatures({ type: "expeditionUnlocked" });
+    }
   }, [
     stateBuilding.buildings,
     dispatchMain,
@@ -43,6 +51,7 @@ function Buildings() {
     stateMain.firstBungalow,
     stateMain.firstHouse,
     stateMain.firstArsenal,
+    stateFeatures.expeditionUnlocked,
   ]);
   // return (
   //   <div className="p-6 grid w-full grid-cols-4 grid-rows-[repeat(auto-fill, 2rem)] items-center justify-center border-2 border-[#222]">

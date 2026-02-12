@@ -6,7 +6,9 @@ const FeatureContext = createContext();
 const initialState = {
   furnaceUnlocked: false,
   armoryUnlocked: false,
+  expeditionUnlocked: false,
   furnaceOpen: false,
+
   furnaceInput: {
     ironOre: 0,
     goldOre: 0,
@@ -29,6 +31,8 @@ function reducer(state, action) {
       return { ...state, furnaceUnlocked: true };
     case "armoryUnlocked":
       return { ...state, armoryUnlocked: true };
+    case "expeditionUnlocked":
+      return { ...state, expeditionUnlocked: true };
     case "addToFurnace": {
       const { resource, amount } = action.payload;
 

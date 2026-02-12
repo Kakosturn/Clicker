@@ -4,10 +4,12 @@ import { useMainContext } from "../context/MainContext";
 import Furnace from "./Furnace";
 import Modal from "./Modal";
 import Armory from "./Armory";
+import Expedition from "./Expedition";
 function FeaturesBar() {
   const { state: stateFeatures } = useFeatureContext();
   const [isFurnaceOpen, setIsFurnaceOpen] = useState(false);
   const [isArmoryOpen, setIsArmoryOpen] = useState(false);
+  const [isExpeditionOpen, setIsExpeditionOpen] = useState(false);
   // console.log(stateFeatures);
   // console.log(stateFeatures.furnaceUnlocked);
   return (
@@ -31,6 +33,17 @@ function FeaturesBar() {
 
         <Modal isOpen={isArmoryOpen} setIsOpen={setIsArmoryOpen}>
           <Armory />
+        </Modal>
+      </div>
+      <div>
+        {stateFeatures.expeditionUnlocked && (
+          <button onClick={() => setIsExpeditionOpen((prev) => !prev)}>
+            Expedition
+          </button>
+        )}
+
+        <Modal isOpen={isExpeditionOpen} setIsOpen={setIsExpeditionOpen}>
+          <Expedition />
         </Modal>
       </div>
     </div>

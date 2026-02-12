@@ -52,18 +52,20 @@ const initialState = {
     ironOre: 1,
   },
   resources: {
-    wood: { amount: 99000, total: 0 },
-    stone: { amount: 99000, total: 0 },
+    wood: { amount: 99, total: 0 },
+    stone: { amount: 99, total: 0 },
     meat: { amount: 99990, total: 0 },
     ironOre: { amount: 10990, total: 0 },
     ironBar: { amount: 11990, total: 0 },
   },
 
   isRunning: false,
+  //
   firstHouse: false,
   firstBungalow: false,
   firstIronBar: false,
   firstArsenal: false,
+
   // secsToCollectWood: 5,
   // secsToCollectStone: 6,
   // secsToCollectMeat: 7,

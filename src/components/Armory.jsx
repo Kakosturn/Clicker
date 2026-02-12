@@ -11,6 +11,15 @@ function Armory() {
     ...stateArmory.inventory.armours,
   ];
   console.log(stateArmory);
+  const totalArmor =
+    (stateArmory.equipped.head?.armor || 0) +
+    (stateArmory.equipped.shoulders?.armor || 0) +
+    (stateArmory.equipped.chest?.armor || 0) +
+    (stateArmory.equipped.gloves?.armor || 0) +
+    (stateArmory.equipped.legs?.armor || 0);
+  const totalDamage =
+    (stateArmory.equipped.weapon?.damage || 0) +
+    (stateArmory.equipped.enhancement?.multiplier || 0);
   function equipItem(item) {
     dispatchArmory({ type: "equip", payload: item });
   }
@@ -56,7 +65,7 @@ function Armory() {
           "
           >
             {/* BODY + EQUIPMENT GRID */}
-            <div className="relative h-64 flex justify-center items-center flex-grow">
+            <div className="relative h-64 flex justify-center items-center flex-grow mb-8">
               <img
                 src="/humanFigure.png"
                 alt="character"
@@ -188,9 +197,13 @@ function Armory() {
             </div>
 
             {/* BOTTOM INVENTORY BAR */}
+            <div className="text-2xl text-orange-300">
+              <p>Armor : {totalArmor ? totalArmor : 0}</p>
+              <p>Damage : {totalDamage}</p>
+            </div>
             <div
               className="
-              mt-16 p-3
+               p-3
               bg-[#160f0a]
               rounded-xl
               border border-orange-800

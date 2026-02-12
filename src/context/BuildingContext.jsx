@@ -49,7 +49,7 @@ const initialState = {
     {
       id: "arsenal",
       component: Arsenal,
-      builtAmount: 0,
+      builtAmount: 80,
       cost: new Cost(10, 0, 0, 0, 20),
       secsToBuild: 1,
       costMultiplier: { wood: 1.2, ironBar: 1.2 },

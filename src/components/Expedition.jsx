@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
-import { keyboardMovements } from "../utils/expeditionHelpers";
+import { createGrid, keyboardMovements } from "../utils/expeditionHelpers";
 import { maxMeatToBring, meatUsedPerMovement } from "../variables";
 import { useArmoryContext } from "../context/ArmoryContext";
+import { errorToast } from "./Toast";
 import Icon from "./Icon";
-
-export const gridSize = 31;
 const tileSize = 16;
+export const gridSize = 31;
+// function createGrid() {
+//   return Array.from({ length: gridSize }, (_, row) =>
+//     Array.from({ length: gridSize }, (_, col) => ({
+//       row,
+//       col,
+//       visible: false,
+//       type: "empty", // later: "forest", "enemy", "treasure", etc.
+//     })),
+//   );
+// }
 
-function createGrid() {
-  return Array.from({ length: gridSize }, (_, row) =>
-    Array.from({ length: gridSize }, (_, col) => ({
-      row,
-      col,
-      visible: false,
-      type: "empty", // later: "forest", "enemy", "treasure", etc.
-    })),
-  );
-}
 function Expedition() {
   const center = Math.floor(gridSize / 2);
   const [grid, setGrid] = useState(createGrid());
@@ -28,9 +28,12 @@ function Expedition() {
   const [isExpeditionRunning, setIsExpeditionRunning] = useState(false);
   const { state: stateArmory } = useArmoryContext();
   useEffect(() => {
+    // console.log("ilk useeffect");
     revealAround(playerPos);
-  }, [playerPos]);
+    if (meatBrought === 0) setIsExpeditionRunning(false);
+  }, [playerPos, meatBrought]);
   useEffect(() => {
+    // console.log("ikinci useffect");
     setGrid(createGrid());
     setPlayerPos({
       row: center,
@@ -67,16 +70,19 @@ function Expedition() {
           if (isPlayerTile || isAdjacent) {
             return { ...tile, visible: true };
           }
-
           return tile; // leave everything else unchanged
+          // return { ...tile, visible: true };
         }),
       ),
     );
   }
   return (
-    <div className="flex p-6">
+    <div
+      className="flex p-6 bg-gradient-to-br from-orange-950 to-[#1b0c05]
+    border border-orange-900"
+    >
       <div
-        className="grid gap-1"
+        className="grid gap-1 bg-orange-950"
         style={{ gridTemplateColumns: `repeat(${gridSize},1fr)` }}
       >
         {isExpeditionRunning ? (
@@ -97,8 +103,8 @@ function Expedition() {
                   if (isAdjacent(tile, playerPos)) {
                     setPlayerPos((prev) => {
                       const newPos = { ...prev, row: tile.row, col: tile.col };
-                      if (meatBrought === 0) setIsExpeditionRunning(false);
                       setMeatBrought((prev) => prev - meatUsedPerMovement);
+
                       return newPos;
                     });
                   }
@@ -107,26 +113,29 @@ function Expedition() {
                 onKeyDown={(e) => keyboardMovements(e, setPlayerPos)}
                 key={`${tile.row}-${tile.col}`}
                 className={`
-                 rounded ${isPlayer ? "bg-orange-500" : "bg-zinc-900"} ${bg}
+                 rounded border text-sm border-zinc-700 ${isPlayer && "bg-orange-500"} ${bg}
                 `}
               >
-                {isPlayer && "🧍"}
+                {isPlayer ? "🧍" : tile.icon}
               </div>
             );
           })
         ) : (
-          <div className="w-[36.5rem] h-[36.5rem] bg-black">
-            <div className="">
+          <div className="w-[36.5rem] h-[36.5rem] rounded bg-zinc-900 p-8">
+            <div className="flex flex-col gap-8">
               <div className="flex gap-2">
-                <p>Meat</p>
+                <p>Meat :</p>
                 <input
                   type="text"
                   value={meatBrought}
                   onChange={(e) => setMeatBrought(e.target.value)}
                   max={maxMeatToBring}
-                  className="bg-zinc-800"
+                  className="bg-zinc-800 w-20"
                 />
-                <button onClick={() => setMeatBrought(maxMeatToBring)}>
+                <button
+                  className=""
+                  onClick={() => setMeatBrought(maxMeatToBring)}
+                >
                   Max
                 </button>
               </div>
@@ -135,8 +144,14 @@ function Expedition() {
                 <p>Armor : {totalArmor}</p>
               </div>
               <button
-                className="bg-zinc-700 px-2 py-4 rounded"
-                onClick={() => setIsExpeditionRunning((prev) => !prev)}
+                className="bg-zinc-700 px-2 py-4 rounded w-fit"
+                onClick={() => {
+                  if (meatBrought <= 10) {
+                    errorToast("Need at least 10 meat to start expedition");
+                    return;
+                  }
+                  setIsExpeditionRunning((prev) => !prev);
+                }}
               >
                 Start Expedition
               </button>
@@ -144,10 +159,15 @@ function Expedition() {
           </div>
         )}
       </div>
-      <div className="flex gap-3 pl-12 h-full">
-        <Icon path={"meat.png"} type="plain" />
-        <p>{meatBrought}</p>
-      </div>
+      {isExpeditionRunning && (
+        <div className=" pl-12 h-full">
+          <p>Meat Remaining</p>
+          <div className="flex gap-3">
+            <Icon path={"meat.png"} type="plain" />
+            <p>{meatBrought}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

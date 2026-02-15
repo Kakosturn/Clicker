@@ -12,7 +12,7 @@ function Buildings() {
   const { state: stateFeatures, dispatch: dispatchFeatures } =
     useFeatureContext();
   // console.log(stateBuilding.buildings);
-  console.log(stateFeatures.expeditionUnlocked);
+  // console.log(stateFeatures.expeditionUnlocked);
   useEffect(() => {
     if (
       stateBuilding.buildings.find((el) => el.id === "cabin").builtAmount >=

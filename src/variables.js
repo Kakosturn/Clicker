@@ -46,3 +46,4 @@ export const durWoodenShoulderArmor = 10;
 //Expedition
 export const maxMeatToBring = 20;
 export const meatUsedPerMovement = 2;
+export const maxHp = 20;

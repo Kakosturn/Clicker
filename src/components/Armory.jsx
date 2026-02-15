@@ -10,7 +10,7 @@ function Armory() {
     ...stateArmory.inventory.weapons,
     ...stateArmory.inventory.armours,
   ];
-  console.log(stateArmory);
+  // console.log(stateArmory);
   const totalArmor =
     (stateArmory.equipped.head?.armor || 0) +
     (stateArmory.equipped.shoulders?.armor || 0) +
@@ -198,6 +198,7 @@ function Armory() {
 
             {/* BOTTOM INVENTORY BAR */}
             <div className="text-2xl text-orange-300">
+              <p>HP : {stateArmory.hp}</p>
               <p>Armor : {totalArmor ? totalArmor : 0}</p>
               <p>Damage : {totalDamage}</p>
             </div>

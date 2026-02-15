@@ -20,6 +20,7 @@ import {
   armorWoodenGlovesArmor,
   secsToObtainWoodenGlovesArmor,
   durWoodenGlovesArmor,
+  maxHp,
 } from "../variables";
 const ArmoryContext = createContext();
 
@@ -33,6 +34,7 @@ const initialState = {
     weapon: null,
     enhancement: null,
   },
+  hp: maxHp,
   amountItemInInventory: 0,
   inventory: {
     capacity: invCapacity,

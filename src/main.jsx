@@ -8,6 +8,7 @@ import { PopulationProvider } from "./context/PopulationContext.jsx";
 import { UpgradeProvider } from "./context/UpgradeContext.jsx";
 import { FeatureProvider } from "./context/FeaturesContext.jsx";
 import { ArmoryProvider } from "./context/ArmoryContext.jsx";
+import { ExpeditionProvider } from "./context/ExpeditionContext.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ContextProvider>
@@ -16,7 +17,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <UpgradeProvider>
             <FeatureProvider>
               <ArmoryProvider>
-                <App />
+                <ExpeditionProvider>
+                  <App />
+                </ExpeditionProvider>
               </ArmoryProvider>
             </FeatureProvider>
           </UpgradeProvider>

@@ -87,6 +87,13 @@ const eventChances = {
     fourthZone: 0,
     fifthZone: 1,
   },
+  refillStation: {
+    firstZone: 0.2,
+    secondZone: 0.2,
+    thirdZone: 0.2,
+    fourthZone: 0.2,
+    fifthZone: 0.2,
+  },
 };
 const zoneDensity = {
   firstZone: 0.2,

@@ -54,7 +54,7 @@ const initialState = {
   resources: {
     wood: { amount: 99, total: 0 },
     stone: { amount: 99, total: 0 },
-    meat: { amount: 99990, total: 0 },
+    meat: { amount: 1000, total: 0 },
     ironOre: { amount: 10990, total: 0 },
     ironBar: { amount: 11990, total: 0 },
   },
@@ -146,6 +146,7 @@ function reducer(state, action) {
     case "loseResource": {
       const { cost } = action.payload; // cost {fields:["wood","stone","meat"],wood:0,stone:0,meat:0}
       const newResources = { ...state.resources };
+
       // {
       //   wood: { amount: 990, total: 0 },
       //   stone: { amount: 990, total: 0 },

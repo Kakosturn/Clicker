@@ -47,3 +47,5 @@ export const durWoodenShoulderArmor = 10;
 export const maxMeatToBring = 20;
 export const meatUsedPerMovement = 2;
 export const maxHp = 20;
+export const gridSize = 31;
+export const maximumMeatBrought = 20;

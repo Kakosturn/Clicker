@@ -4,7 +4,7 @@ import { useMainContext } from "../context/MainContext";
 import Furnace from "./Furnace";
 import Modal from "./Modal";
 import Armory from "./Armory";
-import Expedition from "./Expedition";
+import Expedition from "./Expedition/Expedition";
 function FeaturesBar() {
   const { state: stateFeatures } = useFeatureContext();
   const [isFurnaceOpen, setIsFurnaceOpen] = useState(false);

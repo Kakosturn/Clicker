@@ -1,45 +1,50 @@
 import { useEffect, useState } from "react";
-import { createGrid, keyboardMovements } from "../utils/expeditionHelpers";
-import { maxMeatToBring, meatUsedPerMovement } from "../variables";
-import { useArmoryContext } from "../context/ArmoryContext";
-import { errorToast } from "./Toast";
-import Icon from "./Icon";
+import { createGrid, keyboardMovements } from "../../utils/expeditionHelpers";
+import { maxMeatToBring, meatUsedPerMovement } from "../../variables";
+import { useArmoryContext } from "../../context/ArmoryContext";
+import { errorToast } from "../Toast";
+import Icon from "../Icon";
+import ExpeditionEncounters from "./ExpeditionEncounters";
+import { useMainContext } from "../../context/MainContext";
+import { Cost } from "../../context/MainContext";
+import { useExpeditionContext } from "../../context/ExpeditionContext";
 const tileSize = 16;
 export const gridSize = 31;
-// function createGrid() {
-//   return Array.from({ length: gridSize }, (_, row) =>
-//     Array.from({ length: gridSize }, (_, col) => ({
-//       row,
-//       col,
-//       visible: false,
-//       type: "empty", // later: "forest", "enemy", "treasure", etc.
-//     })),
-//   );
-// }
 
 function Expedition() {
   const center = Math.floor(gridSize / 2);
   const [grid, setGrid] = useState(createGrid());
   const [meatBrought, setMeatBrought] = useState(0);
-  const [playerPos, setPlayerPos] = useState({
-    row: center,
-    col: center,
-  });
-  const [isExpeditionRunning, setIsExpeditionRunning] = useState(false);
+  // const [playerPos, setPlayerPos] = useState({
+  //   row: center,
+  //   col: center,
+  // });
+  const [currentTile, setCurrentTile] = useState({});
+  // const [isExpeditionRunning, setIsExpeditionRunning] = useState(false);
   const { state: stateArmory } = useArmoryContext();
+  const { state: stateMain, dispatch: dispatchMain } = useMainContext();
+  const { state: stateExpedition, dispatch: dispatchExpedition } =
+    useExpeditionContext();
+  const playerPos = stateExpedition.playerPos;
+  const isExpeditionRunning = stateExpedition.isExpeditionRunning;
   useEffect(() => {
     // console.log("ilk useeffect");
     revealAround(playerPos);
-    if (meatBrought === 0) setIsExpeditionRunning(false);
-  }, [playerPos, meatBrought]);
+    if (meatBrought === 0) dispatchExpedition({ type: "runEnd" });
+  }, [playerPos, meatBrought, dispatchExpedition]);
   useEffect(() => {
     // console.log("ikinci useffect");
     setGrid(createGrid());
-    setPlayerPos({
-      row: center,
-      col: center,
+    // setPlayerPos({
+    //   row: center,
+    //   col: center,
+    // });
+    dispatchExpedition({
+      type: "setPlayerPos",
+      payload: { col: center, row: center },
     });
-  }, [isExpeditionRunning, center]);
+  }, [center, dispatchExpedition]);
+
   const totalArmor =
     (stateArmory.equipped.head?.armor || 0) +
     (stateArmory.equipped.shoulders?.armor || 0) +
@@ -101,11 +106,23 @@ function Expedition() {
                 tabIndex={0}
                 onClick={() => {
                   if (isAdjacent(tile, playerPos)) {
-                    setPlayerPos((prev) => {
-                      const newPos = { ...prev, row: tile.row, col: tile.col };
-                      setMeatBrought((prev) => prev - meatUsedPerMovement);
+                    // setPlayerPos((prev) => {
+                    //   const newPos = { ...prev, row: tile.row, col: tile.col };
+                    //   setMeatBrought((prev) => prev - meatUsedPerMovement);
 
-                      return newPos;
+                    //   return newPos;
+                    // });
+                    dispatchExpedition({
+                      type: "setPlayerPos",
+                      payload: { row: tile.row, col: tile.col },
+                    });
+                    setCurrentTile((prev) => {
+                      return {
+                        ...prev,
+                        row: tile.row,
+                        col: tile.col,
+                        type: tile.type,
+                      };
                     });
                   }
                 }}
@@ -150,7 +167,13 @@ function Expedition() {
                     errorToast("Need at least 10 meat to start expedition");
                     return;
                   }
-                  setIsExpeditionRunning((prev) => !prev);
+                  if (stateMain.resources.meat.amount >= meatBrought) {
+                    dispatchExpedition({ type: "runStart" });
+                    dispatchMain({
+                      type: "loseResource",
+                      payload: { cost: new Cost(0, 0, meatBrought) },
+                    });
+                  } else errorToast("Not enough meat");
                 }}
               >
                 Start Expedition
@@ -160,11 +183,21 @@ function Expedition() {
         )}
       </div>
       {isExpeditionRunning && (
-        <div className=" pl-12 h-full">
-          <p>Meat Remaining</p>
-          <div className="flex gap-3">
-            <Icon path={"meat.png"} type="plain" />
-            <p>{meatBrought}</p>
+        <div className="pl-12 h-[40rem] w-full flex flex-col">
+          <div className="h-[20rem] bg-blue-800">
+            <p>Meat Remaining</p>
+            <div className="flex gap-3">
+              <Icon path={"meat.png"} type="plain" />
+              <p>{meatBrought}</p>
+            </div>
+          </div>
+          <div className="bg-blue-400 h-[20rem] w-full">
+            <ExpeditionEncounters
+              type={currentTile.type}
+              meatBrought={meatBrought}
+              setMeatBrought={setMeatBrought}
+              maxMeatToBring={maxMeatToBring}
+            />
           </div>
         </div>
       )}

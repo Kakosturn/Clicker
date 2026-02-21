@@ -1,11 +1,6 @@
 import RefillStation from "./RefillStation";
 
-function ExpeditionEncounters({
-  type,
-  meatBrought,
-  setMeatBrought,
-  maxMeatToBring,
-}) {
+function ExpeditionEncounters({ type }) {
   switch (type) {
     case "empty":
       return <div>empty</div>;
@@ -13,6 +8,8 @@ function ExpeditionEncounters({
       return <div>treasure</div>;
     case "smallEnemy":
       return <div>small enemy</div>;
+    case "mediumEnemy":
+      return <div>medium enemy</div>;
     case "boss":
       return <div>boss</div>;
     case "newElement":

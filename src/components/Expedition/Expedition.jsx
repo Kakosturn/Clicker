@@ -13,13 +13,13 @@ export const gridSize = 31;
 
 function Expedition() {
   const center = Math.floor(gridSize / 2);
-  const [grid, setGrid] = useState(createGrid());
-  const [meatBrought, setMeatBrought] = useState(0);
+  // const [grid, setGrid] = useState(createGrid());
+  // const [meatBrought, setMeatBrought] = useState(0);
   // const [playerPos, setPlayerPos] = useState({
   //   row: center,
   //   col: center,
   // });
-  const [currentTile, setCurrentTile] = useState({});
+  // const [currentTile, setCurrentTile] = useState({});
   // const [isExpeditionRunning, setIsExpeditionRunning] = useState(false);
   const { state: stateArmory } = useArmoryContext();
   const { state: stateMain, dispatch: dispatchMain } = useMainContext();
@@ -27,14 +27,24 @@ function Expedition() {
     useExpeditionContext();
   const playerPos = stateExpedition.playerPos;
   const isExpeditionRunning = stateExpedition.isExpeditionRunning;
+  const currentTile =
+    stateExpedition.grid[stateExpedition.playerPos.row]?.[
+      stateExpedition.playerPos.col
+    ];
+  console.log(currentTile);
+  //Effect
   useEffect(() => {
     // console.log("ilk useeffect");
-    revealAround(playerPos);
-    if (meatBrought === 0) dispatchExpedition({ type: "runEnd" });
-  }, [playerPos, meatBrought, dispatchExpedition]);
+    dispatchExpedition({
+      type: "revealAround",
+      payload: { playerPos: playerPos },
+    });
+    if (stateExpedition.meatBrought === 0)
+      dispatchExpedition({ type: "runEnd" });
+  }, [playerPos, dispatchExpedition, stateExpedition.meatBrought]);
   useEffect(() => {
     // console.log("ikinci useffect");
-    setGrid(createGrid());
+    dispatchExpedition({ type: "setGrid", payload: createGrid() });
     // setPlayerPos({
     //   row: center,
     //   col: center,
@@ -43,7 +53,8 @@ function Expedition() {
       type: "setPlayerPos",
       payload: { col: center, row: center },
     });
-  }, [center, dispatchExpedition]);
+  }, [center, dispatchExpedition, isExpeditionRunning]);
+  //
 
   const totalArmor =
     (stateArmory.equipped.head?.armor || 0) +
@@ -60,27 +71,28 @@ function Expedition() {
     const colDiff = Math.abs(tile.col - posPlayer.col);
     return rowDiff + colDiff === 1;
   }
-  function revealAround(playerPos) {
-    setGrid((prevGrid) =>
-      prevGrid.map((row) =>
-        row.map((tile) => {
-          const isPlayerTile =
-            tile.row === playerPos.row && tile.col === playerPos.col;
+  // function revealAround(playerPos) {
+  //   setGrid((prevGrid) =>
+  //     prevGrid.map((row) =>
+  //       row.map((tile) => {
+  //         const isPlayerTile =
+  //           tile.row === playerPos.row && tile.col === playerPos.col;
 
-          const isAdjacent =
-            Math.abs(tile.row - playerPos.row) +
-              Math.abs(tile.col - playerPos.col) ===
-            1;
+  //         const isAdjacent =
+  //           Math.abs(tile.row - playerPos.row) +
+  //             Math.abs(tile.col - playerPos.col) ===
+  //           1;
 
-          if (isPlayerTile || isAdjacent) {
-            return { ...tile, visible: true };
-          }
-          return tile; // leave everything else unchanged
-          // return { ...tile, visible: true };
-        }),
-      ),
-    );
-  }
+  //         if (isPlayerTile || isAdjacent) {
+  //           return { ...tile, visible: true };
+  //         }
+  //         return tile; // leave everything else unchanged
+  //         // return { ...tile, visible: true };
+  //       }),
+  //     ),
+  //   );
+  // }
+
   return (
     <div
       className="flex p-6 bg-gradient-to-br from-orange-950 to-[#1b0c05]
@@ -91,7 +103,7 @@ function Expedition() {
         style={{ gridTemplateColumns: `repeat(${gridSize},1fr)` }}
       >
         {isExpeditionRunning ? (
-          grid.flat().map((tile) => {
+          stateExpedition.grid.flat().map((tile) => {
             const isPlayer =
               tile.row === playerPos.row && tile.col === playerPos.col;
 
@@ -112,22 +124,31 @@ function Expedition() {
 
                     //   return newPos;
                     // });
+                    dispatchExpedition({ type: "meatSpent" });
                     dispatchExpedition({
                       type: "setPlayerPos",
                       payload: { row: tile.row, col: tile.col },
                     });
-                    setCurrentTile((prev) => {
-                      return {
-                        ...prev,
-                        row: tile.row,
-                        col: tile.col,
-                        type: tile.type,
-                      };
-                    });
+                    // setCurrentTile((prev) => {
+                    //   return {
+                    //     ...prev,
+                    //     row: tile.row,
+                    //     col: tile.col,
+                    //     type: tile.type,
+                    //   };
+                    // });
+                    // dispatchExpedition({
+                    //   type: "setCurrentTile",
+                    //   payload: {
+                    //     row: tile.row,
+                    //     col: tile.col,
+                    //     type: tile.type,
+                    //   },
+                    // });
                   }
                 }}
                 style={{ width: tileSize, height: tileSize }}
-                onKeyDown={(e) => keyboardMovements(e, setPlayerPos)}
+                onKeyDown={(e) => keyboardMovements(e, dispatchExpedition)}
                 key={`${tile.row}-${tile.col}`}
                 className={`
                  rounded border text-sm border-zinc-700 ${isPlayer && "bg-orange-500"} ${bg}
@@ -144,14 +165,24 @@ function Expedition() {
                 <p>Meat :</p>
                 <input
                   type="text"
-                  value={meatBrought}
-                  onChange={(e) => setMeatBrought(e.target.value)}
-                  max={maxMeatToBring}
+                  value={stateExpedition.meatBrought}
+                  onChange={(e) =>
+                    dispatchExpedition({
+                      type: "setMeatBrought",
+                      payload: e.target.value,
+                    })
+                  }
+                  max={stateExpedition.maxMeatBrought}
                   className="bg-zinc-800 w-20"
                 />
                 <button
                   className=""
-                  onClick={() => setMeatBrought(maxMeatToBring)}
+                  onClick={() =>
+                    dispatchExpedition({
+                      type: "setMeatBrought",
+                      payload: stateExpedition.maxMeatBrought,
+                    })
+                  }
                 >
                   Max
                 </button>
@@ -163,15 +194,20 @@ function Expedition() {
               <button
                 className="bg-zinc-700 px-2 py-4 rounded w-fit"
                 onClick={() => {
-                  if (meatBrought <= 10) {
+                  if (stateExpedition.meatBrought <= 10) {
                     errorToast("Need at least 10 meat to start expedition");
                     return;
                   }
-                  if (stateMain.resources.meat.amount >= meatBrought) {
+                  if (
+                    stateMain.resources.meat.amount >=
+                    stateExpedition.meatBrought
+                  ) {
                     dispatchExpedition({ type: "runStart" });
                     dispatchMain({
                       type: "loseResource",
-                      payload: { cost: new Cost(0, 0, meatBrought) },
+                      payload: {
+                        cost: new Cost(0, 0, stateExpedition.meatBrought),
+                      },
                     });
                   } else errorToast("Not enough meat");
                 }}
@@ -184,20 +220,17 @@ function Expedition() {
       </div>
       {isExpeditionRunning && (
         <div className="pl-12 h-[40rem] w-full flex flex-col">
-          <div className="h-[20rem] bg-blue-800">
+          <div className="h-[20rem] bg-zinc-950">
             <p>Meat Remaining</p>
             <div className="flex gap-3">
               <Icon path={"meat.png"} type="plain" />
-              <p>{meatBrought}</p>
+              <p>{stateExpedition.meatBrought}</p>
             </div>
           </div>
-          <div className="bg-blue-400 h-[20rem] w-full">
-            <ExpeditionEncounters
-              type={currentTile.type}
-              meatBrought={meatBrought}
-              setMeatBrought={setMeatBrought}
-              maxMeatToBring={maxMeatToBring}
-            />
+          <div className="bg-blue-950 h-[20rem] w-full">
+            {currentTile.type !== "empty" && (
+              <ExpeditionEncounters type={currentTile.type} />
+            )}
           </div>
         </div>
       )}

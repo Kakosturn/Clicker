@@ -1,24 +1,28 @@
 export const gridSize = 31;
-export function keyboardMovements(e, setPlayerPos) {
+export function keyboardMovements(e, dispatchExpedition) {
   e.preventDefault();
   if (e.key === "ArrowRight") {
-    setPlayerPos((prev) => {
-      return { ...prev, col: prev.col + 1 };
+    dispatchExpedition({
+      type: "keyboardMovement",
+      payload: { direction: "right" },
     });
   }
   if (e.key === "ArrowLeft") {
-    setPlayerPos((prev) => {
-      return { ...prev, col: prev.col - 1 };
+    dispatchExpedition({
+      type: "keyboardMovement",
+      payload: { direction: "left" },
     });
   }
   if (e.key === "ArrowDown") {
-    setPlayerPos((prev) => {
-      return { ...prev, row: prev.row + 1 };
+    dispatchExpedition({
+      type: "keyboardMovement",
+      payload: { direction: "down" },
     });
   }
   if (e.key === "ArrowUp") {
-    setPlayerPos((prev) => {
-      return { ...prev, row: prev.row - 1 };
+    dispatchExpedition({
+      type: "keyboardMovement",
+      payload: { direction: "up" },
     });
   }
 }

@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
 import {
   gridSize,
+  maxHp,
   maximumMeatBrought,
   meatUsedPerMovement,
 } from "../variables";
@@ -20,32 +21,79 @@ const initialState = {
   meatSpentPerMove: meatUsedPerMovement,
   maxMeatAcquiredFromRefill: 10,
   refillStationMeat: 0,
+  player: {
+    hp: maxHp,
+    armor: 0,
+    dmg: 0,
+  },
+  battle: {
+    isActive: false,
+    result: null,
+  },
+  currentEnemy: null,
 
   gridSize: gridSize,
   isExpeditionRunning: false,
+  resultScreen: false,
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "runStart":
-      return { ...state, isExpeditionRunning: true };
-    case "runEnd":
-      return { ...state, isExpeditionRunning: false };
-    case "setPlayerPos":
+    case "runStart": {
+      const { armor, dmg } = action.payload;
       return {
         ...state,
-        playerPos: { col: action.payload.col, row: action.payload.row },
+        isExpeditionRunning: true,
+        player: { ...state.player, armor: armor, dmg: dmg },
       };
-    // case "setCurrentTile": {
-    //   const { row, col, type } = action.payload;
-    //   return {
-    //     ...state,
-    //     currentTile: { ...state.currentTile, row: row, col: col, type: type },
-    //   };
-    // }
-    // case "currentTileEventComplete": {
-    //   return { ...state, currentTile: { ...state.currentTile, type: "empty" } };
-    // }
+    }
+    case "runEnd": {
+      console.log("run end case i");
+      return {
+        ...state,
+        isExpeditionRunning: false,
+        resultScreen: true,
+        grid: createGrid(),
+        playerPos: {
+          row: Math.floor(gridSize / 2),
+          col: Math.floor(gridSize / 2),
+        },
+        player: {
+          ...state.player,
+          hp: maxHp,
+        },
+      };
+    }
+    case "battleStart": {
+      return { ...state, battle: { ...state.battle, isActive: true } };
+    }
+    case "battleEnd": {
+      return { ...state, battle: { ...state.battle, isActive: false } };
+    }
+    case "closeResults": {
+      return { ...state, resultScreen: false };
+    }
+    case "setPlayerPos": {
+      const col = action.payload.col;
+      const row = action.payload.row;
+      const newPos = { col: col, row: row };
+      const currentTile = state.grid[row]?.[col];
+
+      return {
+        ...state,
+        playerPos: newPos,
+        currentEnemy: currentTile.type.includes("Enemy")
+          ? {
+              ...state.currentEnemy,
+              enemyType: currentTile.type,
+              hp: currentTile.hp,
+              dmg: currentTile.dmg,
+              armor: currentTile.armor,
+            }
+          : null,
+      };
+    }
+
     case "keyboardMovement": {
       const direction = action.payload.direction;
       const newPlayerPos =
@@ -62,7 +110,13 @@ function reducer(state, action) {
     }
     case "meatSpent": {
       const newMeat = state.meatBrought - state.meatSpentPerMove;
-      return { ...state, meatBrought: newMeat };
+      // const runGoes = newMeat > 0;
+      return {
+        ...state,
+        meatBrought: newMeat,
+        // isExpeditionRunning: runGoes,
+        // resultScreen: !runGoes,
+      };
     }
     case "setMeatBrought": {
       return { ...state, meatBrought: action.payload };
@@ -104,6 +158,7 @@ function reducer(state, action) {
       };
     }
     case "finalizeEncounter": {
+      console.log("finalizeEncounter case i");
       const { row, col } = action.payload;
 
       const newGrid = [...state.grid];
@@ -119,33 +174,76 @@ function reducer(state, action) {
       return {
         ...state,
         grid: newGrid,
+        currentEnemy: null,
+        battle: { result: null },
       };
     }
-    // case "revealAround": {
-    //   const playerPos = action.payload.playerPos;
-    //   console.log(playerPos);
-    //   console.log(state.grid);
+    // case "setCurrentEnemy": {
+    //   const tile = action.payload;
+    //   console.log(tile);
     //   return {
     //     ...state,
-    //     grid: state.grid.map((row) =>
-    //       row.map((tile) => {
-    //         const isPlayerTile =
-    //           tile.row === playerPos.row && tile.col === playerPos.col;
-
-    //         const isAdjacent =
-    //           Math.abs(tile.row - playerPos.row) +
-    //             Math.abs(tile.col - playerPos.col) ===
-    //           1;
-
-    //         if (isPlayerTile || isAdjacent) {
-    //           return { ...tile, visible: true };
-    //         }
-    //         return tile; // leave everything else unchanged
-    //         // return { ...tile, visible: true };
-    //       }),
-    //     ),
+    //     currentEnemy: {
+    //       ...state.currentEnemy,
+    //       enemyType: tile.type,
+    //       hp: tile.hp,
+    //       dmg: tile.dmg,
+    //       armor: tile.armor,
+    //     },
     //   };
     // }
+    case "attack": {
+      const dmg = action.payload.dmg;
+      // console.log(state.currentEnemy);
+      // console.log(dmg);
+
+      if (dmg < state.currentEnemy.armor) {
+        return {
+          ...state,
+          currentEnemy: {
+            ...state.currentEnemy,
+            armor: state.currentEnemy.armor - dmg,
+          },
+        };
+      }
+      if (dmg - state.currentEnemy.armor > 0) {
+        const dmgToArmor = state.currentEnemy.armor;
+        const dmgToHp = dmg - state.currentEnemy.armor;
+        const newHp = state.currentEnemy.hp - dmgToHp;
+        console.log(newHp);
+        if (newHp <= 0) {
+          return {
+            ...state,
+            currentEnemy: { ...state.currentEnemy, hp: 0 },
+            battle: { isActive: false, result: "win" },
+          };
+        }
+        return {
+          ...state,
+          currentEnemy: {
+            ...state.currentEnemy,
+            armor: state.currentEnemy.armor - dmgToArmor,
+            hp: newHp,
+          },
+        };
+      }
+      return {
+        ...state,
+        currentEnemy: {
+          ...state.currentEnemy,
+          hp: state.currentEnemy.hp - 100,
+        },
+      };
+    }
+    case "npcAttack": {
+      const dmg = action.payload.dmg;
+
+      return {
+        ...state,
+        player: { ...state.player, hp: state.player.hp - dmg },
+      };
+    }
+
     default:
       return { ...state };
   }

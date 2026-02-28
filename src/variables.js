@@ -1,3 +1,7 @@
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 export const requiredWoodForGathering1Upgrade = 100;
 export const requiredStoneForGathering1Upgrade = 100;
 export const requiredMeatForGathering1Upgrade = 100;
@@ -49,3 +53,27 @@ export const meatUsedPerMovement = 2;
 export const maxHp = 20;
 export const gridSize = 31;
 export const maximumMeatBrought = 20;
+
+export function createEnemy(type) {
+  const configs = {
+    smallEnemy: {
+      hp: [10, 13, 15, 17],
+      armor: [0, 2, 3, 4],
+      dmg: [3, 4, 5, 6],
+    },
+    mediumEnemy: {
+      hp: [20, 25, 30],
+      armor: [3, 5, 7],
+      dmg: [6, 8, 10],
+    },
+  };
+
+  const base = configs[type];
+
+  return {
+    type,
+    hp: base.hp[getRandomInt(base.hp.length)],
+    armor: base.armor[getRandomInt(base.armor.length)],
+    dmg: base.dmg[getRandomInt(base.dmg.length)],
+  };
+}

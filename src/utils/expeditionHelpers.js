@@ -1,3 +1,5 @@
+import { createEnemy } from "../variables";
+
 export const gridSize = 31;
 export function keyboardMovements(e, dispatchExpedition) {
   e.preventDefault();
@@ -198,7 +200,21 @@ function allocateZoneEvents(zoneName, tiles) {
   const emptyTiles = tiles.slice(eventTileCount);
   for (const tile of eventTiles) {
     const eventType = pickEvent(zoneName, caps, counter);
+
+    if (eventType === "smallEnemy") {
+      const smallEnemy = createEnemy("smallEnemy");
+      tile.hp = smallEnemy.hp;
+      tile.armor = smallEnemy.armor;
+      tile.dmg = smallEnemy.dmg;
+    }
+    if (eventType === "mediumEnemy") {
+      const mediumEnemy = createEnemy("mediumEnemy");
+      tile.hp = mediumEnemy.hp;
+      tile.armor = mediumEnemy.armor;
+      tile.dmg = mediumEnemy.dmg;
+    }
     tile.type = eventType;
+
     tile.icon = icon(eventType);
   }
   for (const tile of emptyTiles) {
@@ -262,4 +278,7 @@ function icon(type) {
   if (type === "mediumEnemy") return "🗡";
   if (type === "treasure") return "💰";
   if (type === "newElement") return "❤";
+}
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }

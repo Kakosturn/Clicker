@@ -1,28 +1,19 @@
 import RefillStation from "./RefillStation";
+import { AnimatePresence } from "motion/react";
+import Enemy from "./Enemy";
 
 function ExpeditionEncounters({ type }) {
-  switch (type) {
-    case "empty":
-      return <div>empty</div>;
-    case "treasure":
-      return <div>treasure</div>;
-    case "smallEnemy":
-      return <div>small enemy</div>;
-    case "mediumEnemy":
-      return <div>medium enemy</div>;
-    case "boss":
-      return <div>boss</div>;
-    case "newElement":
-      return <div>new element</div>;
-    case "refillStation":
-      return (
-        <div>
-          <RefillStation />
-        </div>
-      );
-    default:
-      return <div>empty</div>;
-  }
+  return (
+    <AnimatePresence mode="wait">
+      {type === "empty" && <div key={"empty"}></div>}
+      {type === "treasure" && <div>treasure</div>}
+      {type === "smallEnemy" && <Enemy key={"smallEnemy"} />}
+      {type === "mediumEnemy" && <Enemy key={"mediumEnemy"} />}
+      {type === "boss" && <div>boss</div>}
+      {type === "newElement" && <div>new element</div>}
+      {type === "refillStation" && <RefillStation key={"refillStation"} />}
+    </AnimatePresence>
+  );
 }
 
 export default ExpeditionEncounters;

@@ -14,8 +14,9 @@ function App() {
     function () {
       dispatch({ type: "reset" });
     },
-    [dispatch]
+    [dispatch],
   );
+
   const bool = beginningCheck(state.status);
   //console.log(bool);
   return (

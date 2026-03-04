@@ -116,7 +116,7 @@ function ProgressBar({ type, clicksToObtain, payload, resource }) {
   return (
     <div
       className="
-        relative w-full h-10
+        relative w-3/4 h-10
         rounded-xl
         overflow-hidden
         bg-zinc-800

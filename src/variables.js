@@ -21,6 +21,23 @@ export const clicksToObtainIronOre = 10;
 ///////////////////////////////////////////////////////////////////////////////////////
 //
 //
+// Buildings
+//
+//
+export const requiredShackForCabin = 1;
+export const requiredCabinForBungalow = 1;
+export const requiredBungalowForHouse = 1;
+export const requiredHouseForArsenal = 1;
+
+export const popIncreaseShack = 10;
+export const popIncreaseCabin = 20;
+export const popIncreaseBungalow = 30;
+export const popIncreaseHouse = 40;
+export const popIncreaseArsenal = 0;
+
+///////////////////////////////////////////////////////////////////////////////////////
+//
+//
 //Armory
 //
 //

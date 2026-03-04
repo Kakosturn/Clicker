@@ -8,7 +8,7 @@ function Upgrade({ secsToObtain, type, name, path, cost, tooltip }) {
   // console.log(cost);
   // console.log(objectKeys);
   return (
-    <div className="flex scale-90 gap-12 p-3">
+    <div className="flex text-xl scale-90 gap-12 p-3">
       <div className="flex gap-2">
         <Icon path={path} width="w-10" />
         <div className="relative">

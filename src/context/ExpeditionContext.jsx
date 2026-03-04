@@ -31,7 +31,6 @@ const initialState = {
     result: null,
   },
   currentEnemy: null,
-
   gridSize: gridSize,
   isExpeditionRunning: false,
   resultScreen: false,

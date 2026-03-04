@@ -11,15 +11,19 @@ function EnemyCooldownBar({
 }) {
   const [key, setKey] = useState(0);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onComplete?.();
-      setKey((prev) => prev + 1); // restart animation
-    }, duration * 1000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     console.log("tick");
+  //     onComplete?.();
+  //     setKey((prev) => prev + 1); // restart animation
+  //   }, duration * 1000);
 
-    return () => clearTimeout(timer);
-  }, [key, duration, onComplete]);
-
+  //   return () => clearTimeout(timer);
+  // }, [duration, onComplete]);
+  function handleAttack() {
+    onComplete?.();
+    setKey((prev) => prev + 1);
+  }
   return (
     <div className="flex flex-col gap-2 w-full">
       <div className="w-full h-4 bg-zinc-800 rounded overflow-hidden">
@@ -29,6 +33,7 @@ function EnemyCooldownBar({
           animate={{ width: "100%" }}
           transition={{ duration, ease: "linear" }}
           className="h-full bg-red-600"
+          onAnimationComplete={handleAttack}
         />
       </div>
       <div className="flex gap-1">

@@ -5,6 +5,12 @@ import Shack from "../components/Buildings/Shack";
 import House from "../components/Buildings/House";
 import Arsenal from "../components/Buildings/Arsenal";
 import { Cost } from "./MainContext";
+import {
+  requiredBungalowForHouse,
+  requiredCabinForBungalow,
+  requiredHouseForArsenal,
+  requiredShackForCabin,
+} from "../variables";
 
 const BuildingContext = createContext();
 
@@ -13,7 +19,7 @@ const initialState = {
     {
       id: "shack",
       component: Shack,
-      builtAmount: 100,
+      builtAmount: 0,
       cost: new Cost(10, 0, 0),
       secsToBuild: 2,
       costMultiplier: { wood: 1.2 },
@@ -22,38 +28,42 @@ const initialState = {
     {
       id: "cabin",
       component: Cabin,
-      builtAmount: 10,
+      builtAmount: 0,
       cost: new Cost(30, 0, 0),
       secsToBuild: 1,
       costMultiplier: { wood: 1.2 },
-      unlocked: (buildingState) => buildingState.buildings[0].builtAmount >= 1,
+      unlocked: (buildingState) =>
+        buildingState.buildings[0].builtAmount >= requiredShackForCabin,
     },
     {
       id: "bungalow",
       component: Bungalow,
-      builtAmount: 10,
+      builtAmount: 0,
       cost: new Cost(10, 5, 0),
       secsToBuild: 1,
       costMultiplier: { wood: 1.2, stone: 1.2 },
-      unlocked: (buildingState) => buildingState.buildings[1].builtAmount >= 4,
+      unlocked: (buildingState) =>
+        buildingState.buildings[1].builtAmount >= requiredCabinForBungalow,
     },
     {
       id: "house",
       component: House,
-      builtAmount: 10,
+      builtAmount: 0,
       cost: new Cost(10, 0, 0, 0, 10),
       secsToBuild: 1,
       costMultiplier: { wood: 1.2, ironBar: 1.2 },
-      unlocked: (buildingState) => buildingState.buildings[2].builtAmount >= 5,
+      unlocked: (buildingState) =>
+        buildingState.buildings[2].builtAmount >= requiredBungalowForHouse,
     },
     {
       id: "arsenal",
       component: Arsenal,
-      builtAmount: 80,
+      builtAmount: 0,
       cost: new Cost(10, 0, 0, 0, 20),
       secsToBuild: 1,
       costMultiplier: { wood: 1.2, ironBar: 1.2 },
-      unlocked: (buildingState) => buildingState.buildings[3].builtAmount >= 5,
+      unlocked: (buildingState) =>
+        buildingState.buildings[3].builtAmount >= requiredHouseForArsenal,
     },
   ],
 };

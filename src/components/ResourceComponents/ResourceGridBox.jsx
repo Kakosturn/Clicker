@@ -1,18 +1,26 @@
+import { motion } from "motion/react";
+
 function ResourceGridBox({ children }) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ type: "spring", stiffness: 100, damping: 15 }}
       className="
         grid grid-cols-[1.4fr,1fr,2fr,1fr]
         items-center gap-5
-        px-4 py-3
-        rounded-xl
-        bg-zinc-900/60
-        
-        shadow-lg
+        px-5 py-3
+        rounded
+        bg-game-monolith
+        border border-game-border
+        text-lg
+        shadow-md
+        transition-colors
+        hover:border-game-border/80
       "
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 

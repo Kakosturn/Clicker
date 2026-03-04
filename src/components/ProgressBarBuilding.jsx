@@ -3,8 +3,7 @@ import { Cost, useMainContext } from "../context/MainContext.jsx";
 import { useBuildingContext } from "../context/BuildingContext.jsx";
 
 import { usePopulationContext } from "../context/PopulationContext.jsx";
-import toast from "react-hot-toast";
-import Notification from "./Notification";
+import { motion } from "motion/react";
 import { errorToast } from "./Toast";
 const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
   const secondsToBuild = secsToBuild;
@@ -24,28 +23,19 @@ const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
   // console.log(isRunning);
 
   return (
-    <div className="relative w-48 h-10 rounded-xl border-2 border-zinc-700 overflow-hidden bg-zinc-800 hover:bg-zinc-600">
-      <div
-        className={`
-          absolute left-0 top-0 h-full
-          bg-gradient-to-r from-amber-600 via-orange-500 to-yellow-400
-          shadow-[0_0_12px_rgba(255,180,80,0.7)]
-          transition-[width] ease-linear
-        `}
-        style={{
-          width: isRunning ? "100%" : "0%",
-          transition: isRunning ? `width ${secondsToBuild}s linear` : "none",
-        }}
+    <div className="relative w-full h-10 rounded-sm border border-game-border overflow-hidden bg-game-panel group cursor-pointer">
+      {/* The Animated Fill Bar */}
+      <motion.div
+        initial={{ width: "0%" }}
+        animate={{ width: isRunning ? "100%" : "0%" }}
+        transition={{ duration: isRunning ? secsToBuild : 0, ease: "linear" }}
+        className="absolute left-0 top-0 h-full bg-game-ichor shadow-[0_0_15px_rgba(185,255,36,0.6)]"
       />
-      {isRunning && (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="building-shine" />
-        </div>
-      )}
+
       <button
         className={`
-          relative z-10 w-full h-full font-semibold
-          ${isRunning ? "text-yellow-100" : "text-gray-200"}
+          relative z-50 w-full h-full font-semibold text-xl transition-colors
+          ${isRunning ? "text-game-monolith mix-blend-difference" : "text-gray-400 group-hover:text-white"}
         `}
         disabled={isRunning}
         onClick={() => {
@@ -59,9 +49,9 @@ const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
               dispatchBuilding({ type: "build", payload: type });
               popDispatch({ type: "venatrixIncrease", payload: popIncrease });
               setIsRunning(false);
-            }, secondsToBuild * 1000);
+            }, secsToBuild * 1000);
           } else {
-            errorToast("Not enough material");
+            errorToast("Insufficient Materials");
           }
         }}
       >
@@ -72,3 +62,52 @@ const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
 };
 
 export default ProgressBarBuilding;
+
+/// old return
+
+// return (
+//     <div className="relative w-48 h-10 rounded-xl border-2 border-zinc-700 overflow-hidden bg-zinc-800 hover:bg-zinc-600">
+//       <div
+//         className={`
+//           absolute left-0 top-0 h-full
+//           bg-gradient-to-r from-amber-600 via-orange-500 to-yellow-400
+//           shadow-[0_0_12px_rgba(255,180,80,0.7)]
+//           transition-[width] ease-linear
+//         `}
+//         style={{
+//           width: isRunning ? "100%" : "0%",
+//           transition: isRunning ? `width ${secondsToBuild}s linear` : "none",
+//         }}
+//       />
+//       {isRunning && (
+//         <div className="absolute inset-0 overflow-hidden pointer-events-none">
+//           <div className="building-shine" />
+//         </div>
+//       )}
+//       <button
+//         className={`
+//           relative z-10 w-full h-full font-semibold
+//           ${isRunning ? "text-yellow-100" : "text-gray-200"}
+//         `}
+//         disabled={isRunning}
+//         onClick={() => {
+//           if (cost.lte(currentMaterial)) {
+//             dispatchMain({
+//               type: "loseResource",
+//               payload: { cost },
+//             });
+//             setIsRunning(true);
+//             setTimeout(() => {
+//               dispatchBuilding({ type: "build", payload: type });
+//               popDispatch({ type: "venatrixIncrease", payload: popIncrease });
+//               setIsRunning(false);
+//             }, secondsToBuild * 1000);
+//           } else {
+//             errorToast("Not enough material");
+//           }
+//         }}
+//       >
+//         {isRunning ? "Building.." : "Build"}
+//       </button>
+//     </div>
+//   );

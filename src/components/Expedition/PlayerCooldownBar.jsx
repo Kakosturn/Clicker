@@ -4,7 +4,7 @@ import Icon from "../Icon";
 
 function PlayerCooldownBar({ duration = 3, onAttack, hp, dmg, armor }) {
   const [ready, setReady] = useState(false);
-  const [key, setKey] = useState(0);
+  const [key, setKey] = useState(8);
 
   const handleAttack = () => {
     if (!ready) return; // can't attack yet

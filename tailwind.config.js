@@ -14,6 +14,13 @@ export default {
         modalShow: "modalShow 0.5s ease-out forwards",
       },
       colors: {
+        game: {
+          ichor: "#B9FF24", // Main 1: The Alien/Player/Treasure
+          rust: "#D73A4A", // Main 2: The Flesh/Meat/Enemy/Combat
+          monolith: "#101114", // Grey: Deep Void Background
+          panel: "#25272c", // Grey: Explored Grid / UI Cards
+          border: "#2A2D35", // Grey: Grid Lines / Outlines
+        },
         upgrades: "var(--upgrades-bg)",
         features: "var(--features-bg)",
       },

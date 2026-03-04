@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Icon from "../../Icon";
+import { motion } from "motion/react";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
 import { useMainContext } from "./../../../context/MainContext";
@@ -14,38 +15,58 @@ function Stone() {
   );
   return (
     <ResourceGridBox>
+      {/* LEFT: icon + label */}
       <Label>
         <Icon path={"stone.png"} />
         <p>{"Stone"} : </p>
       </Label>
-      <span
+
+      {/* AMOUNT */}
+      <motion.span
+        key={stateMain.resources.stone.amount}
+        initial={{
+          scale: 1.1,
+          color: stateMain.resourceIncreased ? "#ffffff" : "#ff0000",
+          textShadow: "0px 0px 8px #ffffff",
+        }}
+        animate={{
+          scale: 1,
+          color: "#B9FF24",
+          textShadow: "0px 0px 0px transparent",
+        }}
+        transition={{ duration: 0.2 }}
         className="
           justify-self-center
-          font-mono
-          text-lg
-          text-emerald-300
-          bg-black/40
-          px-3
+          font-bold
+          bg-game-panel
+          px-4
           py-1
-          rounded-md
+          rounded-sm
           border
-          border-zinc-700
+          border-game-border
           shadow-inner
         "
       >
         {stateMain.resources.stone.amount}
-      </span>
+      </motion.span>
 
-      <ProgressBar
-        type={"gainResource"}
-        clicksToObtain={clicksToObtain}
-        setClicksToObtain={setClicksToObtain}
-        payload={
-          stateMain.obtainedAmount.stone * stateUpgrade.multiplierSelf.stone
-        }
-        resource={"stone"}
-      />
-      <Arrows resource="stone" />
+      {/* PROGRESS BAR */}
+      <div className="w-full">
+        <ProgressBar
+          type={"gainResource"}
+          clicksToObtain={clicksToObtain}
+          setClicksToObtain={setClicksToObtain}
+          payload={
+            stateMain.obtainedAmount.stone * stateUpgrade.multiplierSelf.stone
+          }
+          resource={"stone"}
+        />
+      </div>
+
+      {/* UPGRADE ARROWS */}
+      <div className="flex justify-end">
+        <Arrows resource="stone" />
+      </div>
     </ResourceGridBox>
   );
 }

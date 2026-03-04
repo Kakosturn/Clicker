@@ -28,7 +28,7 @@ function Upgrades() {
       {/* Completed Upgrades */}
       <div className="w-1/2">
         {stateUpgrade.upgradesCompleted.upgrades.map((el, i) => {
-          console.log(stateUpgrade.upgradesCompleted[el].tooltip);
+          // console.log(stateUpgrade.upgradesCompleted[el].tooltip);
           return (
             <Icon
               type="upgrade"

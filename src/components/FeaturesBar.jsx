@@ -13,7 +13,7 @@ function FeaturesBar() {
   // console.log(stateFeatures);
   // console.log(stateFeatures.furnaceUnlocked);
   return (
-    <div className="flex bg-features py-8 px-12 gap-24">
+    <div className="flex bg-features py-8 px-12 gap-24 text-2xl">
       <div>
         {stateFeatures.furnaceUnlocked && (
           <button onClick={() => setIsFurnaceOpen((prev) => !prev)}>

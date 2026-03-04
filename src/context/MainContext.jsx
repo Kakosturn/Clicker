@@ -51,12 +51,13 @@ const initialState = {
     meat: 1,
     ironOre: 1,
   },
+  resourceIncreased: true,
   resources: {
-    wood: { amount: 99, total: 0 },
-    stone: { amount: 99, total: 0 },
-    meat: { amount: 1000, total: 0 },
-    ironOre: { amount: 10990, total: 0 },
-    ironBar: { amount: 11990, total: 0 },
+    wood: { amount: 0, total: 0 },
+    stone: { amount: 0, total: 0 },
+    meat: { amount: 0, total: 0 },
+    ironOre: { amount: 0, total: 0 },
+    ironBar: { amount: 0, total: 0 },
   },
 
   isRunning: false,
@@ -65,19 +66,6 @@ const initialState = {
   firstBungalow: false,
   firstIronBar: false,
   firstArsenal: false,
-
-  // secsToCollectWood: 5,
-  // secsToCollectStone: 6,
-  // secsToCollectMeat: 7,
-  // secsToCollectIronOre: 10,
-  // wood: 99990,
-  // totalWoodCollected: 0,
-  // stone: 99990,
-  // totalStoneCollected: 0,
-  // meat: 99990,
-  // totalMeatCollected: 0,
-  // ironOre: 99990,
-  // totalIronOreCollected: 0,
 
   status: "ready",
   randomTexts: [...firstPhaseTexts],
@@ -141,6 +129,7 @@ function reducer(state, action) {
             total: state.resources[resource].total + amount,
           },
         },
+        resourceIncreased: true,
       };
     }
     case "loseResource": {
@@ -168,6 +157,7 @@ function reducer(state, action) {
       return {
         ...state,
         resources: newResources,
+        resourceIncreased: false,
       };
     }
     case "venatrixAvailable": {

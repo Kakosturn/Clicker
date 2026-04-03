@@ -34,7 +34,7 @@ const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
 
       <button
         className={`
-          relative z-50 w-full h-full font-semibold text-xl transition-colors
+          relative w-full h-full font-semibold text-xl transition-colors
           ${isRunning ? "text-game-monolith mix-blend-difference" : "text-gray-400 group-hover:text-white"}
         `}
         disabled={isRunning}

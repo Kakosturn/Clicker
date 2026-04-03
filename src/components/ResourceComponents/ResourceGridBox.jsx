@@ -16,7 +16,7 @@ function ResourceGridBox({ children }) {
         text-lg
         shadow-md
         transition-colors
-        hover:border-game-border/80
+        hover:border-gray-600
       "
     >
       {children}

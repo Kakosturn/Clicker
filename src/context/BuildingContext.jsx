@@ -19,7 +19,7 @@ const initialState = {
     {
       id: "shack",
       component: Shack,
-      builtAmount: 0,
+      builtAmount: 90,
       cost: new Cost(10, 0, 0),
       secsToBuild: 2,
       costMultiplier: { wood: 1.2 },
@@ -28,7 +28,7 @@ const initialState = {
     {
       id: "cabin",
       component: Cabin,
-      builtAmount: 0,
+      builtAmount: 90,
       cost: new Cost(30, 0, 0),
       secsToBuild: 1,
       costMultiplier: { wood: 1.2 },
@@ -38,7 +38,7 @@ const initialState = {
     {
       id: "bungalow",
       component: Bungalow,
-      builtAmount: 0,
+      builtAmount: 90,
       cost: new Cost(10, 5, 0),
       secsToBuild: 1,
       costMultiplier: { wood: 1.2, stone: 1.2 },
@@ -48,7 +48,7 @@ const initialState = {
     {
       id: "house",
       component: House,
-      builtAmount: 0,
+      builtAmount: 90,
       cost: new Cost(10, 0, 0, 0, 10),
       secsToBuild: 1,
       costMultiplier: { wood: 1.2, ironBar: 1.2 },
@@ -58,7 +58,7 @@ const initialState = {
     {
       id: "arsenal",
       component: Arsenal,
-      builtAmount: 0,
+      builtAmount: 90,
       cost: new Cost(10, 0, 0, 0, 20),
       secsToBuild: 1,
       costMultiplier: { wood: 1.2, ironBar: 1.2 },

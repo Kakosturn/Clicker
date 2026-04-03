@@ -16,7 +16,7 @@ const initialState = {
   },
   furnaceLimit: 20,
   smeltResourceInSeconds: {
-    ironOre: 0.1,
+    ironOre: 2,
     goldOre: 10,
   },
   smeltCostFor: {

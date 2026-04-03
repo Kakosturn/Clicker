@@ -1,3 +1,5 @@
+import { Cost } from "../context/MainContext";
+
 export function beginningCheck(status) {
   if (
     status === "beginning/0" ||
@@ -74,4 +76,10 @@ export function validation(state, action) {
     state.venatrixAtWood;
 
   if (action.payload > totalVenatrix) return { ...state };
+}
+
+export function costObjectForFurnaceMaterial(material, amount) {
+  if (material === "ironOre") {
+    return new Cost(0, 0, 0, amount);
+  }
 }

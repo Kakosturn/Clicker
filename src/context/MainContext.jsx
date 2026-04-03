@@ -53,11 +53,11 @@ const initialState = {
   },
   resourceIncreased: true,
   resources: {
-    wood: { amount: 0, total: 0 },
-    stone: { amount: 0, total: 0 },
+    wood: { amount: 990, total: 0 },
+    stone: { amount: 990, total: 0 },
     meat: { amount: 0, total: 0 },
-    ironOre: { amount: 0, total: 0 },
-    ironBar: { amount: 0, total: 0 },
+    ironOre: { amount: 990, total: 0 },
+    ironBar: { amount: 990, total: 0 },
   },
 
   isRunning: false,

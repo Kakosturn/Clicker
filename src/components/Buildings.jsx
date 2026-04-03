@@ -59,19 +59,11 @@ function Buildings() {
     <div className="p-8 bg-game-panel border border-game-border rounded-sm shadow-2xl flex flex-col gap-6 w-full">
       {/* HEADER ROW */}
       <div className="flex justify-between items-end border-b border-game-border pb-4">
-        <h2 className="text-3xl font-bold text-game-ichor uppercase tracking-widest">
+        <h2 className="text-3xl font-bold text-game-ichor tracking-wider">
           Buildings
         </h2>
 
-        <div className="text-lg font-bold text-gray-400 uppercase tracking-widest flex items-center">
-          {stateMain.statusArr.slice(1).includes(stateMain.status) ? (
-            <Population />
-          ) : (
-            <span className="bg-game-monolith px-4 py-1 rounded-sm border border-game-border shadow-inner text-game-ichor">
-              POPULATION: {statePop.venatrix}
-            </span>
-          )}
-        </div>
+        <Population />
       </div>
 
       {/* COLUMN TITLES */}
@@ -86,7 +78,7 @@ function Buildings() {
         <AnimatePresence>
           {stateBuilding.buildings
             .filter((building) => building.unlocked(stateBuilding))
-            .map((building, i) => {
+            .map((building) => {
               const Component = building.component;
               return (
                 <motion.div

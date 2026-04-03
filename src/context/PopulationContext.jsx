@@ -62,35 +62,9 @@ function reducer(state, action) {
 
     //! yeni resource geldiğinde buranın anası sikilicek.
     case "venatrixInjured": {
-      if (state.venatrix > 0) {
-        return {
-          ...state,
-          venatrix: state.venatrix - 1,
-          venatrixInjured: state.venatrixInjured + 1,
-        };
-      }
-      if (state.venatrix === 0 && state.venatrixAtMeat) {
-        return {
-          ...state,
-          venatrixInjured: state.venatrixInjured + 1,
-          venatrixAtMeat: state.venatrixAtMeat - 1,
-        };
-      }
-      if (state.venatrix === 0 && state.venatrixAtStone) {
-        return {
-          ...state,
-          venatrixInjured: state.venatrixInjured + 1,
-          venatrixAtStone: state.venatrixAtStone - 1,
-        };
-      }
-      if (state.venatrix === 0 && state.venatrixAtWood) {
-        return {
-          ...state,
-          venatrixInjured: state.venatrixInjured + 1,
-          venatrixAtWood: state.venatrixAtWood - 1,
-        };
-      }
-      return { ...state };
+      const newIdle = state.idle !== 0 ? state.idle - 1 : 0;
+      const newInjured = state.injured;
+      return { ...state, idle: newIdle };
     }
     case "venatrixRecovered": {
       return {

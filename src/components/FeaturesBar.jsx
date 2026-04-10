@@ -57,7 +57,7 @@ import { motion } from "motion/react";
 import { useFeatureContext } from "../context/FeaturesContext";
 import Furnace from "./Furnace";
 import Modal from "./Modal";
-import Armory from "./Armory";
+import Armory from "../armory/Armory";
 import Expedition from "./Expedition/Expedition";
 
 function FeaturesBar() {

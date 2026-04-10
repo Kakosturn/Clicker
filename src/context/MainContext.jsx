@@ -55,7 +55,7 @@ const initialState = {
   resources: {
     wood: { amount: 990, total: 0 },
     stone: { amount: 990, total: 0 },
-    meat: { amount: 0, total: 0 },
+    meat: { amount: 90, total: 0 },
     ironOre: { amount: 990, total: 0 },
     ironBar: { amount: 990, total: 0 },
   },

@@ -26,6 +26,7 @@ function reducer(state, action) {
     case "assign": {
       const resource = action.payload;
       if (state.idle === 0) return { ...state };
+
       return {
         ...state,
         idle: state.idle - 1,
@@ -62,108 +63,45 @@ function reducer(state, action) {
 
     //! yeni resource geldiğinde buranın anası sikilicek.
     case "venatrixInjured": {
-      const newIdle = state.idle !== 0 ? state.idle - 1 : 0;
-      const newInjured = state.injured;
-      return { ...state, idle: newIdle };
+      const activeJobs = Object.keys(state.assigned).filter(
+        (el) => state.assigned[el] > 0,
+      );
+      if (activeJobs.length === 0) {
+        return state;
+      }
+      // const totalWorkingPop = Object.values(state.assigned).reduce(
+      //   (acc, curr) => acc + curr,
+      //   0,
+      // );
+      const randomJob =
+        activeJobs[Math.floor(Math.random() * activeJobs.length)];
+
+      // const newAssigned = {
+      //   ...state.assigned,
+      //   [randomJob]:
+      //     state.assigned[randomJob] > 0
+      //       ? state.assigned[randomJob] - 1
+      //       : state.assigned[randomJob],
+      // };
+      const newAssigned = {
+        ...state.assigned,
+        // We also don't need the ternary (> 0) here anymore, because
+        // the activeJobs filter already proved this number is 1 or higher!
+        [randomJob]: state.assigned[randomJob] - 1,
+      };
+      // const newInjured =
+      //   totalWorkingPop !== 0 ? state.injured + 1 : state.injured;
+      return { ...state, injured: state.injured + 1, assigned: newAssigned };
     }
     case "venatrixRecovered": {
+      const newInjured = state.injured > 0 ? state.injured - 1 : state.injured;
       return {
         ...state,
-        venatrix: state.venatrix + 1,
-        venatrixInjured: state.venatrixInjured - 1,
-      };
-    }
-    case "setVenatrix": {
-      return { ...state, venatrix: action.payload };
-    }
-    case "venatrixAtWood": {
-      return {
-        ...state,
-        venatrix: state.venatrix - 1,
-        venatrixAtWood: state.venatrixAtWood + 1,
-      };
-    }
-    case "setVenatrixAtWood": {
-      if (action.payload - state.venatrixAtWood <= state.venatrix) {
-        return {
-          ...state,
-          venatrixAtWood: action.payload,
-          venatrix: state.venatrix - (action.payload - state.venatrixAtWood),
-        };
-      }
-      return {
-        ...state,
-        venatrix: state.venatrix - action.payload,
-        venatrixAtWood: action.payload,
-      };
-    }
-    case "venatrixAtStone": {
-      return {
-        ...state,
-        venatrix: state.venatrix - 1,
-        venatrixAtStone: state.venatrixAtStone + 1,
-      };
-    }
-    case "setVenatrixAtStone": {
-      if (action.payload - state.venatrixAtStone <= state.venatrix) {
-        return {
-          ...state,
-          venatrixAtStone: action.payload,
-          venatrix: state.venatrix - (action.payload - state.venatrixAtStone),
-        };
-      }
-
-      return {
-        ...state,
-        venatrix: state.venatrix - action.payload,
-        venatrixAtStone: action.payload,
-      };
-    }
-    case "venatrixAtMeat": {
-      return {
-        ...state,
-        venatrix: state.venatrix - 1,
-        venatrixAtMeat: state.venatrixAtMeat + 1,
-      };
-    }
-    case "setVenatrixAtMeat": {
-      if (action.payload - state.venatrixAtMeat <= state.venatrix) {
-        return {
-          ...state,
-          venatrixAtMeat: action.payload,
-          venatrix: state.venatrix - (action.payload - state.venatrixAtMeat),
-        };
-      }
-
-      return {
-        ...state,
-
-        venatrixAtMeat: action.payload,
+        idle: state.idle + 1,
+        injured: newInjured,
       };
     }
 
-    case "venatrixReturnFromWood": {
-      return {
-        ...state,
-        venatrix: state.venatrix + 1,
-        venatrixAtWood: state.venatrixAtWood - 1,
-      };
-    }
-
-    case "venatrixReturnFromStone": {
-      return {
-        ...state,
-        venatrix: state.venatrix + 1,
-        venatrixAtStone: state.venatrixAtStone - 1,
-      };
-    }
-    case "venatrixReturnFromMeat": {
-      return {
-        ...state,
-        venatrix: state.venatrix + 1,
-        venatrixAtMeat: state.venatrixAtMeat - 1,
-      };
-    }
     default: {
       console.log("default case");
       return { ...state };

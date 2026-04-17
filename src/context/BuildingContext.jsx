@@ -4,7 +4,7 @@ import Cabin from "../components/Buildings/Cabin";
 import Shack from "../components/Buildings/Shack";
 import House from "../components/Buildings/House";
 import Arsenal from "../components/Buildings/Arsenal";
-import { Cost } from "./MainContext";
+import { Cost } from "../utils/costClass";
 import {
   requiredBungalowForHouse,
   requiredCabinForBungalow,

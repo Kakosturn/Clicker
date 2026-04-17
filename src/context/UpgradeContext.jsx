@@ -1,10 +1,6 @@
 import { createContext, useContext, useReducer } from "react";
-import { tooltipLumberMill, tooltipQuarry } from "../variables";
+import { upgradeList } from "../variables";
 const initialState = {
-  // selfWoodMultiplier: 1,
-  // selfStoneMultiplier: 1,
-  // selfMeatMultiplier: 1,
-  // selfGatheringUpgradeCounter: 0,
   multiplierSelf: {
     wood: 1,
     stone: 1,
@@ -12,31 +8,28 @@ const initialState = {
     ironOre: 1,
     gatheringUpgradeCounter: 0,
   },
-  upgradesCompleted: {
-    upgrades: [],
-    lumberMill: {
-      completed: false,
-      tooltip: tooltipLumberMill,
-    },
-    quarry: {
-      completed: false,
-      tooltip: tooltipQuarry,
-    },
-  },
+  upgradeList: upgradeList,
+  // upgradesCompleted: {
+  //   upgrades: [],
+  //   lumberMill: {
+  //     completed: false,
+  //     tooltip: tooltipLumberMill,
+  //   },
+  //   quarry: {
+  //     completed: false,
+  //     tooltip: tooltipQuarry,
+  //   },
+  // },
   multiplier: {
     wood: 1,
     stone: 1,
     meat: 1,
     ironOre: 1,
   },
-  cost: {
-    lumberMill: { wood: 100 },
-    quarry: { stone: 100 },
-    gathering1: 1000,
-  },
-  lumberMill: false,
-  quarry: false,
-  gathering1: false,
+
+  // lumberMill: false,
+  // quarry: false,
+  // gathering1: false,
   // woodMultiplier: 1,
   // stoneMultiplier: 1,
   // meatMultiplier: 1,

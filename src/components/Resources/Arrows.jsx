@@ -85,7 +85,7 @@ function Arrows({ resource }) {
         flex items-center justify-end gap-1
         bg-game-panel
         border border-game-border
-        rounded-sm
+        rounded-xs
         "
     >
       {/* Down */}
@@ -96,7 +96,7 @@ function Arrows({ resource }) {
         className="
           w-8 h-8
           flex items-center justify-center
-          rounded-sm
+          rounded-xs
           bg-game-border
           transition-colors
         "
@@ -142,7 +142,7 @@ function Arrows({ resource }) {
             text-center
             font-bold
             bg-transparent
-            outline-none
+            outline-hidden
             appearance-none
             [&::-webkit-inner-spin-button]:appearance-none
             [&::-webkit-outer-spin-button]:appearance-none
@@ -158,7 +158,7 @@ function Arrows({ resource }) {
         className="
         w-8 h-8
         flex items-center justify-center
-        rounded-sm        
+        rounded-xs        
         bg-game-border
         transition-colors
         "
@@ -240,7 +240,7 @@ export default Arrows;
 //         flex items-center justify-end gap-1
 //         bg-game-panel
 //         border border-game-border
-//         rounded-sm
+//         rounded-xs
 
 //       "
 //     >
@@ -252,7 +252,7 @@ export default Arrows;
 //         className="
 //           w-8 h-8
 //           flex items-center justify-center
-//           rounded-sm
+//           rounded-xs
 //           bg-game-border
 //           transition-colors
 
@@ -296,7 +296,7 @@ export default Arrows;
 //             text-center
 //             text-zinc-100
 //             bg-transparent
-//             outline-none
+//             outline-hidden
 //             appearance-none
 //             [&::-webkit-inner-spin-button]:appearance-none
 //             [&::-webkit-outer-spin-button]:appearance-none
@@ -312,7 +312,7 @@ export default Arrows;
 //         className="
 //           w-8 h-8
 //           flex items-center justify-center
-//           rounded-sm
+//           rounded-xs
 //           bg-game-border
 //           transition-colors
 

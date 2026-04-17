@@ -11,7 +11,7 @@ function Cost({ cost, iconType }) {
         return (
           <div
             key={i}
-            className="flex items-center gap-1.5   px-2 py-0.5 rounded-sm shadow-inner"
+            className="flex items-center gap-1.5   px-2 py-0.5 rounded-xs shadow-inner"
           >
             <span className="font-bold font-mono text-lg text-gray-200">
               {cost[el]}

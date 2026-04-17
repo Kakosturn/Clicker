@@ -43,18 +43,23 @@ const eventCaps = {
   },
   thirdZone: {
     treasure: 4,
-    mediumEnemy: 2,
+    mediumEnemy: 5,
     empty: Infinity,
-    refillStation: 1,
+    refillStation: 4,
   },
   fourthZone: {
     empty: Infinity,
+    mediumEnemy: 2,
+    refillStation: 2,
+    trasure: 2,
   },
   fifthZone: {
     boss: 1,
     newElement: 1,
     empty: Infinity,
-    refillStation: 1,
+    refillStation: 5,
+    hardEnemy: 8,
+    treasure: 2,
   },
 };
 const eventChances = {
@@ -79,6 +84,14 @@ const eventChances = {
     fourthZone: 0.5,
     fifthZone: 0.1,
   },
+  hardEnemy: {
+    firstZone: 0,
+    secondZone: 0,
+    thirdZone: 0,
+    fourthZone: 0.3,
+    fifthZone: 0.7,
+  },
+
   boss: {
     firstZone: 0,
     secondZone: 0,
@@ -133,7 +146,7 @@ export function createGrid({ size = 31 } = {}) {
         zoneDifficulty,
         type: null,
         icon: null,
-        visible: false,
+        visible: true,
         explored: false,
       };
     }),
@@ -213,6 +226,12 @@ function allocateZoneEvents(zoneName, tiles) {
       tile.armor = mediumEnemy.armor;
       tile.dmg = mediumEnemy.dmg;
     }
+    if (eventType === "hardEnemy") {
+      const hardEnemy = createEnemy("hardEnemy");
+      tile.hp = hardEnemy.hp;
+      tile.armor = hardEnemy.armor;
+      tile.dmg = hardEnemy.dmg;
+    }
     tile.type = eventType;
 
     tile.icon = icon(eventType);
@@ -273,9 +292,10 @@ function randomTile(array) {
 function icon(type) {
   if (type === "empty") return null;
   if (type === "smallEnemy") return "⚔";
+  if (type === "mediumEnemy") return "🗡";
+  if (type === "hardEnemy") return "☠";
   if (type === "refillStation") return "🐃";
   if (type === "boss") return "💋";
-  if (type === "mediumEnemy") return "🗡";
   if (type === "treasure") return "💰";
   if (type === "newElement") return "❤";
 }

@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { Cost } from "./MainContext";
+import { Cost } from "../utils/costClass";
 import {
   secsToObtainWoodenChestArmor,
   secsToObtainIronSword,
@@ -76,6 +76,16 @@ const initialState = {
           slot: "weapon",
           durability: durIronSword,
         },
+        {
+          id: "goldSword",
+          name: "Gold Sword",
+          cost: new Cost(1, 0, 0, 0, 10),
+          damage: 77,
+          icon: "goldSword.png",
+          secsToObtain: secsToObtainIronSword,
+          slot: "weapon",
+          durability: durIronSword,
+        },
       ],
       armours: [
         {
@@ -84,6 +94,16 @@ const initialState = {
           cost: new Cost(20),
           armor: armorWoodenChestArmor,
           icon: "woodenChestArmor.png",
+          secsToObtain: secsToObtainWoodenChestArmor,
+          slot: "chest",
+          durability: durWoodenChestArmor,
+        },
+        {
+          id: "ironChestArmor",
+          name: "Iron Chest Armor",
+          cost: new Cost(20),
+          armor: 13,
+          icon: "ironChestArmor.png",
           secsToObtain: secsToObtainWoodenChestArmor,
           slot: "chest",
           durability: durWoodenChestArmor,
@@ -146,7 +166,7 @@ function reducer(state, action) {
           (el) => el.id === id,
         ) ||
         state.craftingWindow.availableCrafts.armours.find((el) => el.id === id);
-      console.log(craftedItem);
+      // console.log(craftedItem);
       if (!craftedItem) return state;
       const isWeapon = state.craftingWindow.availableCrafts.weapons.some(
         (el) => el.id === id,
@@ -171,36 +191,86 @@ function reducer(state, action) {
         amountItemInInventory: state.amountItemInInventory + 1,
       };
     }
+    // case "equip": {
+    //   const item = action.payload;
+    //   const itemIndexInArr =
+    //     state.inventory.armours.findIndex((el) => el.id === item.id) ||
+    //     state.inventory.weapons.findIndex((el) => el.id === item.id);
+    //   console.log(state.inventory.armours.findIndex((el) => el.id === item.id));
+    //   console.log(state.inventory.weapons.findIndex((el) => el.id === item.id));
+    //   console.log(itemIndexInArr);
+    //   console.log(state.inventory);
+    //   return {
+    //     ...state,
+    //     equipped: { ...state.equipped, [item.slot]: item },
+    //     inventory: {
+    //       ...state.inventory,
+    //       weapons: state.inventory.weapons.filter(
+    //         (el, i) => i !== itemIndexInArr,
+    //       ),
+    //       armours: state.inventory.armours.filter(
+    //         (el, i) => i !== itemIndexInArr,
+    //       ),
+    //     },
+    //   };
+    // }
     case "equip": {
       const item = action.payload;
-      // console.log(item);
-      // const correctSlot = Object.keys(state.equipped).find(
-      //   (el) => el === item.slot,
-      // );
-      // const isWeapon = state.craftingWindow.availableCrafts.weapons.some(
-      //   (el) => el.id === item.id,
-      // );
-      // const isArmor = state.craftingWindow.availableCrafts.armours.some(
-      //   (el) => el.id === item.id,
-      // );
-      // console.log(correctSlot, isWeapon, isArmor);
-      // const inventoryUpdated = {
-      //   ...state.inventory,
-      //   weapons: isWeapon
-      //     ? state.inventory.weapons.filter((el) => el.id !== item.id)
-      //     : state.inventory.weapons,
-      //   armours: isArmor
-      //     ? state.inventory.armours.filter((el) => el.id !== item.id)
-      //     : state.inventory.armours,
-      // };
+
+      // 1. Find the indexes independently (no || operators)
+      const armorIndex = state.inventory.armours.findIndex(
+        (el) => el.id === item.id,
+      );
+      const weaponIndex = state.inventory.weapons.findIndex(
+        (el) => el.id === item.id,
+      );
+
+      // 2. Safely remove the item ONLY from the array where it was actually found
+      let newArmours =
+        armorIndex !== -1
+          ? state.inventory.armours.filter((_, i) => i !== armorIndex)
+          : [...state.inventory.armours]; // Just copy it if not found here
+
+      let newWeapons =
+        weaponIndex !== -1
+          ? state.inventory.weapons.filter((_, i) => i !== weaponIndex)
+          : [...state.inventory.weapons]; // Just copy it if not found here
+
+      // 3. GEAR SWAP LOGIC: Strictly pure, no .push() allowed!
+      const previouslyEquipped = state.equipped[item.slot];
+
+      if (previouslyEquipped) {
+        if (previouslyEquipped.slot === "weapon") {
+          // Create a NEW array containing the filtered weapons + the old weapon
+          newWeapons = [...newWeapons, previouslyEquipped];
+        } else {
+          // Create a NEW array containing the filtered armor + the old armor
+          newArmours = [...newArmours, previouslyEquipped];
+        }
+      }
+
+      // 4. Return the new state
       return {
         ...state,
         equipped: { ...state.equipped, [item.slot]: item },
         inventory: {
           ...state.inventory,
-          weapons: state.inventory.weapons.filter((el) => el.id !== item.id),
-          armours: state.inventory.armours.filter((el) => el.id !== item.id),
+          weapons: newWeapons,
+          armours: newArmours,
         },
+      };
+    }
+    case "unequip": {
+      const item = action.payload;
+      const isWeapon = item.slot === "weapon";
+      return {
+        ...state,
+        inventory: {
+          ...state.inventory,
+          weapons: [...state.inventory.weapons, ...(isWeapon ? [item] : [])],
+          armours: [...state.inventory.armours, ...(!isWeapon ? [item] : [])],
+        },
+        equipped: { ...state.equipped, [item.slot]: null },
       };
     }
     default: {

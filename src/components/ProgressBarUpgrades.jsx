@@ -5,7 +5,7 @@ import { useUpgradeContext } from "../context/UpgradeContext";
 import { useMainContext } from "../context/MainContext";
 import { upgradeCost } from "../utils/helperUpgrade";
 import toast from "react-hot-toast";
-import { Cost } from "../context/MainContext";
+import { Cost } from "../utils/costClass";
 import Notification from "./Notification";
 function ProgressBarUpgrades({ type, secsToObtain, cost }) {
   ///STATE
@@ -31,7 +31,7 @@ function ProgressBarUpgrades({ type, secsToObtain, cost }) {
       <div
         className={`
           absolute left-0 top-0 h-full
-          bg-gradient-to-r from-amber-600 via-orange-500 to-yellow-400
+          bg-linear-to-r from-amber-600 via-orange-500 to-yellow-400
           shadow-[0_0_12px_rgba(255,180,80,0.7)]
           transition-[width] ease-linear
         `}

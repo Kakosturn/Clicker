@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useMainContext } from "../context/MainContext";
 import { usePopulationContext } from "../context/PopulationContext";
 import Modal from "./Modal";
-import { Cost } from "../context/MainContext";
+import { Cost } from "../utils/costClass";
 
 function Population() {
   const { state: statePop, dispatch: dispatchPop } = usePopulationContext();

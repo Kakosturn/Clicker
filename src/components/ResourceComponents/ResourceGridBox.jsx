@@ -7,7 +7,7 @@ function ResourceGridBox({ children }) {
       animate={{ opacity: 1, x: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 15 }}
       className="
-        grid grid-cols-[1.4fr,1fr,2fr,1fr]
+        grid grid-cols-[1.4fr_1fr_2fr_1fr]
         items-center gap-5
         px-5 py-3
         rounded

@@ -6,7 +6,7 @@ import { errorToast } from "../Toast";
 import Icon from "../Icon";
 import ExpeditionEncounters from "./ExpeditionEncounters";
 import { useMainContext } from "../../context/MainContext";
-import { Cost } from "../../context/MainContext";
+import { Cost } from "../../utils/costClass";
 import { useExpeditionContext } from "../../context/ExpeditionContext";
 import ResultScreen from "./ResultScreen";
 import { AnimatePresence, motion } from "motion/react";
@@ -75,7 +75,7 @@ function Expedition() {
     >
       {stateExpedition.resultScreen && <ResultScreen />}
       <div
-        className="grid gap-[2px] bg-game-border p-[1px] rounded shadow-2xl"
+        className="grid gap-[2px] bg-game-border p-px rounded-sm shadow-2xl"
         style={{
           gridTemplateColumns: `repeat(${gridSize},1fr)`,
           height: "fit-content",
@@ -92,10 +92,11 @@ function Expedition() {
             // if (tile.visited && !tile.visible) bg = "bg-zinc-900"; // seen before
             if (isPlayer) tileStyle = "bg-orange-500"; // player
             if (
-              tile.visible &&
-              (tile.type === "smallEnemy" ||
-                tile.type === "boss" ||
-                tile.type === "mediumEnemy")
+              (tile.visible &&
+                (tile.type === "smallEnemy" ||
+                  tile.type === "boss" ||
+                  tile.type === "mediumEnemy")) ||
+              tile.type === "hardEnemy"
             ) {
               tileStyle =
                 "bg-game-panel text-game-rust drop-shadow-[0_0_5px_rgba(215,58,74,0.8)]";
@@ -132,7 +133,7 @@ function Expedition() {
                 key={`${tile.row}-${tile.col}`}
                 className={`
                    flex items-center rounded-md justify-center text-sm transition-all duration-150
-                   ${tileStyle} ${isAdjacent(tile, playerPos) ? "cursor-pointer hover:bg-game-border" : "outline-none"}
+                   ${tileStyle} ${isAdjacent(tile, playerPos) ? "cursor-pointer hover:bg-game-border" : "outline-hidden"}
                  `}
               >
                 {isPlayer ? "🧍" : tile.visible ? tile.icon : ""}
@@ -146,7 +147,7 @@ function Expedition() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="w-[36.5rem] h-[36.5rem] rounded bg-game-panel p-10 flex items-center justify-center"
+            className="w-146 h-146 rounded-sm bg-game-panel p-10 flex items-center justify-center"
           >
             <div className="flex flex-col gap-10 w-full max-w-sm">
               <h2 className="text-3xl font-bold tracking-widest text-game-ichor uppercase border-b border-game-border pb-4">
@@ -167,12 +168,12 @@ function Expedition() {
                       })
                     }
                     max={stateExpedition.maxMeatBrought}
-                    className="bg-game-monolith border border-game-border text-game-ichor px-3 py-2 w-24 text-center outline-none focus:border-game-ichor transition-colors font-bold"
+                    className="bg-game-monolith border border-game-border text-game-ichor px-3 py-2 w-24 text-center outline-hidden focus:border-game-ichor transition-colors font-bold"
                   />
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-game-border hover:bg-game-ichor hover:text-game-monolith px-4 py-2 rounded font-bold transition-colors"
+                    className="bg-game-border hover:bg-game-ichor hover:text-game-monolith px-4 py-2 rounded-sm font-bold transition-colors"
                     onClick={() =>
                       dispatchExpedition({
                         type: "setMeatBrought",
@@ -184,7 +185,7 @@ function Expedition() {
                   </motion.button>
                 </div>
               </div>
-              <div className="flex flex-col gap-3 bg-game-monolith p-4 rounded border border-game-border">
+              <div className="flex flex-col gap-3 bg-game-monolith p-4 rounded-sm border border-game-border">
                 <div className="flex justify-between text-lg">
                   <span className="text-gray-400 tracking-wider">
                     Total Damage
@@ -204,7 +205,7 @@ function Expedition() {
                   boxShadow: "0px 0px 25px rgba(185,255,36,0.4)",
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-game-ichor text-game-monolith px-4 py-4 rounded font-bold text-xl uppercase tracking-widest shadow-[0_0_15px_rgba(185,255,36,0.2)] hover:shadow-[0_0_25px_rgba(185,255,36,0.6)] hover:scale-[1.02] transition-all"
+                className="bg-game-ichor text-game-monolith px-4 py-4 rounded-sm font-bold text-xl uppercase tracking-widest shadow-[0_0_15px_rgba(185,255,36,0.2)] hover:shadow-[0_0_25px_rgba(185,255,36,0.6)] hover:scale-[1.02] transition-all"
                 onClick={() => {
                   if (stateExpedition.meatBrought <= 10) {
                     errorToast("Need at least 10 meat to start expedition");
@@ -242,7 +243,7 @@ function Expedition() {
             transition={{ type: "spring", stiffness: 120, damping: 15 }}
             className="pl-8 w-full flex flex-col gap-6"
           >
-            <div className="bg-game-panel border border-game-border rounded p-6 shadow-xl">
+            <div className="bg-game-panel border border-game-border rounded-sm p-6 shadow-xl">
               <h3 className="text-game-ichor uppercase tracking-widest font-bold mb-6 text-xl border-b border-game-border pb-2">
                 Vitals
               </h3>
@@ -278,7 +279,7 @@ function Expedition() {
               </div>
             </div>
 
-            <div className="bg-game-monolith border border-game-border rounded shadow-inner flex-grow relative overflow-hidden flex flex-col">
+            <div className="bg-game-monolith border border-game-border rounded-sm shadow-inner grow relative overflow-hidden flex flex-col">
               <ExpeditionEncounters type={currentTile.type || "empty"} />
             </div>
           </motion.div>
@@ -295,7 +296,7 @@ export default Expedition;
 //       {stateExpedition.resultScreen && <ResultScreen />}
 
 //       <div
-//         className="grid gap-[1px] bg-game-border p-[1px] rounded shadow-2xl"
+//         className="grid gap-px bg-game-border p-px rounded-sm shadow-2xl"
 //         style={{ gridTemplateColumns: `repeat(${gridSize},1fr)`, height: "fit-content" }}
 //       >
 //         {isExpeditionRunning ? (
@@ -346,7 +347,7 @@ export default Expedition;
 //                 key={`${tile.row}-${tile.col}`}
 //                 className={`
 //                   flex items-center justify-center text-sm transition-all duration-150
-//                   ${tileStyle} ${isAdjacent(tile, playerPos) ? "cursor-pointer hover:bg-game-border" : "outline-none"}
+//                   ${tileStyle} ${isAdjacent(tile, playerPos) ? "cursor-pointer hover:bg-game-border" : "outline-hidden"}
 //                 `}
 //               >
 //                 {isPlayer ? "X" : tile.visible ? tile.icon : ""}
@@ -355,7 +356,7 @@ export default Expedition;
 //           })
 //         ) : (
 //           /* --- PRE-EXPEDITION START MENU --- */
-//           <div className="w-[36.5rem] h-[36.5rem] rounded bg-game-panel p-10 flex items-center justify-center">
+//           <div className="w-146 h-146 rounded-sm bg-game-panel p-10 flex items-center justify-center">
 //             <div className="flex flex-col gap-10 w-full max-w-sm">
 //               <h2 className="text-3xl font-bold tracking-widest text-game-ichor uppercase border-b border-game-border pb-4">
 //                 Prepare
@@ -374,10 +375,10 @@ export default Expedition;
 //                       })
 //                     }
 //                     max={stateExpedition.maxMeatBrought}
-//                     className="bg-game-monolith border border-game-border text-game-ichor px-3 py-2 w-24 text-center outline-none focus:border-game-ichor transition-colors font-bold"
+//                     className="bg-game-monolith border border-game-border text-game-ichor px-3 py-2 w-24 text-center outline-hidden focus:border-game-ichor transition-colors font-bold"
 //                   />
 //                   <button
-//                     className="bg-game-border hover:bg-game-ichor hover:text-game-monolith px-4 py-2 rounded font-bold transition-colors"
+//                     className="bg-game-border hover:bg-game-ichor hover:text-game-monolith px-4 py-2 rounded-sm font-bold transition-colors"
 //                     onClick={() =>
 //                       dispatchExpedition({
 //                         type: "setMeatBrought",
@@ -390,7 +391,7 @@ export default Expedition;
 //                 </div>
 //               </div>
 
-//               <div className="flex flex-col gap-3 bg-game-monolith p-4 rounded border border-game-border">
+//               <div className="flex flex-col gap-3 bg-game-monolith p-4 rounded-sm border border-game-border">
 //                 <div className="flex justify-between text-lg">
 //                   <span className="text-gray-400 uppercase tracking-wider">Total Damage</span>
 //                   <span className="font-bold text-white">{totalDamage}</span>
@@ -402,7 +403,7 @@ export default Expedition;
 //               </div>
 
 //               <button
-//                 className="bg-game-ichor text-game-monolith px-4 py-4 rounded font-bold text-xl uppercase tracking-widest shadow-[0_0_15px_rgba(185,255,36,0.2)] hover:shadow-[0_0_25px_rgba(185,255,36,0.6)] hover:scale-[1.02] transition-all"
+//                 className="bg-game-ichor text-game-monolith px-4 py-4 rounded-sm font-bold text-xl uppercase tracking-widest shadow-[0_0_15px_rgba(185,255,36,0.2)] hover:shadow-[0_0_25px_rgba(185,255,36,0.6)] hover:scale-[1.02] transition-all"
 //                 onClick={() => {
 //                   if (stateExpedition.meatBrought <= 10) {
 //                     errorToast("Need at least 10 meat to start expedition");
@@ -432,7 +433,7 @@ export default Expedition;
 //       {/* --- RIGHT SIDE STATS & ENCOUNTER PANEL --- */}
 //       {isExpeditionRunning && (
 //         <div className="pl-8 w-96 flex flex-col gap-6">
-//           <div className="bg-game-panel border border-game-border rounded p-6 shadow-xl">
+//           <div className="bg-game-panel border border-game-border rounded-sm p-6 shadow-xl">
 //             <h3 className="text-game-ichor uppercase tracking-widest font-bold mb-6 text-xl border-b border-game-border pb-2">
 //               Vitals
 //             </h3>
@@ -456,7 +457,7 @@ export default Expedition;
 //             </div>
 //           </div>
 
-//           <div className="bg-game-monolith border border-game-border rounded shadow-inner flex-grow relative overflow-hidden flex flex-col">
+//           <div className="bg-game-monolith border border-game-border rounded-sm shadow-inner grow relative overflow-hidden flex flex-col">
 //              <ExpeditionEncounters type={currentTile.type || "empty"} />
 //           </div>
 //         </div>
@@ -469,7 +470,7 @@ export default Expedition;
 //       {stateExpedition.resultScreen && <ResultScreen />}
 
 //       <div
-//         className="grid gap-[1px] bg-game-border p-[1px] rounded shadow-2xl relative z-10"
+//         className="grid gap-px bg-game-border p-px rounded-sm shadow-2xl relative z-10"
 //         style={{ gridTemplateColumns: `repeat(${gridSize},1fr)`, height: "fit-content" }}
 //       >
 //         {isExpeditionRunning ? (
@@ -515,7 +516,7 @@ export default Expedition;
 //                 key={`${tile.row}-${tile.col}`}
 //                 className={`
 //                   flex items-center justify-center text-sm transition-colors duration-150
-//                   ${tileStyle} ${isAdjacent(tile, playerPos) ? "cursor-pointer hover:bg-game-border" : "outline-none"}
+//                   ${tileStyle} ${isAdjacent(tile, playerPos) ? "cursor-pointer hover:bg-game-border" : "outline-hidden"}
 //                 `}
 //               >
 //                 {isPlayer ? "X" : tile.visible ? tile.icon : ""}
@@ -529,7 +530,7 @@ export default Expedition;
 //             animate={{ opacity: 1, scale: 1 }}
 //             exit={{ opacity: 0, scale: 0.95 }}
 //             transition={{ duration: 0.3, ease: "easeOut" }}
-//             className="w-[36.5rem] h-[36.5rem] rounded bg-game-panel p-10 flex items-center justify-center"
+//             className="w-146 h-146 rounded-sm bg-game-panel p-10 flex items-center justify-center"
 //           >
 //             <div className="flex flex-col gap-10 w-full max-w-sm">
 //               <h2 className="text-3xl font-bold tracking-widest text-game-ichor uppercase border-b border-game-border pb-4">
@@ -549,12 +550,12 @@ export default Expedition;
 //                       })
 //                     }
 //                     max={stateExpedition.maxMeatBrought}
-//                     className="bg-game-monolith border border-game-border text-game-ichor px-3 py-2 w-24 text-center outline-none focus:border-game-ichor transition-colors font-bold"
+//                     className="bg-game-monolith border border-game-border text-game-ichor px-3 py-2 w-24 text-center outline-hidden focus:border-game-ichor transition-colors font-bold"
 //                   />
 //                   <motion.button
 //                     whileHover={{ scale: 1.05 }}
 //                     whileTap={{ scale: 0.95 }}
-//                     className="bg-game-border hover:bg-game-ichor hover:text-game-monolith px-4 py-2 rounded font-bold transition-colors"
+//                     className="bg-game-border hover:bg-game-ichor hover:text-game-monolith px-4 py-2 rounded-sm font-bold transition-colors"
 //                     onClick={() =>
 //                       dispatchExpedition({
 //                         type: "setMeatBrought",
@@ -567,7 +568,7 @@ export default Expedition;
 //                 </div>
 //               </div>
 
-//               <div className="flex flex-col gap-3 bg-game-monolith p-4 rounded border border-game-border">
+//               <div className="flex flex-col gap-3 bg-game-monolith p-4 rounded-sm border border-game-border">
 //                 <div className="flex justify-between text-lg">
 //                   <span className="text-gray-400 uppercase tracking-wider">Total Damage</span>
 //                   <span className="font-bold text-white">{totalDamage}</span>
@@ -581,7 +582,7 @@ export default Expedition;
 //               <motion.button
 //                 whileHover={{ scale: 1.02, boxShadow: "0px 0px 25px rgba(185,255,36,0.4)" }}
 //                 whileTap={{ scale: 0.98 }}
-//                 className="bg-game-ichor text-game-monolith px-4 py-4 rounded font-bold text-xl uppercase tracking-widest shadow-[0_0_15px_rgba(185,255,36,0.2)]"
+//                 className="bg-game-ichor text-game-monolith px-4 py-4 rounded-sm font-bold text-xl uppercase tracking-widest shadow-[0_0_15px_rgba(185,255,36,0.2)]"
 //                 onClick={() => {
 //                   if (stateExpedition.meatBrought <= 10) {
 //                     errorToast("Need at least 10 meat to start expedition");
@@ -618,7 +619,7 @@ export default Expedition;
 //             transition={{ type: "spring", stiffness: 120, damping: 15 }}
 //             className="pl-8 w-96 flex flex-col gap-6"
 //           >
-//             <div className="bg-game-panel border border-game-border rounded p-6 shadow-xl">
+//             <div className="bg-game-panel border border-game-border rounded-sm p-6 shadow-xl">
 //               <h3 className="text-game-ichor uppercase tracking-widest font-bold mb-6 text-xl border-b border-game-border pb-2">
 //                 Vitals
 //               </h3>
@@ -649,7 +650,7 @@ export default Expedition;
 //               </div>
 //             </div>
 
-//             <div className="bg-game-monolith border border-game-border rounded shadow-inner flex-grow relative overflow-hidden flex flex-col">
+//             <div className="bg-game-monolith border border-game-border rounded-sm shadow-inner grow relative overflow-hidden flex flex-col">
 //                <ExpeditionEncounters type={currentTile.type || "empty"} />
 //             </div>
 //           </motion.div>

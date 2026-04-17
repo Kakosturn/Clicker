@@ -1,4 +1,4 @@
-import { Cost } from "../context/MainContext";
+import { Cost } from "./costClass";
 
 export function beginningCheck(status) {
   if (

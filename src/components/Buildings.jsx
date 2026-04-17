@@ -56,7 +56,7 @@ function Buildings() {
   ]);
 
   return (
-    <div className="p-8 bg-game-panel border border-game-border rounded-sm shadow-2xl flex flex-col gap-6 w-full">
+    <div className="p-8 bg-game-panel border border-game-border rounded-xs shadow-2xl flex flex-col gap-6 w-full">
       {/* HEADER ROW */}
       <div className="flex justify-between items-end border-b border-game-border pb-4">
         <h2 className="text-3xl font-bold text-game-ichor tracking-wider">
@@ -156,7 +156,7 @@ export default Buildings;
 //   ]);
 
 // return (
-//   <div className="p-8 bg-game-panel border border-game-border rounded-sm shadow-2xl flex flex-col gap-6 w-full">
+//   <div className="p-8 bg-game-panel border border-game-border rounded-xs shadow-2xl flex flex-col gap-6 w-full">
 
 //     {/* HEADER ROW */}
 //     <div className="flex justify-between items-end border-b border-game-border pb-4">
@@ -168,7 +168,7 @@ export default Buildings;
 //         {stateMain.statusArr.slice(1).includes(stateMain.status) ? (
 //           <Population />
 //         ) : (
-//           <span className="bg-game-monolith px-4 py-1 rounded-sm border border-game-border shadow-inner text-game-ichor">
+//           <span className="bg-game-monolith px-4 py-1 rounded-xs border border-game-border shadow-inner text-game-ichor">
 //             POPULATION: {statePop.venatrix}
 //           </span>
 //         )}
@@ -215,7 +215,7 @@ export default Buildings;
 //// OLD RETURN
 
 // return (
-//     <div className="p-8 grid w-full text-xl grid-cols-4 items-center border border-game-border rounded-sm bg-game-panel shadow-[0_0_25px_rgba(0,0,0,0.8)] gap-y-6">
+//     <div className="p-8 grid w-full text-xl grid-cols-4 items-center border border-game-border rounded-xs bg-game-panel shadow-[0_0_25px_rgba(0,0,0,0.8)] gap-y-6">
 //       {/* HEADER ROW */}
 //       <div className="col-span-full flex justify-between items-center px-4">
 //         <p className="text-4xl text-zinc-100 italic">Buildings</p>

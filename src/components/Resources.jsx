@@ -15,7 +15,7 @@ function Resources() {
     <div
       className="
         p-8 bg-game-panel border border-game-border
-        rounded-sm shadow-2xl flex flex-col gap-[68px] text-lg w-full"
+        rounded-xs shadow-2xl flex flex-col gap-17 text-lg w-full"
     >
       {/* Header */}
       <p

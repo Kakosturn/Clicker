@@ -6,7 +6,13 @@ import { Tooltip } from "react-tooltip";
 
 // export default Icon;
 
-function Icon({ path, width = "w-1/4", type = "resource", tooltip }) {
+function Icon({
+  path,
+  width = "w-1/4",
+  type = "resource",
+  tooltip,
+  className = "w-10",
+}) {
   if (type === "upgrade") {
     return (
       <div
@@ -43,14 +49,16 @@ function Icon({ path, width = "w-1/4", type = "resource", tooltip }) {
     );
   }
   if (type === "plain")
-    return <img src={`./public/${path}`} alt="" className={`inline w-10`} />;
+    return (
+      <img src={`./public/${path}`} alt="" className={`inline ${className}`} />
+    );
 
   return (
     <div
       className="
         w-10 h-10
         flex items-center justify-center
-        rounded-sm
+        rounded-xs
         bg-game-monolith
         shadow-inner
       "

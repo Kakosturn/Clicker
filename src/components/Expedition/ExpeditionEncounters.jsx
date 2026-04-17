@@ -9,6 +9,7 @@ function ExpeditionEncounters({ type }) {
       {type === "treasure" && <div>treasure</div>}
       {type === "smallEnemy" && <Enemy key={"smallEnemy"} />}
       {type === "mediumEnemy" && <Enemy key={"mediumEnemy"} />}
+      {type === "hardEnemy" && <Enemy key={"hardEnemy"} />}
       {type === "boss" && <div>boss</div>}
       {type === "newElement" && <div>new element</div>}
       {type === "refillStation" && <RefillStation key={"refillStation"} />}

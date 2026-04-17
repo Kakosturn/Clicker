@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Cost, useMainContext } from "../context/MainContext";
+import { useMainContext } from "../context/MainContext";
 import { useFeatureContext } from "../context/FeaturesContext";
 import { errorToast } from "./Toast";
 import { costObjectForFurnaceMaterial } from "../utils/helper";
@@ -12,7 +12,7 @@ function FurnaceMaterials({ material, amount, isSmelting }) {
   const furnaceLimit = stateFeatures.furnaceLimit;
 
   return (
-    <div className="flex items-center justify-between bg-game-panel border border-game-border rounded-sm p-4">
+    <div className="flex items-center justify-between bg-game-panel border border-game-border rounded-xs p-4">
       <div className="flex flex-col gap-1">
         <p className="text-white font-bold uppercase tracking-wider text-lg">
           {material}
@@ -31,7 +31,7 @@ function FurnaceMaterials({ material, amount, isSmelting }) {
           }}
           whileTap={{ scale: 0.95 }}
           disabled={isSmelting}
-          className="px-3 py-2 rounded-sm bg-game-border text-gray-300 font-bold font-mono transition-colors"
+          className="px-3 py-2 rounded-xs bg-game-border text-gray-300 font-bold font-mono transition-colors"
           onClick={() => {
             if (currentMaterial === 0) return;
             if (amount < furnaceLimit) {
@@ -57,7 +57,7 @@ function FurnaceMaterials({ material, amount, isSmelting }) {
           }}
           disabled={isSmelting}
           whileTap={{ scale: 0.95 }}
-          className="px-3 py-2 rounded-sm bg-game-border text-gray-300 font-bold uppercase tracking-widest transition-colors"
+          className="px-3 py-2 rounded-xs bg-game-border text-gray-300 font-bold uppercase tracking-widest transition-colors"
           onClick={() => {
             if (amount < furnaceLimit) {
               const toAdd = Math.min(furnaceLimit - amount, currentMaterial);
@@ -86,7 +86,7 @@ function FurnaceMaterials({ material, amount, isSmelting }) {
           max={currentMaterial}
           disabled
           value={amount}
-          className="w-16 px-2 py-2 text-center rounded-sm bg-game-monolith text-game-ichor font-bold font-mono border border-game-border focus:outline-none focus:border-game-ichor appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="w-16 px-2 py-2 text-center rounded-xs bg-game-monolith text-game-ichor font-bold font-mono border border-game-border focus:outline-hidden focus:border-game-ichor appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
       </div>
     </div>

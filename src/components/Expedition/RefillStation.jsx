@@ -1,5 +1,6 @@
 import { useExpeditionContext } from "../../context/ExpeditionContext";
-import { Cost, useMainContext } from "../../context/MainContext";
+import { useMainContext } from "../../context/MainContext";
+import { Cost } from "../../utils/costClass";
 import Icon from "../Icon";
 import { errorToast } from "../Toast";
 import { motion } from "motion/react";
@@ -10,7 +11,7 @@ function RefillStation() {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-black text-zinc-200"
+      className="flex flex-col items-center justify-center w-full h-full bg-linear-to-br from-zinc-900 via-zinc-800 to-black text-zinc-200"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -40,7 +41,7 @@ function RefillStation() {
               })
             }
             max={stateExpedition.maxMeatAcquiredFromRefill}
-            className="bg-zinc-700 h-full rounded-lg px-4 py-2 text-2xl focus:outline-none focus:ring-2 focus:ring-orange-400 w-24 text-center"
+            className="bg-zinc-700 h-full rounded-lg px-4 py-2 text-2xl focus:outline-hidden focus:ring-2 focus:ring-orange-400 w-24 text-center"
             onBlur={(e) => {
               if (e.target.value > stateExpedition.maxMeatAcquiredFromRefill) {
                 dispatchExpedition({
@@ -57,7 +58,7 @@ function RefillStation() {
                 payload: stateExpedition.maxMeatAcquiredFromRefill,
               })
             }
-            className="px-2 py-2 rounded-lg bg-orange-900 hover:bg-orange-700 text-zinc-200 shadow transition"
+            className="px-2 py-2 rounded-lg bg-orange-900 hover:bg-orange-700 text-zinc-200 shadow-sm transition"
           >
             Max
           </button>

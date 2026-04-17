@@ -1,63 +1,9 @@
-// import { useState } from "react";
-// import { useFeatureContext } from "../context/FeaturesContext";
-// import { useMainContext } from "../context/MainContext";
-// import Furnace from "./Furnace";
-// import Modal from "./Modal";
-// import Armory from "./Armory";
-// import Expedition from "./Expedition/Expedition";
-// function FeaturesBar() {
-//   const { state: stateFeatures } = useFeatureContext();
-//   const [isFurnaceOpen, setIsFurnaceOpen] = useState(false);
-//   const [isArmoryOpen, setIsArmoryOpen] = useState(false);
-//   const [isExpeditionOpen, setIsExpeditionOpen] = useState(false);
-//   // console.log(stateFeatures);
-//   // console.log(stateFeatures.furnaceUnlocked);
-//   return (
-//     <div className="flex bg-features py-8 px-12 gap-24 text-2xl">
-//       <div>
-//         {stateFeatures.furnaceUnlocked && (
-//           <button onClick={() => setIsFurnaceOpen((prev) => !prev)}>
-//             Furnace
-//           </button>
-//         )}
-//         <Modal isOpen={isFurnaceOpen} setIsOpen={setIsFurnaceOpen}>
-//           <Furnace />
-//         </Modal>
-//       </div>
-//       <div>
-//         {stateFeatures.armoryUnlocked && (
-//           <button onClick={() => setIsArmoryOpen((prev) => !prev)}>
-//             Armory
-//           </button>
-//         )}
-
-//         <Modal isOpen={isArmoryOpen} setIsOpen={setIsArmoryOpen}>
-//           <Armory />
-//         </Modal>
-//       </div>
-//       <div>
-//         {stateFeatures.expeditionUnlocked && (
-//           <button onClick={() => setIsExpeditionOpen((prev) => !prev)}>
-//             Expedition
-//           </button>
-//         )}
-
-//         <Modal isOpen={isExpeditionOpen} setIsOpen={setIsExpeditionOpen}>
-//           <Expedition />
-//         </Modal>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default FeaturesBar;
-
 import { useState } from "react";
 import { motion } from "motion/react";
 import { useFeatureContext } from "../context/FeaturesContext";
 import Furnace from "./Furnace";
 import Modal from "./Modal";
-import Armory from "../armory/Armory";
+import Armory from "./Armory/Armory";
 import Expedition from "./Expedition/Expedition";
 
 function FeaturesBar() {

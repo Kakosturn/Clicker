@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
-const modalStyle = {
-  position: "fixed",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 600,
-  backgroundColor: "#202020",
-  border: "2px solid #000",
-  borderRadius: "0.625rem",
-  boxShadow: 24,
-  padding: "2rem 4rem",
-  zIndex: 1001,
-};
+// const modalStyle = {
+//   position: "fixed",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: 600,
+//   backgroundColor: "#202020",
+//   border: "2px solid #000",
+//   borderRadius: "0.625rem",
+//   boxShadow: 24,
+//   padding: "2rem 4rem",
+//   zIndex: 1001,
+// };
 
 const overlayStyle = {
   position: "fixed",
@@ -34,7 +34,7 @@ function Modal({ children, isOpen, setIsOpen }) {
       <div style={overlayStyle} onClick={() => setIsOpen(false)}></div>
       <div
         className="animate-modalShow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 
-        bg-[#202020] border-2 border-black rounded-2xl shadow-2xl z-[1001]"
+        bg-[#202020] border-2 border-black rounded-2xl shadow-2xl z-1001"
       >
         {children}
         <button

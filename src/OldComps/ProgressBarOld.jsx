@@ -41,7 +41,7 @@
 //         }}
 //       ></div>
 //       <button
-//         className="text-gray-200 border-2 border-gray-200 w-full translate-y-[-100%]"
+//         className="text-gray-200 border-2 border-gray-200 w-full -translate-y-full"
 //         onClick={() => setIsRunning(true)}
 //       >
 //         {btnName}

@@ -45,7 +45,7 @@ function Wood() {
           bg-game-panel
           px-4
           py-1
-          rounded-sm
+          rounded-xs
           border
           border-game-border
           shadow-inner

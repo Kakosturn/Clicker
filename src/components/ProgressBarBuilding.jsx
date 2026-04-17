@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Cost, useMainContext } from "../context/MainContext.jsx";
+import { useMainContext } from "../context/MainContext.jsx";
 import { useBuildingContext } from "../context/BuildingContext.jsx";
+import { Cost } from "../utils/costClass";
 
 import { usePopulationContext } from "../context/PopulationContext.jsx";
 import { motion } from "motion/react";
@@ -23,7 +24,7 @@ const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
   // console.log(isRunning);
 
   return (
-    <div className="relative w-full h-10 rounded-sm border border-game-border overflow-hidden bg-game-panel group cursor-pointer">
+    <div className="relative w-full h-10 rounded-xs border border-game-border overflow-hidden bg-game-panel group cursor-pointer">
       {/* The Animated Fill Bar */}
       <motion.div
         initial={{ width: "0%" }}
@@ -70,7 +71,7 @@ export default ProgressBarBuilding;
 //       <div
 //         className={`
 //           absolute left-0 top-0 h-full
-//           bg-gradient-to-r from-amber-600 via-orange-500 to-yellow-400
+//           bg-linear-to-r from-amber-600 via-orange-500 to-yellow-400
 //           shadow-[0_0_12px_rgba(255,180,80,0.7)]
 //           transition-[width] ease-linear
 //         `}

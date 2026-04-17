@@ -1,17 +1,8 @@
+import { Cost } from "./utils/costClass";
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
-
-export const requiredWoodForGathering1Upgrade = 100;
-export const requiredStoneForGathering1Upgrade = 100;
-export const requiredMeatForGathering1Upgrade = 100;
-
-export const secsForLumberMillUpgrade = 10;
-
-export const tooltipLumberMill =
-  "Increases wood gathering efficiency for venatrix by ANAN";
-export const tooltipQuarry =
-  "Increases stone gathering efficiancy for venatrix by ANANN";
 
 export const clicksToObtainWood = 2;
 export const clicksToObtainStone = 6;
@@ -69,7 +60,7 @@ export const maxMeatToBring = 20;
 export const meatUsedPerMovement = 2;
 export const maxHp = 20;
 export const gridSize = 31;
-export const maximumMeatBrought = 20;
+export const maximumMeatBrought = 500;
 
 export function createEnemy(type) {
   const configs = {
@@ -83,6 +74,11 @@ export function createEnemy(type) {
       armor: [3, 5, 7],
       dmg: [6, 8, 10],
     },
+    hardEnemy: {
+      hp: [35, 40, 45],
+      armor: [5, 7, 9],
+      dmg: [11, 12, 13],
+    },
   };
 
   const base = configs[type];
@@ -94,3 +90,85 @@ export function createEnemy(type) {
     dmg: base.dmg[getRandomInt(base.dmg.length)],
   };
 }
+
+////////////////////////////////////////////////////////////////////////////////////////
+// Upgrades
+
+export const requiredWoodForGathering1Upgrade = 100;
+export const requiredStoneForGathering1Upgrade = 100;
+export const requiredMeatForGathering1Upgrade = 100;
+
+export const secsForLumberMillUpgrade = 10;
+
+export const upgradeList = [
+  {
+    name: "Lumber Mill",
+    id: "lumberMill",
+    unlocked: ({ stateBuilding }) =>
+      stateBuilding.buildings.find((el) => el.id === "shack").builtAmount > 10,
+    visible: ({ stateBuilding }) =>
+      stateBuilding.buildings.find((el) => el.id === "shack").builtAmount > 5,
+    completed: false,
+    cost: new Cost(100),
+    tooltip: "Increases wood gathering efficiency for venatrix by ANAN",
+    path: "lumberMill.png",
+    secsToAcquire: 10,
+    type: "upgradeLumberMill",
+  },
+  //
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //
+  {
+    name: "Quarry",
+    id: "quarry",
+    unlocked: ({ stateBuilding }) =>
+      stateBuilding.buildings.find((el) => el.id === "bungalow").builtAmount >
+      10,
+    visible: ({ stateBuilding }) =>
+      stateBuilding.buildings.find((el) => el.id === "bungalow").builtAmount >
+      5,
+    completed: false,
+    cost: new Cost(0, 100),
+    tooltip: "Increases stone gathering efficiancy for venatrix by ANANN",
+    path: "quarry.png",
+    secsToAcquire: 10,
+    type: "upgradeQuarry",
+  },
+  //
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //
+  {
+    name: "Gathering/1",
+    id: "gathering1",
+    unlocked: ({ stateMain }) => {
+      if (
+        stateMain.resources.wood.total > requiredWoodForGathering1Upgrade &&
+        stateMain.resources.meat.total > requiredMeatForGathering1Upgrade &&
+        stateMain.resources.stone.total > requiredStoneForGathering1Upgrade
+      ) {
+        return true;
+      } else return false;
+    },
+    visible: ({ stateMain }) => {
+      if (
+        stateMain.resources.wood.total >
+          Math.round(requiredWoodForGathering1Upgrade / 2) &&
+        stateMain.resources.meat.total >
+          Math.round(requiredMeatForGathering1Upgrade / 2) &&
+        stateMain.resources.stone.total >
+          Math.round(requiredStoneForGathering1Upgrade / 2)
+      ) {
+        return true;
+      } else return false;
+    },
+    completed: false,
+    cost: new Cost(100),
+    tooltip: "daha fazla topla",
+    path: "muscle.png",
+    secsToAcquire: 10,
+    type: "upgradeGathering/1",
+  },
+  //
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //
+];

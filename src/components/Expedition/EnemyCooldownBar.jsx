@@ -26,7 +26,7 @@ function EnemyCooldownBar({
   }
   return (
     <div className="flex flex-col gap-2 w-full">
-      <div className="w-full h-4 bg-zinc-800 rounded overflow-hidden">
+      <div className="w-full h-4 bg-zinc-800 rounded-sm overflow-hidden">
         <motion.div
           key={key}
           initial={{ width: "0%" }}

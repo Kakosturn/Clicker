@@ -46,7 +46,7 @@ function ArrowsWood() {
   }
 
   function onBlurHandler(e) {
-    console.log("blur aktif");
+    console.log("blur-sm aktif");
     const inputValue = Number(e.target.value);
     // console.log(
     //   `inputValue = ${inputValue} numvenatrix = ${popState.venatrixAtWood} total venatrix(idle) = ${popState.venatrix}`

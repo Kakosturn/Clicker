@@ -35,8 +35,8 @@ import { useMainContext } from "../context/MainContext";
 //   //         transition-[width] duration-300 ease-out
 //   //         ${
 //   //           progress >= 100
-//   //             ? "bg-gradient-to-r from-green-400 to-green-600 shadow-[0_0_12px_rgba(0,255,0,0.7)]"
-//   //             : "bg-gradient-to-r from-orange-400 to-yellow-500"
+//   //             ? "bg-linear-to-r from-green-400 to-green-600 shadow-[0_0_12px_rgba(0,255,0,0.7)]"
+//   //             : "bg-linear-to-r from-orange-400 to-yellow-500"
 //   //         }
 //   //       `}
 //   //       style={{ width: `${progress}%` }}
@@ -62,7 +62,7 @@ import { useMainContext } from "../context/MainContext";
 //       <div
 //         className={`
 //           absolute left-0 top-0 h-full
-//           bg-gradient-to-r from-emerald-500 via-green-400 to-lime-300
+//           bg-linear-to-r from-emerald-500 via-green-400 to-lime-300
 //           shadow-[0_0_12px_rgba(120,255,120,0.7)]
 //           transition-[width] duration-200 ease-out
 //         `}
@@ -129,7 +129,7 @@ function ProgressBar({ type, clicksToObtain, payload, resource }) {
       <div
         className="
           absolute left-0 top-0 h-full
-          bg-gradient-to-r
+          bg-linear-to-r
           from-emerald-500 via-green-400 to-lime-300
           shadow-[0_0_12px_rgba(120,255,120,0.6)]
           transition-[width] duration-200 ease-out

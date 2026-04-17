@@ -12,7 +12,7 @@ function Cabin({ builtAmount, cost, secsToBuild }) {
   const { state: mainState, dispatch: mainDispatch } = useMainContext();
 
   return (
-    <div className="grid grid-cols-4 items-center gap-4 px-5 py-3 bg-game-monolith border border-game-border rounded-sm hover:border-gray-600 transition-colors group">
+    <div className="grid grid-cols-4 items-center gap-4 px-5 py-3 bg-game-monolith border border-game-border rounded-xs hover:border-gray-600 transition-colors group">
       {/* Col 1: Icon & Name */}
       <div className="flex items-center justify-self-start">
         <Label>

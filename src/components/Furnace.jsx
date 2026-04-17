@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMainContext } from "../context/MainContext";
 import { useFeatureContext } from "../context/FeaturesContext";
-import { Cost } from "../context/MainContext";
+import { Cost } from "../utils/costClass";
 import { errorToast } from "./Toast";
 import { motion } from "motion/react";
 import FurnaceMaterials from "./FurnaceMaterials";
@@ -29,9 +29,9 @@ function Furnace() {
       : 0;
 
   return (
-    <div className="w-full bg-game-panel border border-game-border rounded-sm p-8 flex gap-8 shadow-2xl">
+    <div className="w-full bg-game-panel border border-game-border rounded-xs p-8 flex gap-8 shadow-2xl">
       {/* LEFT SIDE — RESOURCES */}
-      <div className="flex-1 bg-game-monolith border border-game-border rounded-sm p-6 flex flex-col gap-6 shadow-inner">
+      <div className="flex-1 bg-game-monolith border border-game-border rounded-xs p-6 flex flex-col gap-6 shadow-inner">
         <h3 className="text-game-ichor font-bold tracking-widest uppercase text-xl border-b border-game-border pb-2">
           Input
         </h3>
@@ -44,7 +44,7 @@ function Furnace() {
         />
       </div>
       {/* RIGHT SIDE — FURNACE */}
-      <div className="w-80 bg-game-monolith border border-game-border rounded-sm p-6 flex flex-col items-center gap-6 shadow-inner relative">
+      <div className="w-80 bg-game-monolith border border-game-border rounded-xs p-6 flex flex-col items-center gap-6 shadow-inner relative">
         {/* Furnace Image (With animated heat glow) */}
         <motion.div
           animate={{
@@ -57,7 +57,7 @@ function Furnace() {
               : "inset 0px 0px 10px rgba(0,0,0,0.5)",
           }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
-          className="w-32 h-32 rounded-sm bg-game-panel border border-game-border flex items-center justify-center relative overflow-hidden"
+          className="w-32 h-32 rounded-xs bg-game-panel border border-game-border flex items-center justify-center relative overflow-hidden"
         >
           <img
             src="furnace.png"
@@ -72,7 +72,7 @@ function Furnace() {
           <span className="text-white">{stateFeatures.furnaceLimit}</span>
         </p>
         {/* Input info */}
-        <div className="text-center w-full bg-game-panel border border-game-border py-2 rounded-sm">
+        <div className="text-center w-full bg-game-panel border border-game-border py-2 rounded-xs">
           <p className="text-game-ichor font-bold tracking-widest text-xs mb-1">
             Queue
           </p>
@@ -104,7 +104,7 @@ function Furnace() {
 
         {/* Progress + Smelt */}
         <div className="w-full flex flex-col gap-3">
-          <div className="relative w-full h-12 rounded-sm border border-game-border overflow-hidden bg-game-panel group">
+          <div className="relative w-full h-12 rounded-xs border border-game-border overflow-hidden bg-game-panel group">
             {/* Animated Progress Fill */}
             <motion.div
               initial={{ width: "0%" }}
@@ -259,7 +259,7 @@ export default Furnace;
 //         <div
 //           className="
 //         absolute left-0 top-0 h-full
-//         bg-gradient-to-r from-red-700 via-orange-600 to-yellow-400
+//         bg-linear-to-r from-red-700 via-orange-600 to-yellow-400
 //         shadow-[0_0_12px_rgba(255,120,60,0.8)]
 //       "
 //           style={{
@@ -352,16 +352,16 @@ export default Furnace;
 //       : 0;
 
 //   return (
-//     <div className="w-[800px] bg-game-panel border border-game-border rounded-sm p-8 flex gap-8 shadow-2xl">
+//     <div className="w-[800px] bg-game-panel border border-game-border rounded-xs p-8 flex gap-8 shadow-2xl">
 
 //       {/* LEFT SIDE — RESOURCES */}
-//       <div className="flex-1 bg-game-monolith border border-game-border rounded-sm p-6 flex flex-col gap-6 shadow-inner">
+//       <div className="flex-1 bg-game-monolith border border-game-border rounded-xs p-6 flex flex-col gap-6 shadow-inner">
 //         <h3 className="text-game-ichor font-bold tracking-widest uppercase text-xl border-b border-game-border pb-2">
 //           Smelter Input
 //         </h3>
 
 //         {/* RESOURCE ROW */}
-//         <div className="flex items-center justify-between bg-game-panel border border-game-border rounded-sm p-4">
+//         <div className="flex items-center justify-between bg-game-panel border border-game-border rounded-xs p-4">
 //           <div className="flex flex-col gap-1">
 //             <p className="text-white font-bold uppercase tracking-wider text-lg">Iron Ore</p>
 //             <p className="text-sm text-gray-500 font-mono">{currentIronOre} IN STORAGE</p>
@@ -371,7 +371,7 @@ export default Furnace;
 //             <motion.button
 //               whileHover={{ scale: 1.05, backgroundColor: "#B9FF24", color: "#101114" }}
 //               whileTap={{ scale: 0.95 }}
-//               className="px-3 py-2 rounded-sm bg-game-border text-gray-300 font-bold font-mono transition-colors"
+//               className="px-3 py-2 rounded-xs bg-game-border text-gray-300 font-bold font-mono transition-colors"
 //               onClick={() => {
 //                 if (currentIronOre === 0) return;
 //                 if (amount < furnaceLimit) {
@@ -392,7 +392,7 @@ export default Furnace;
 //             <motion.button
 //               whileHover={{ scale: 1.05, backgroundColor: "#B9FF24", color: "#101114" }}
 //               whileTap={{ scale: 0.95 }}
-//               className="px-3 py-2 rounded-sm bg-game-border text-gray-300 font-bold uppercase tracking-widest transition-colors"
+//               className="px-3 py-2 rounded-xs bg-game-border text-gray-300 font-bold uppercase tracking-widest transition-colors"
 //               onClick={() => {
 //                 if (amount < furnaceLimit) {
 //                   const toAdd = Math.min(furnaceLimit - amount, currentIronOre);
@@ -421,14 +421,14 @@ export default Furnace;
 //               max={currentIronOre}
 //               disabled
 //               value={amount}
-//               className="w-16 px-2 py-2 text-center rounded-sm bg-game-monolith text-game-ichor font-bold font-mono border border-game-border focus:outline-none focus:border-game-ichor appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+//               className="w-16 px-2 py-2 text-center rounded-xs bg-game-monolith text-game-ichor font-bold font-mono border border-game-border focus:outline-hidden focus:border-game-ichor appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 //             />
 //           </div>
 //         </div>
 //       </div>
 
 //       {/* RIGHT SIDE — FURNACE */}
-//       <div className="w-80 bg-game-monolith border border-game-border rounded-sm p-6 flex flex-col items-center gap-6 shadow-inner relative">
+//       <div className="w-80 bg-game-monolith border border-game-border rounded-xs p-6 flex flex-col items-center gap-6 shadow-inner relative">
 
 //         {/* Furnace Image (With animated heat glow) */}
 //         <motion.div
@@ -438,7 +438,7 @@ export default Furnace;
 //               : "inset 0px 0px 10px rgba(0,0,0,0.5)"
 //           }}
 //           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-//           className="w-32 h-32 rounded-sm bg-game-panel border border-game-border flex items-center justify-center relative overflow-hidden"
+//           className="w-32 h-32 rounded-xs bg-game-panel border border-game-border flex items-center justify-center relative overflow-hidden"
 //         >
 //           <img
 //             src="furnace.png"
@@ -453,7 +453,7 @@ export default Furnace;
 //         </p>
 
 //         {/* Input info */}
-//         <div className="text-center w-full bg-game-panel border border-game-border py-2 rounded-sm">
+//         <div className="text-center w-full bg-game-panel border border-game-border py-2 rounded-xs">
 //           <p className="text-game-ichor font-bold uppercase tracking-widest text-xs mb-1">Queue</p>
 //           <p className="text-white font-mono text-lg">{ironOreInFurnace} Iron Ore</p>
 //         </div>
@@ -482,7 +482,7 @@ export default Furnace;
 
 //         {/* Progress + Smelt */}
 //         <div className="w-full flex flex-col gap-3">
-//           <div className="relative w-full h-12 rounded-sm border border-game-border overflow-hidden bg-game-panel group">
+//           <div className="relative w-full h-12 rounded-xs border border-game-border overflow-hidden bg-game-panel group">
 
 //             {/* Animated Progress Fill */}
 //             <motion.div
@@ -591,7 +591,7 @@ export default Furnace;
 
 //           <div className="flex items-center gap-2">
 //             <button
-//               className="px-2 py-1 rounded bg-orange-700 hover:bg-orange-500 text-white font-semibold transition"
+//               className="px-2 py-1 rounded-sm bg-orange-700 hover:bg-orange-500 text-white font-semibold transition"
 //               onClick={() => {
 //                 if (currentIronOre === 0) return;
 //                 if (amount < furnaceLimit) {
@@ -610,7 +610,7 @@ export default Furnace;
 //             </button>
 
 //             <button
-//               className="px-2 py-1 rounded bg-orange-800 hover:bg-orange-600 text-white font-semibold transition"
+//               className="px-2 py-1 rounded-sm bg-orange-800 hover:bg-orange-600 text-white font-semibold transition"
 //               onClick={() => {
 //                 if (amount < furnaceLimit) {
 //                   dispatchFeatures({
@@ -640,7 +640,7 @@ export default Furnace;
 //               rounded-md
 //               bg-orange-800 text-orange-100
 //               border border-orange-700
-//               focus:outline-none focus:ring-2 focus:ring-orange-500
+//               focus:outline-hidden focus:ring-2 focus:ring-orange-500
 //             "
 //             />
 //           </div>
@@ -653,7 +653,7 @@ export default Furnace;
 //       <div
 //         className="
 //       w-72
-//       bg-gradient-to-b from-[#1a0f09] to-[#0b0503]
+//       bg-linear-to-b from-[#1a0f09] to-[#0b0503]
 //       rounded-xl
 //       border border-orange-800
 //       p-4
@@ -665,7 +665,7 @@ export default Furnace;
 //           className="
 //         w-36 h-36
 //         rounded-xl
-//         bg-gradient-to-b from-gray-800 to-gray-900
+//         bg-linear-to-b from-gray-800 to-gray-900
 //         border-2 border-orange-700
 //         flex items-center justify-center
 //         shadow-inner
@@ -723,7 +723,7 @@ export default Furnace;
 //             <div
 //               className="
 //               absolute left-0 top-0 h-full
-//               bg-gradient-to-r from-red-700 via-orange-600 to-yellow-400
+//               bg-linear-to-r from-red-700 via-orange-600 to-yellow-400
 //               shadow-[0_0_12px_rgba(255,120,60,0.8)]
 //             "
 //               style={{

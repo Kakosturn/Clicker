@@ -1,29 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { keyboardMovements } from "../../utils/expeditionHelpers";
 
-import { useArmoryContext } from "../../context/ArmoryContext";
 import { errorToast } from "../Toast";
 import Icon from "../Icon";
 import ExpeditionEncounters from "./ExpeditionEncounters";
-import { useMainContext } from "../../context/MainContext";
 import { Cost } from "../../utils/costClass";
-import { useExpeditionContext } from "../../context/ExpeditionContext";
 import ResultScreen from "./ResultScreen";
 import { AnimatePresence, motion } from "motion/react";
+import { useMainStore } from "../../stores/useMainStore";
+import { useArmoryStore } from "../../stores/useArmoryStore";
+import { useExpeditionStore } from "../../stores/useExpeditionStore";
 const tileSize = 18;
 export const gridSize = 31;
 
 function Expedition() {
-  const { state: stateArmory } = useArmoryContext();
-  const { state: stateMain, dispatch: dispatchMain } = useMainContext();
-  const { state: stateExpedition, dispatch: dispatchExpedition } =
-    useExpeditionContext();
-  const playerPos = stateExpedition.playerPos;
-  const isExpeditionRunning = stateExpedition.isExpeditionRunning;
-  const currentTile =
-    stateExpedition.grid[stateExpedition.playerPos.row]?.[
-      stateExpedition.playerPos.col
-    ];
+  const meat = useMainStore((state) => state.resources.meat.amount);
+  const loseResource = useMainStore((state) => state.loseResource);
+  const equipped = useArmoryStore((state) => state.equipped);
+  const grid = useExpeditionStore((state) => state.grid);
+  const playerPos = useExpeditionStore((state) => state.playerPos);
+  const isExpeditionRunning = useExpeditionStore(
+    (state) => state.isExpeditionRunning,
+  );
+  const player = useExpeditionStore((state) => state.player);
+  const meatBrought = useExpeditionStore((state) => state.meatBrought);
+  const runEnd = useExpeditionStore((state) => state.runEnd);
+  const resultScreen = useExpeditionStore((state) => state.resultScreen);
+  const revealAround = useExpeditionStore((state) => state.revealAround);
+  const meatSpent = useExpeditionStore((state) => state.meatSpent);
+  const setPlayerPos = useExpeditionStore((state) => state.setPlayerPos);
+  const maxMeatBrought = useExpeditionStore((state) => state.maxMeatBrought);
+  const setMeatBrought = useExpeditionStore((state) => state.setMeatBrought);
+  const runStart = useExpeditionStore((state) => state.runStart);
+  const currentTile = grid[playerPos.row]?.[playerPos.col];
   // const center = Math.floor(gridSize / 2);
 
   //Effect
@@ -31,9 +40,9 @@ function Expedition() {
     if (!isExpeditionRunning) return;
     console.log("useeffect");
 
-    if (stateExpedition.meatBrought === 0 || stateExpedition.player.hp <= 0) {
+    if (meatBrought === 0 || player.hp <= 0) {
       console.log("hp sifirlandi veya et bitti");
-      dispatchExpedition({ type: "runEnd" });
+      runEnd();
     }
     //
     //BU İKİ DİSPATCH TE YAPTIĞIMI ŞUAN CONTEXT TEKİ CASE TE YAPIYORUM,
@@ -44,23 +53,17 @@ function Expedition() {
     //   type: "setPlayerPos",
     //   payload: { col: center, row: center },
     // });
-  }, [
-    dispatchExpedition,
-    stateExpedition.meatBrought,
-    stateExpedition.player.hp,
-    isExpeditionRunning,
-  ]);
+  }, [isExpeditionRunning, meatBrought, player.hp, runEnd]);
   // console.log(isExpeditionRunning);
 
   const totalArmor =
-    (stateArmory.equipped.head?.armor || 0) +
-    (stateArmory.equipped.shoulders?.armor || 0) +
-    (stateArmory.equipped.chest?.armor || 0) +
-    (stateArmory.equipped.gloves?.armor || 0) +
-    (stateArmory.equipped.legs?.armor || 0);
+    (equipped.head?.armor || 0) +
+    (equipped.shoulders?.armor || 0) +
+    (equipped.chest?.armor || 0) +
+    (equipped.gloves?.armor || 0) +
+    (equipped.legs?.armor || 0);
   const totalDamage =
-    (stateArmory.equipped.weapon?.damage || 0) +
-    (stateArmory.equipped.enhancement?.multiplier || 0);
+    (equipped.weapon?.damage || 0) + (equipped.enhancement?.multiplier || 0);
 
   function isAdjacent(tile, posPlayer) {
     const rowDiff = Math.abs(tile.row - posPlayer.row);
@@ -73,7 +76,7 @@ function Expedition() {
       className="flex p-6 relative bg-game-monolith text-gray-300 font-sans tracking-wide
     border border-orange-900"
     >
-      {stateExpedition.resultScreen && <ResultScreen />}
+      {resultScreen && <ResultScreen />}
       <div
         className="grid gap-[2px] bg-game-border p-px rounded-sm shadow-2xl"
         style={{
@@ -82,7 +85,7 @@ function Expedition() {
         }}
       >
         {isExpeditionRunning ? (
-          stateExpedition.grid.flat().map((tile) => {
+          grid.flat().map((tile) => {
             const isPlayer =
               tile.row === playerPos.row && tile.col === playerPos.col;
 
@@ -92,11 +95,11 @@ function Expedition() {
             // if (tile.visited && !tile.visible) bg = "bg-zinc-900"; // seen before
             if (isPlayer) tileStyle = "bg-orange-500"; // player
             if (
-              (tile.visible &&
-                (tile.type === "smallEnemy" ||
-                  tile.type === "boss" ||
-                  tile.type === "mediumEnemy")) ||
-              tile.type === "hardEnemy"
+              tile.visible &&
+              (tile.type === "smallEnemy" ||
+                tile.type === "boss" ||
+                tile.type === "mediumEnemy" ||
+                tile.type === "hardEnemy")
             ) {
               tileStyle =
                 "bg-game-panel text-game-rust drop-shadow-[0_0_5px_rgba(215,58,74,0.8)]";
@@ -117,19 +120,16 @@ function Expedition() {
                 tabIndex={0}
                 onClick={() => {
                   if (isAdjacent(tile, playerPos)) {
-                    dispatchExpedition({ type: "meatSpent" });
-                    dispatchExpedition({
-                      type: "setPlayerPos",
-                      payload: { row: tile.row, col: tile.col },
-                    });
-                    dispatchExpedition({
-                      type: "revealAround",
-                      payload: { playerPos: playerPos },
-                    });
+                    meatSpent();
+                    setPlayerPos({ row: tile.row, col: tile.col });
+                    revealAround({ playerPos: playerPos });
                   }
                 }}
                 style={{ width: tileSize, height: tileSize }}
-                onKeyDown={(e) => keyboardMovements(e, dispatchExpedition)}
+                //!!!!!!!!!
+                //keyboard movement ını şimdilik kaldırıyorum hallet sonra.
+                //!!!!!!!!!
+                // onKeyDown={(e) => keyboardMovements(e, dispatchExpedition)}
                 key={`${tile.row}-${tile.col}`}
                 className={`
                    flex items-center rounded-md justify-center text-sm transition-all duration-150
@@ -160,14 +160,9 @@ function Expedition() {
                 <div className="flex gap-2">
                   <input
                     type="number"
-                    value={stateExpedition.meatBrought}
-                    onChange={(e) =>
-                      dispatchExpedition({
-                        type: "setMeatBrought",
-                        payload: Number(e.target.value),
-                      })
-                    }
-                    max={stateExpedition.maxMeatBrought}
+                    value={meatBrought}
+                    onChange={(e) => setMeatBrought(Number(e.target.value))}
+                    max={maxMeatBrought}
                     className="bg-game-monolith border border-game-border text-game-ichor px-3 py-2 w-24 text-center outline-hidden focus:border-game-ichor transition-colors font-bold"
                   />
                   <motion.button
@@ -175,10 +170,7 @@ function Expedition() {
                     whileTap={{ scale: 0.95 }}
                     className="bg-game-border hover:bg-game-ichor hover:text-game-monolith px-4 py-2 rounded-sm font-bold transition-colors"
                     onClick={() =>
-                      dispatchExpedition({
-                        type: "setMeatBrought",
-                        payload: stateExpedition.maxMeatBrought,
-                      })
+                      setMeatBrought(maxMeatBrought)
                     }
                   >
                     MAX
@@ -207,23 +199,17 @@ function Expedition() {
                 whileTap={{ scale: 0.98 }}
                 className="bg-game-ichor text-game-monolith px-4 py-4 rounded-sm font-bold text-xl uppercase tracking-widest shadow-[0_0_15px_rgba(185,255,36,0.2)] hover:shadow-[0_0_25px_rgba(185,255,36,0.6)] hover:scale-[1.02] transition-all"
                 onClick={() => {
-                  if (stateExpedition.meatBrought <= 10) {
+                  if (meatBrought <= 10) {
                     errorToast("Need at least 10 meat to start expedition");
                     return;
                   }
-                  if (
-                    stateMain.resources.meat.amount >=
-                    stateExpedition.meatBrought
-                  ) {
-                    dispatchExpedition({
-                      type: "runStart",
-                      payload: { dmg: totalDamage, armor: totalArmor },
+                  if (meat >= meatBrought) {
+                    runStart({
+                      dmg: totalDamage,
+                      armor: totalArmor
                     });
-                    dispatchMain({
-                      type: "loseResource",
-                      payload: {
-                        cost: new Cost(0, 0, stateExpedition.meatBrought),
-                      },
+                    loseResource({
+                      cost: new Cost(0, 0, meatBrought),
                     });
                   } else errorToast("Not enough meat");
                 }}
@@ -255,7 +241,7 @@ function Expedition() {
                     <span className="text-gray-400 w-16">Meat</span>
                   </div>
                   <p className="text-game-rust text-xl">
-                    {stateExpedition.meatBrought}
+                    {meatBrought}
                   </p>
                 </div>
                 <div className="flex items-center gap-8">
@@ -264,7 +250,7 @@ function Expedition() {
                     <span className="text-gray-400 w-16">HP</span>
                   </div>
                   <p className="text-game-rust  text-xl">
-                    {stateExpedition.player.hp}
+                    {player.hp}
                   </p>
                 </div>
                 <div className="flex items-center gap-8">
@@ -273,7 +259,7 @@ function Expedition() {
                     <span className="text-gray-400 w-16">Armor</span>
                   </div>
                   <p className="text-white  text-xl">
-                    {stateExpedition.player.armor}
+                    {player.armor}
                   </p>
                 </div>
               </div>

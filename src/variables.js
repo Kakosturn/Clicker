@@ -26,6 +26,11 @@ export const popIncreaseBungalow = 30;
 export const popIncreaseHouse = 40;
 export const popIncreaseArsenal = 0;
 
+export const secsToBuildShack = 1;
+export const secsToBuildCabin = 1;
+export const secsToBuildBungalow = 1;
+export const secsToBuildHouse = 1;
+export const secsToBuildArsenal = 1;
 ///////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -104,10 +109,10 @@ export const upgradeList = [
   {
     name: "Lumber Mill",
     id: "lumberMill",
-    unlocked: ({ stateBuilding }) =>
-      stateBuilding.buildings.find((el) => el.id === "shack").builtAmount > 10,
-    visible: ({ stateBuilding }) =>
-      stateBuilding.buildings.find((el) => el.id === "shack").builtAmount > 5,
+    unlocked: ({ buildings }) =>
+      buildings.find((el) => el.id === "shack").builtAmount > 10,
+    visible: ({ buildings }) =>
+      buildings.find((el) => el.id === "shack").builtAmount > 5,
     completed: false,
     cost: new Cost(100),
     tooltip: "Increases wood gathering efficiency for venatrix by ANAN",
@@ -121,11 +126,11 @@ export const upgradeList = [
   {
     name: "Quarry",
     id: "quarry",
-    unlocked: ({ stateBuilding }) =>
-      stateBuilding.buildings.find((el) => el.id === "bungalow").builtAmount >
+    unlocked: ({ buildings }) =>
+      buildings.find((el) => el.id === "bungalow").builtAmount >
       10,
-    visible: ({ stateBuilding }) =>
-      stateBuilding.buildings.find((el) => el.id === "bungalow").builtAmount >
+    visible: ({ buildings }) =>
+      buildings.find((el) => el.id === "bungalow").builtAmount >
       5,
     completed: false,
     cost: new Cost(0, 100),

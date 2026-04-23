@@ -146,7 +146,7 @@ export function createGrid({ size = 31 } = {}) {
         zoneDifficulty,
         type: null,
         icon: null,
-        visible: true,
+        visible: false,
         explored: false,
       };
     }),

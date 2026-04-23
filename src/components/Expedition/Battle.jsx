@@ -1,28 +1,35 @@
 import { useState } from "react";
 import EnemyCooldownBar from "./EnemyCooldownBar";
 import PlayerCooldownBar from "./PlayerCooldownBar";
-import { useExpeditionContext } from "../../context/ExpeditionContext";
 import Icon from "../Icon";
+import { useExpeditionStore } from "../../stores/useExpeditionStore";
+import { use } from "react";
 
 function Battle({ hpEnemy, dmgEnemy, armorEnemy }) {
-  const { state: stateExpedition, dispatch: dispatchExpedition } =
-    useExpeditionContext();
+  const battleIsActive = useExpeditionStore((state) => state.battle.isActive);
+  const playerPos = useExpeditionStore((state) => state.playerPos);
+  const grid = useExpeditionStore((state) => state.grid);
+  const battleResult = useExpeditionStore((state) => state.battle.result);
+  const finalizeEncounter = useExpeditionStore(
+    (state) => state.finalizeEncounter,
+  );
+  const player = useExpeditionStore((state) => state.player);
+  const currentEnemy = useExpeditionStore((state) => state.currentEnemy);
+  const battleStart = useExpeditionStore((state) => state.battleStart);
+  const attack = useExpeditionStore((state) => state.attack);
+  const npcAttack = useExpeditionStore((state) => state.npcAttack);
+  const currentTile = grid[playerPos.row]?.[playerPos.col];
 
-  const currentTile =
-    stateExpedition.grid[stateExpedition.playerPos.row]?.[
-      stateExpedition.playerPos.col
-    ];
-  const battleIsActive = stateExpedition.battle.isActive;
   // console.log(stateExpedition.smallEnemyHp);
-  if (stateExpedition.battle.result === "win") {
+  if (battleResult === "win") {
     return (
       <div>
         <p>Victory</p>
         <button
           onClick={() =>
-            dispatchExpedition({
-              type: "finalizeEncounter",
-              payload: { row: currentTile.row, col: currentTile.col },
+            finalizeEncounter({
+              row: currentTile.row,
+              col: currentTile.col,
             })
           }
         >
@@ -43,19 +50,19 @@ function Battle({ hpEnemy, dmgEnemy, armorEnemy }) {
             <p>Enemy</p>
             <div className="flex gap-1">
               <Icon path={"damage.png"} type="plain" />
-              <p>{stateExpedition.currentEnemy?.dmg}</p>
+              <p>{currentEnemy?.dmg}</p>
             </div>
             <div className="flex gap-1">
               <Icon path={"armor.png"} type="plain" />
-              <p>{stateExpedition.currentEnemy?.armor}</p>
+              <p>{currentEnemy?.armor}</p>
             </div>
             <div className="flex gap-1">
               <Icon path={"hp.png"} type="plain" />
-              <p>{stateExpedition.currentEnemy?.hp}</p>
+              <p>{currentEnemy?.hp}</p>
             </div>
             <button
               onClick={() => {
-                dispatchExpedition({ type: "battleStart" });
+                battleStart();
               }}
             >
               Fight
@@ -67,15 +74,10 @@ function Battle({ hpEnemy, dmgEnemy, armorEnemy }) {
             <div className="w-1/4">
               <p>You</p>
               <PlayerCooldownBar
-                hp={stateExpedition.player.hp}
-                dmg={stateExpedition.player.dmg}
-                armor={stateExpedition.player.armor}
-                onAttack={() =>
-                  dispatchExpedition({
-                    type: "attack",
-                    payload: { dmg: stateExpedition.player.dmg },
-                  })
-                }
+                hp={player.hp}
+                dmg={player.dmg}
+                armor={player.armor}
+                onAttack={() => attack({ dmg: player.dmg })}
               />
             </div>
             <div className="w-1/4">
@@ -83,12 +85,7 @@ function Battle({ hpEnemy, dmgEnemy, armorEnemy }) {
               <EnemyCooldownBar
                 hpEnemy={hpEnemy}
                 armorEnemy={armorEnemy}
-                onComplete={() =>
-                  dispatchExpedition({
-                    type: "npcAttack",
-                    payload: { dmg: dmgEnemy },
-                  })
-                }
+                onComplete={() => npcAttack({ dmg: dmgEnemy })}
                 dmgEnemy={dmgEnemy}
               />
             </div>

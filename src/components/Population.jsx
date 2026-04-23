@@ -1,17 +1,22 @@
 import { useEffect, useRef } from "react";
-import { useMainContext } from "../context/MainContext";
-import { usePopulationContext } from "../context/PopulationContext";
 import Modal from "./Modal";
 import { Cost } from "../utils/costClass";
+import { useMainStore } from "../stores/useMainStore";
+import { usePopulationStore } from "../stores/usePopulationStore";
 
 function Population() {
-  const { state: statePop, dispatch: dispatchPop } = usePopulationContext();
-  const { state: stateMain, dispatch: dispatchMain } = useMainContext();
+  const injured = usePopulationStore((state) => state.injured);
+  const assigned = usePopulationStore((state) => state.assigned);
+  const idle = usePopulationStore((state) => state.idle);
+  const venatrixInjured = usePopulationStore(state=>state.venatrixInjured)
+  const venatrixRecovered = usePopulationStore(state=>state.venatrixRecovered)
+  const meat = useMainStore((state) => state.resources.meat.amount);
+  const loseResource = useMainStore((state) => state.loseResource);
   // 1. Create refs to track changing resources WITHOUT resetting our timers
-  const currentMeatRef = useRef(stateMain.resources.meat.amount);
-  const injuredRef = useRef(statePop.injured);
+  const currentMeatRef = useRef(meat);
+  const injuredRef = useRef(injured);
 
-  const totalWorkingPop = Object.values(statePop.assigned).reduce(
+  const totalWorkingPop = Object.values(assigned).reduce(
     (acc, curr) => acc + curr,
     0,
   );
@@ -23,9 +28,9 @@ function Population() {
   // console.log(totalWorkingPop, statePop.injured);
   // 2. Keep the refs updated every time the state changes
   useEffect(() => {
-    currentMeatRef.current = stateMain.resources.meat.amount;
-    injuredRef.current = statePop.injured;
-  }, [stateMain.resources.meat.amount, statePop.injured]);
+    currentMeatRef.current = meat;
+    injuredRef.current = injured;
+  }, [meat, injured]);
 
   // --- EFFECT 1: Working Venatrix (Eating or Starving) ---
   useEffect(() => {
@@ -34,43 +39,37 @@ function Population() {
     const intervalId = setInterval(() => {
       // Check the REF, not the state!
       if (currentMeatRef.current > 0) {
-        dispatchMain({
-          type: "loseResource",
-          payload: { cost: new Cost(0, 0, 1) },
-        });
+        loseResource({ cost: new Cost(0, 0, 1) });
       } else {
-        dispatchPop({ type: "venatrixInjured" });
+        venatrixInjured();
       }
     }, meatSpentPerVenatrix);
 
     return () => clearInterval(intervalId);
     // Notice: currentMeatRef is NOT in the dependencies.
     // This timer will only reset if the totalWorkingPop changes!
-  }, [totalWorkingPop, meatSpentPerVenatrix, dispatchMain, dispatchPop]);
+  }, [totalWorkingPop, meatSpentPerVenatrix, loseResource,venatrixInjured]);
 
   // --- EFFECT 2: Injured Venatrix (Recovering) ---
   useEffect(() => {
     // We only need to start this timer if there are actually injured Venatrix
-    if (statePop.injured === 0) return;
+    if (injured === 0) return;
 
     const intervalId = setInterval(() => {
       // If we have meat AND we have injured people
       if (currentMeatRef.current > 0 && injuredRef.current > 0) {
-        dispatchPop({ type: "venatrixRecovered" });
-        dispatchMain({
-          type: "loseResource",
-          payload: { cost: new Cost(0, 0, 1) },
-        });
+        venatrixRecovered();
+        loseResource({ cost: new Cost(0, 0, 1) });
       }
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [statePop.injured, dispatchMain, dispatchPop]); // Timer resets only if injured count changes
+  }, [ loseResource,injured,venatrixRecovered]); // Timer resets only if injured count changes
 
   return (
     <div>
-      Population : {statePop.idle}
-      {statePop.injured ? ` (${statePop.injured} injured)` : ""}
+      Population : {idle}
+      {injured ? ` (${injured} injured)` : ""}
       <Modal
         content={
           "From now on, Venatrix must be fed to function, or they will become injured 🤕"
@@ -84,15 +83,11 @@ export default Population;
 
 //! eski population, useEffect ler değişti yenisinde
 // import { useEffect } from "react";
-// import { useMainContext } from "../context/MainContext";
-// import { usePopulationContext } from "../context/PopulationContext";
 // import Popup from "reactjs-popup";
 // import Modal from "./Modal";
 // import { Cost } from "../context/MainContext";
 
 // function Population() {
-//   const { state: statePop, dispatch: dispatchPop } = usePopulationContext();
-//   const { state: stateMain, dispatch: dispatchMain } = useMainContext();
 
 //   const totalWorkingPop =
 //     statePop.assigned.wood +

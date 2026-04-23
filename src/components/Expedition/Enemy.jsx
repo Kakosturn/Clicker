@@ -1,12 +1,14 @@
 import { motion } from "motion/react";
 import Battle from "./Battle";
-import { useExpeditionContext } from "../../context/ExpeditionContext";
+import { useExpeditionStore } from "../../stores/useExpeditionStore";
 function Enemy() {
-  const { state: stateExpedition } = useExpeditionContext();
-  const currentTile =
-    stateExpedition.grid[stateExpedition.playerPos.row]?.[
-      stateExpedition.playerPos.col
-    ];
+  // const playerPos = useExpeditionStore((state) => state.playerPos);
+  // const grid = useExpeditionStore((state) => state.grid);
+  const currentEnemy = useExpeditionStore((state) => state.currentEnemy);
+  // const currentTile =
+  //   grid[playerPos.row]?.[
+  //     playerPos.col
+  //   ];
   // console.log(currentTile);
   return (
     <motion.div
@@ -17,9 +19,9 @@ function Enemy() {
     >
       <div>
         <Battle
-          hpEnemy={stateExpedition.currentEnemy?.hp}
-          dmgEnemy={stateExpedition.currentEnemy?.dmg}
-          armorEnemy={stateExpedition.currentEnemy?.armor}
+          hpEnemy={currentEnemy?.hp}
+          dmgEnemy={currentEnemy?.dmg}
+          armorEnemy={currentEnemy?.armor}
         />
       </div>
     </motion.div>

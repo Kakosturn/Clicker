@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useMainContext } from "../context/MainContext";
 import { between, selectNewsFeed } from "../utils/helper";
 import TextTransition, { presets } from "react-text-transition";
+import { useMainStore } from "../stores/useMainStore";
 
 const mainNews = {
   "beginning/0":
@@ -13,18 +13,19 @@ const mainNews = {
 };
 
 function NewsFeed() {
-  const { state } = useMainContext();
-  const newsFeed = selectNewsFeed(mainNews, state.status);
+  const status = useMainStore((state) => state.status);
+  const randomTexts = useMainStore((state) => state.randomTexts);
+  const newsFeed = selectNewsFeed(mainNews, status);
   //console.log(state.randomTexts);
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const intervalId = setInterval(
-      () => setIndex(between(0, state.randomTexts.length)),
+      () => setIndex(between(0, randomTexts.length)),
       20000,
     );
     return () => clearTimeout(intervalId);
-  }, [state.randomTexts.length]);
+  }, [randomTexts.length]);
 
   return (
     <div className="text-center text-xl border-2 bg-zinc-900 mb-8 border-zinc-800 w-1/2 h-auto ml-auto mr-auto py-5 px-10 rounded-2xl grid grid-cols-1 justify-center items-center ">
@@ -35,7 +36,7 @@ function NewsFeed() {
       </div>
       <div className="grow-0 shrink">
         <TextTransition inline springConfig={presets.gentle}>
-          {state.randomTexts[index % state.randomTexts.length]}
+          {randomTexts[index % randomTexts.length]}
         </TextTransition>
       </div>
     </div>

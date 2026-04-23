@@ -3,18 +3,24 @@ import Icon from "../../Icon";
 import { motion } from "motion/react";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
-import { useMainContext } from "../../../context/MainContext";
+
 import { useUpgradeContext } from "../../../context/UpgradeContext";
 import Arrows from "../Arrows";
 import ResourceGridBox from "../../ResourceComponents/ResourceGridBox";
+import { useMainStore } from "../../../stores/useMainStore";
 
 function Wood() {
-  const { state: stateMain } = useMainContext();
+ 
+  const clicksToObtainWood = useMainStore((state) => state.clicksToObtain.wood);
+  const resourceIncreased = useMainStore((state) => state.resourceIncreased);
+  const obtainedAmount = useMainStore((state) => state.obtainedAmount.wood);
+  const wood = useMainStore((state) => state.resources.wood.amount);
   const { state: stateUpgrade } = useUpgradeContext();
   const [clicksToObtain, setClicksToObtain] = useState(
-    stateMain.clicksToObtain.wood,
+    clicksToObtainWood,
   );
-  const deneme = [null, null];
+  // const deneme = [null, null];
+  console.log("wood comp rendered");
   return (
     <ResourceGridBox>
       {/* LEFT: icon + label */}
@@ -27,10 +33,10 @@ function Wood() {
 
       {/* AMOUNT */}
       <motion.span
-        key={stateMain.resources.wood.amount}
+        key={wood}
         initial={{
           scale: 1.1,
-          color: stateMain.resourceIncreased ? "#ffffff" : "#ff0000",
+          color: resourceIncreased ? "#ffffff" : "#ff0000",
           textShadow: "0px 0px 8px #ffffff",
         }}
         animate={{
@@ -38,7 +44,7 @@ function Wood() {
           color: "#B9FF24",
           textShadow: "0px 0px 0px transparent",
         }}
-        transition={{ duration: stateMain.resourceIncreased ? 0.2 : 1 }}
+        transition={{ duration: resourceIncreased ? 0.2 : 1 }}
         className="
           justify-self-center
           font-bold
@@ -51,7 +57,7 @@ function Wood() {
           shadow-inner
         "
       >
-        {stateMain.resources.wood.amount}
+        {wood}
       </motion.span>
 
       {/* PROGRESS BAR */}
@@ -62,7 +68,7 @@ function Wood() {
           clicksToObtain={clicksToObtain}
           setClicksToObtain={setClicksToObtain}
           payload={
-            stateMain.obtainedAmount.wood * stateUpgrade.multiplierSelf.wood
+            obtainedAmount * stateUpgrade.multiplierSelf.wood
           }
         />
       </div>

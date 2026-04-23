@@ -1,24 +1,26 @@
 import { useState } from "react";
-import { useMainContext } from "../context/MainContext.jsx";
-import { useBuildingContext } from "../context/BuildingContext.jsx";
 import { Cost } from "../utils/costClass";
 
-import { usePopulationContext } from "../context/PopulationContext.jsx";
 import { motion } from "motion/react";
 import { errorToast } from "./Toast";
+import { useMainStore } from "../stores/useMainStore.js";
+import { useBuildingStore } from "../stores/useBuildingStore.js";
+import { usePopulationStore } from "../stores/usePopulationStore.js";
 const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
-  const secondsToBuild = secsToBuild;
   const [isRunning, setIsRunning] = useState(false);
-  const { state: stateBuilding, dispatch: dispatchBuilding } =
-    useBuildingContext();
-  const { state: stateMain, dispatch: dispatchMain } = useMainContext();
-  const { dispatch: popDispatch } = usePopulationContext();
+
+  const build = useBuildingStore((state) => state.build);
+  const venatrixIncrease = usePopulationStore(
+    (state) => state.venatrixIncrease,
+  );
+  const resources = useMainStore((state) => state.resources);
+  const loseResource = useMainStore((state) => state.loseResource);
   const currentMaterial = new Cost(
-    stateMain.resources.wood.amount,
-    stateMain.resources.stone.amount,
-    stateMain.resources.meat.amount,
-    stateMain.resources.ironOre.amount,
-    stateMain.resources.ironBar.amount,
+    resources.wood.amount,
+    resources.stone.amount,
+    resources.meat.amount,
+    resources.ironOre.amount,
+    resources.ironBar.amount,
   );
 
   // console.log(isRunning);
@@ -41,14 +43,11 @@ const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
         disabled={isRunning}
         onClick={() => {
           if (cost.lte(currentMaterial)) {
-            dispatchMain({
-              type: "loseResource",
-              payload: { cost },
-            });
+            loseResource({ cost });
             setIsRunning(true);
             setTimeout(() => {
-              dispatchBuilding({ type: "build", payload: type });
-              popDispatch({ type: "venatrixIncrease", payload: popIncrease });
+              build(type);
+              venatrixIncrease(popIncrease);
               setIsRunning(false);
             }, secsToBuild * 1000);
           } else {
@@ -63,52 +62,3 @@ const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
 };
 
 export default ProgressBarBuilding;
-
-/// old return
-
-// return (
-//     <div className="relative w-48 h-10 rounded-xl border-2 border-zinc-700 overflow-hidden bg-zinc-800 hover:bg-zinc-600">
-//       <div
-//         className={`
-//           absolute left-0 top-0 h-full
-//           bg-linear-to-r from-amber-600 via-orange-500 to-yellow-400
-//           shadow-[0_0_12px_rgba(255,180,80,0.7)]
-//           transition-[width] ease-linear
-//         `}
-//         style={{
-//           width: isRunning ? "100%" : "0%",
-//           transition: isRunning ? `width ${secondsToBuild}s linear` : "none",
-//         }}
-//       />
-//       {isRunning && (
-//         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-//           <div className="building-shine" />
-//         </div>
-//       )}
-//       <button
-//         className={`
-//           relative z-10 w-full h-full font-semibold
-//           ${isRunning ? "text-yellow-100" : "text-gray-200"}
-//         `}
-//         disabled={isRunning}
-//         onClick={() => {
-//           if (cost.lte(currentMaterial)) {
-//             dispatchMain({
-//               type: "loseResource",
-//               payload: { cost },
-//             });
-//             setIsRunning(true);
-//             setTimeout(() => {
-//               dispatchBuilding({ type: "build", payload: type });
-//               popDispatch({ type: "venatrixIncrease", payload: popIncrease });
-//               setIsRunning(false);
-//             }, secondsToBuild * 1000);
-//           } else {
-//             errorToast("Not enough material");
-//           }
-//         }}
-//       >
-//         {isRunning ? "Building.." : "Build"}
-//       </button>
-//     </div>
-//   );

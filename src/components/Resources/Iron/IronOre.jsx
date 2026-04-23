@@ -3,16 +3,20 @@ import Icon from "../../Icon";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
 import { motion } from "motion/react";
-import { useMainContext } from "../../../context/MainContext";
 import { useUpgradeContext } from "../../../context/UpgradeContext";
 import Arrows from "../Arrows";
 import ResourceGridBox from "../../ResourceComponents/ResourceGridBox";
+import { useMainStore } from "../../../stores/useMainStore";
+
 function IronOre() {
-  const { state: stateMain } = useMainContext();
-  const { state: stateUpgrade } = useUpgradeContext();
-  const [clicksToObtain, setClicksToObtain] = useState(
-    stateMain.clicksToObtain.ironOre,
+  const clicksToObtainIronOre = useMainStore(
+    (state) => state.clicksToObtain.ironOre,
   );
+  const ironOre = useMainStore((state) => state.resources.ironOre.amount);
+  const resourceIncreased = useMainStore((state) => state.resourceIncreased);
+  const obtainedAmount = useMainStore((state) => state.obtainedAmount.ironOre);
+  const { state: stateUpgrade } = useUpgradeContext();
+  const [clicksToObtain, setClicksToObtain] = useState(clicksToObtainIronOre);
   //console.log(clicksToObtain);
   return (
     <ResourceGridBox>
@@ -26,10 +30,10 @@ function IronOre() {
 
       {/* AMOUNT */}
       <motion.span
-        key={stateMain.resources.ironOre.amount}
+        key={ironOre}
         initial={{
           scale: 1.1,
-          color: stateMain.resourceIncreased ? "#ffffff" : "#ff0000",
+          color: resourceIncreased ? "#ffffff" : "#ff0000",
           textShadow: "0px 0px 8px #ffffff",
         }}
         animate={{
@@ -50,7 +54,7 @@ function IronOre() {
           shadow-inner
         "
       >
-        {stateMain.resources.ironOre.amount}
+        {ironOre}
       </motion.span>
       {/* PROGRESS BAR */}
       <div className="w-full">
@@ -59,10 +63,7 @@ function IronOre() {
           resource={"ironOre"}
           clicksToObtain={clicksToObtain}
           setClicksToObtain={setClicksToObtain}
-          payload={
-            stateMain.obtainedAmount.ironOre *
-            stateUpgrade.multiplierSelf.ironOre
-          }
+          payload={obtainedAmount * stateUpgrade.multiplierSelf.ironOre}
         />
       </div>
       {/* UPGRADE ARROWS */}

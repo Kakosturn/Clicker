@@ -1,12 +1,11 @@
-import { useArmoryContext } from "../../context/ArmoryContext";
 import Icon from "../Icon";
 import Item from "./Item";
 import Crafting from "./Crafting";
 import Inventory from "./Inventory";
+import { useArmoryStore } from "../../stores/useArmoryStore";
 
 function Armory() {
-  const { state: stateArmory } = useArmoryContext();
-
+  const equipped = useArmoryStore((state) => state.equipped);
   return (
     // FIX 1: Clamped the height to 85% of the viewport height so it never goes off-screen
     // Added flex flex-col so the internal sections know how to calculate their remaining space
@@ -36,7 +35,7 @@ function Armory() {
               <div className="absolute left-0 top-12 z-10 flex flex-col items-center gap-1">
                 <div className="w-16 h-16 border border-game-border rounded-xs flex items-center justify-center bg-game-monolith shadow-[0_0_15px_rgba(185,255,36,0.1)] transition-colors hover:border-game-ichor/50">
                   <Icon
-                    path={`${stateArmory.equipped.weapon?.icon}`}
+                    path={`${equipped.weapon?.icon}`}
                     type="plain"
                   />
                 </div>
@@ -54,27 +53,27 @@ function Armory() {
 
               {/* ARMOR SLOTS */}
               <Item
-                iconPath={stateArmory.equipped.head?.icon}
+                iconPath={equipped.head?.icon}
                 slot={"head"}
                 positionClass="top-2 right-8"
               />
               <Item
-                iconPath={stateArmory.equipped.shoulders?.icon}
+                iconPath={equipped.shoulders?.icon}
                 slot={"shoulders"}
                 positionClass="top-8 right-20"
               />
               <Item
-                iconPath={stateArmory.equipped.chest?.icon}
+                iconPath={equipped.chest?.icon}
                 slot={"chest"}
                 positionClass="top-14 right-14"
               />
               <Item
-                iconPath={stateArmory.equipped.gloves?.icon}
+                iconPath={equipped.gloves?.icon}
                 slot={"gloves"}
                 positionClass="top-24 right-3"
               />
               <Item
-                iconPath={stateArmory.equipped.legs?.icon}
+                iconPath={equipped.legs?.icon}
                 slot={"legs"}
                 positionClass="bottom-10 right-14"
               />

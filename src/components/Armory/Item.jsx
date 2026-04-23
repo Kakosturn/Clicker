@@ -1,9 +1,9 @@
+import { useArmoryStore } from "../../stores/useArmoryStore";
 import Icon from "../Icon";
-import { useArmoryContext } from "../../context/ArmoryContext";
 
 function Item({ slot, iconPath, positionClass }) {
-  const { state: stateArmory, dispatch: dispatchArmory } = useArmoryContext();
-  const equippedItem = stateArmory.equipped[slot] || null;
+  const equippedItem = useArmoryStore((state) => state.equipped[slot]);
+  const unequip = useArmoryStore((state) => state.unequip);
   return (
     <div
       className={`absolute z-10 flex flex-col items-center gap-1 ${positionClass}`}
@@ -11,7 +11,7 @@ function Item({ slot, iconPath, positionClass }) {
       <div
         onClick={() => {
           console.log(equippedItem);
-          dispatchArmory({ type: "unequip", payload: equippedItem });
+          unequip(equippedItem);
         }}
         className="
           w-8 h-8 border border-game-border rounded-xs

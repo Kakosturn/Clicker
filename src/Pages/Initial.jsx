@@ -1,14 +1,15 @@
 import Button from "../components/Button";
-import { useMainContext } from "../context/MainContext";
+
+import { useMainStore } from "../stores/useMainStore";
 
 function Initial() {
-  const { dispatch } = useMainContext();
+  const beginningStatus = useMainStore((state) => state.beginningStatus);
 
   return (
     <div className="bg-[#202020] flex flex-col items-center pt-16 gap-24">
       <p className="text-5xl">Are you ready to begin ?</p>
       <Button
-        onClick={() => dispatch({ type: "beginning/0" })}
+        onClick={() => beginningStatus()}
         className={"text-3xl"}
       >{`Begin`}</Button>
     </div>

@@ -3,17 +3,18 @@ import Icon from "../../Icon";
 import { motion } from "motion/react";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
-import { useMainContext } from "../../../context/MainContext";
 import { useUpgradeContext } from "../../../context/UpgradeContext";
 import Arrows from "../Arrows";
 import ResourceGridBox from "../../ResourceComponents/ResourceGridBox";
+import { useMainStore } from "../../../stores/useMainStore";
 function Meat() {
-  const { state: stateMain } = useMainContext();
+  const clicksToObtainMeat = useMainStore((state) => state.clicksToObtain.meat);
+  const resourceIncreased = useMainStore((state) => state.resourceIncreased);
+  const obtainedAmount = useMainStore((state) => state.obtainedAmount.meat);
+  const meat = useMainStore((state) => state.resources.meat.amount);
   const { state: stateUpgrade } = useUpgradeContext();
 
-  const [clicksToObtain, setClicksToObtain] = useState(
-    stateMain.clicksToObtain.meat,
-  );
+  const [clicksToObtain, setClicksToObtain] = useState(clicksToObtainMeat);
   return (
     <ResourceGridBox>
       {/* LEFT: icon + label */}
@@ -26,10 +27,10 @@ function Meat() {
 
       {/* AMOUNT */}
       <motion.span
-        key={stateMain.resources.meat.amount}
+        key={meat}
         initial={{
           scale: 1.1,
-          color: stateMain.resourceIncreased ? "#ffffff" : "#ff0000",
+          color: resourceIncreased ? "#ffffff" : "#ff0000",
           textShadow: "0px 0px 8px #ffffff",
         }}
         animate={{
@@ -50,7 +51,7 @@ function Meat() {
           shadow-inner
         "
       >
-        {stateMain.resources.meat.amount}
+        {meat}
       </motion.span>
 
       {/* PROGRESS BAR */}
@@ -59,9 +60,7 @@ function Meat() {
           type={"gainResource"}
           clicksToObtain={clicksToObtain}
           setClicksToObtain={setClicksToObtain}
-          payload={
-            stateMain.obtainedAmount.meat * stateUpgrade.multiplierSelf.meat
-          }
+          payload={obtainedAmount * stateUpgrade.multiplierSelf.meat}
           resource={"meat"}
         />
       </div>

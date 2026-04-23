@@ -2,16 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { errorToast } from "../Toast";
 import { useUpgradeContext } from "../../context/UpgradeContext";
-import { useMainContext } from "../../context/MainContext";
-import { usePopulationContext } from "../../context/PopulationContext";
+import { useMainStore } from "../../stores/useMainStore";
+import { usePopulationStore } from "../../stores/usePopulationStore";
 
 function Arrows({ resource }) {
-  const { state: popState, dispatch: popDispatch } = usePopulationContext();
-  const { state: mainState, dispatch: mainDispatch } = useMainContext();
+  const assigned = usePopulationStore((state) => state.assigned);
+  const assign = usePopulationStore((state) => state.assign);
+  const unassign = usePopulationStore((state) => state.unassign);
+  const setAssigned = usePopulationStore((state) => state.setAssigned);
+  const idle = usePopulationStore((state) => state.idle);
+  const gainResource = useMainStore((state) => state.gainResource);
   const { state: stateUpgrade } = useUpgradeContext();
   // --- ANIMATION TRACKING ---
   const [flash, setFlash] = useState({ active: false, color: "#B9FF24" }); // defaults to game-ichor
-  const currentAssigned = popState.assigned[resource];
+  const currentAssigned = assigned[resource];
   const prevAssigned = useRef(currentAssigned);
 
   // console.log(currentAssigned, prevAssigned);
@@ -42,41 +46,38 @@ function Arrows({ resource }) {
     if (currentAssigned > 0) {
       const intervalId = setInterval(
         () =>
-          mainDispatch({
-            type: "gainResource",
-            payload: { resource: resource, amount: 1 },
+          gainResource({
+            resource: resource,
+            amount: 1,
           }),
         secsToGather,
       );
 
       return () => clearInterval(intervalId);
     }
-  }, [secsToGather, mainDispatch, resource, currentAssigned]);
+  }, [secsToGather, gainResource, resource, currentAssigned]);
 
   function upArrowHandler() {
-    if (popState.idle > 0) {
-      popDispatch({ type: "assign", payload: resource });
+    if (idle > 0) {
+      assign(resource);
     }
   }
 
   function downArrowHandler() {
     if (currentAssigned > 0) {
-      popDispatch({ type: "unassign", payload: resource });
+      unassign(resource);
     }
   }
 
   function onBlurHandler(e) {
     const inputValue = Number(e.target.value);
 
-    if (inputValue - currentAssigned > popState.idle) {
+    if (inputValue - currentAssigned > idle) {
       errorToast("blurhandler error1");
       return;
     }
 
-    popDispatch({
-      type: "setAssigned",
-      payload: { resource: resource, amount: inputValue },
-    });
+    setAssigned({ resource: resource, amount: inputValue });
   }
 
   return (
@@ -113,7 +114,7 @@ function Arrows({ resource }) {
         <motion.input
           type="number"
           min={0}
-          max={popState.idle + currentAssigned}
+          max={idle + currentAssigned}
           value={currentAssigned}
           // The Animation Magic happens here:
           animate={{
@@ -126,15 +127,12 @@ function Arrows({ resource }) {
           transition={{ duration: 0.2 }}
           onChange={(e) => {
             const inputValue = Number(e.target.value);
-            if (inputValue - currentAssigned > popState.idle) {
+            if (inputValue - currentAssigned > idle) {
               errorToast("onchangehandler error1");
               return;
             }
 
-            popDispatch({
-              type: "setAssigned",
-              payload: { resource: resource, amount: inputValue },
-            });
+            setAssigned({ resource: resource, amount: inputValue });
           }}
           onBlur={onBlurHandler}
           className="
@@ -181,12 +179,8 @@ export default Arrows;
 // import { useEffect } from "react";
 // import { errorToast } from "../Toast";
 // import { useUpgradeContext } from "../../context/UpgradeContext";
-// import { useMainContext } from "../../context/MainContext";
-// import { usePopulationContext } from "../../context/PopulationContext";
 
 // function Arrows({ resource }) {
-//   const { state: popState, dispatch: popDispatch } = usePopulationContext();
-//   const { state: mainState, dispatch: mainDispatch } = useMainContext();
 //   const { state: stateUpgrade } = useUpgradeContext();
 
 //   const secsToGather =

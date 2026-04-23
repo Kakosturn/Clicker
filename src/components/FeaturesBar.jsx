@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { useFeatureContext } from "../context/FeaturesContext";
 import Furnace from "./Furnace";
 import Modal from "./Modal";
 import Armory from "./Armory/Armory";
 import Expedition from "./Expedition/Expedition";
+import { useFeaturesStore } from "../stores/useFeaturesStore";
 
 function FeaturesBar() {
-  const { state: stateFeatures } = useFeatureContext();
   const [isFurnaceOpen, setIsFurnaceOpen] = useState(false);
   const [isArmoryOpen, setIsArmoryOpen] = useState(false);
   const [isExpeditionOpen, setIsExpeditionOpen] = useState(false);
+  const furnaceUnlocked = useFeaturesStore((state) => state.furnaceUnlocked);
+  const armoryUnlocked = useFeaturesStore((state) => state.armoryUnlocked);
+  const expeditionUnlocked = useFeaturesStore((state) => state.expeditionUnlocked);
+  
 
   // Reusable button style class
   const tabClassName = `
@@ -26,7 +29,7 @@ function FeaturesBar() {
     <div className="flex items-center bg-game-monolith border-b-2 border-game-border py-6 px-12 gap-10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] relative z-20">
       {/* Furnace Tab */}
       <div>
-        {stateFeatures.furnaceUnlocked && (
+        {furnaceUnlocked && (
           <motion.button
             whileHover={{
               scale: 1.05,
@@ -47,7 +50,7 @@ function FeaturesBar() {
 
       {/* Armory Tab */}
       <div>
-        {stateFeatures.armoryUnlocked && (
+        {armoryUnlocked && (
           <motion.button
             whileHover={{
               scale: 1.05,
@@ -68,7 +71,7 @@ function FeaturesBar() {
 
       {/* Expedition Tab */}
       <div>
-        {stateFeatures.expeditionUnlocked && (
+        {expeditionUnlocked && (
           <motion.button
             whileHover={{
               scale: 1.05,

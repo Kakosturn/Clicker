@@ -1,31 +1,29 @@
-import { useBuildingContext } from "../context/BuildingContext";
 import { useUpgradeContext } from "../context/UpgradeContext";
 
-import { useMainContext } from "../context/MainContext";
 import { Cost } from "../utils/costClass";
 
 import Upgrade from "./Upgrade";
-import Icon from "./Icon";
-import { usePopulationContext } from "../context/PopulationContext";
-import { useArmoryContext } from "../context/ArmoryContext";
-import { useExpeditionContext } from "../context/ExpeditionContext";
+import { useMainStore } from "../stores/useMainStore";
+import { useBuildingStore } from "../stores/useBuildingStore";
+import { useArmoryStore } from "../stores/useArmoryStore";
+import { useExpeditionStore } from "../stores/useExpeditionStore";
+import { usePopulationStore } from "../stores/usePopulationStore";
 
 function Upgrades() {
   const { state: stateUpgrade } = useUpgradeContext();
   // 1. Gather all the live state from your game
-  const { state: stateMain } = useMainContext();
-  const { state: stateBuilding } = useBuildingContext();
-  const { state: statePop } = usePopulationContext();
-  const { state: stateArmory } = useArmoryContext();
-  const { state: stateExpedition } = useExpeditionContext();
-
+  const stateMain = useMainStore((state) => state);
+  const buildings = useBuildingStore((state) => state.buildings);
+  const armory = useArmoryStore((state) => state);
+  const expedition = useExpeditionStore((state) => state);
+  const statePop = usePopulationStore((state) => state);
   // 2. Package it into the "God Object"
   const gameState = {
     stateMain,
-    stateBuilding,
+    buildings,
     statePop,
-    stateArmory,
-    stateExpedition,
+    armory,
+    expedition,
   };
   // useEffect(() => {
   //   if (stateBuilding.shack === 10) {

@@ -1,37 +1,35 @@
 import Icon from "../Icon";
 import { errorToast } from "../Toast";
-import { useArmoryContext } from "../../context/ArmoryContext";
-import { useExpeditionContext } from "../../context/ExpeditionContext";
-
+import { useArmoryStore } from "../../stores/useArmoryStore";
+import { useExpeditionStore } from "../../stores/useExpeditionStore";
 function Inventory() {
-  const { state: stateArmory, dispatch: dispatchArmory } = useArmoryContext();
-  const { state: stateExpedition } = useExpeditionContext();
-  const allInventoryItems = [
-    ...stateArmory.inventory.weapons,
-    ...stateArmory.inventory.armours,
-  ];
+  const equipped = useArmoryStore((state) => state.equipped);
+  const inventory = useArmoryStore((state) => state.inventory);
+  const invCapacity = useArmoryStore((state) => state.inventory.capacity);
+  const equip = useArmoryStore((state) => state.equip);
+  const playerHp = useExpeditionStore((state) => state.player.hp);
+  const allInventoryItems = [...inventory.weapons, ...inventory.armours];
 
   const totalArmor =
-    (stateArmory.equipped.head?.armor || 0) +
-    (stateArmory.equipped.shoulders?.armor || 0) +
-    (stateArmory.equipped.chest?.armor || 0) +
-    (stateArmory.equipped.gloves?.armor || 0) +
-    (stateArmory.equipped.legs?.armor || 0);
+    (equipped.head?.armor || 0) +
+    (equipped.shoulders?.armor || 0) +
+    (equipped.chest?.armor || 0) +
+    (equipped.gloves?.armor || 0) +
+    (equipped.legs?.armor || 0);
 
   const totalDamage =
-    (stateArmory.equipped.weapon?.damage || 0) +
-    (stateArmory.equipped.enhancement?.multiplier || 0);
+    (equipped.weapon?.damage || 0) + (equipped.enhancement?.multiplier || 0);
 
   function equipItem(item) {
     console.log(item.slot);
-    console.log(stateArmory.equipped);
-    console.log(stateArmory.equipped[item.slot]);
-    // if (stateArmory.equipped[item.slot]) {
+    console.log(equipped);
+    console.log(equipped[item.slot]);
+    // if (equipped[item.slot]) {
     //   console.log(`item equipped in ${item.slot} slot`);
     //   errorToast("Item equipped in that slot");
     //   return;
     // }
-    dispatchArmory({ type: "equip", payload: item });
+    equip(item);
   }
 
   return (
@@ -40,9 +38,7 @@ function Inventory() {
       <div className="flex justify-between items-center bg-game-monolith border border-game-border p-2 rounded-xs">
         <div className="flex flex-col items-center w-1/3">
           <span className="text-sm tracking-wider text-gray-500">HP</span>
-          <span className="text-white font-mono text-sm">
-            {stateExpedition.player.hp}
-          </span>
+          <span className="text-white font-mono text-sm">{playerHp}</span>
         </div>
         <div className="flex flex-col items-center w-1/3">
           <span className="text-sm tracking-wider text-gray-500">Armor</span>
@@ -65,7 +61,7 @@ function Inventory() {
             Inventory
           </p>
           <p className="text-xs font-mono text-gray-500">
-            {allInventoryItems.length} / {stateArmory.inventory.capacity}
+            {allInventoryItems.length} / {invCapacity}
           </p>
         </div>
 

@@ -1,16 +1,16 @@
 import { motion } from "motion/react";
-import { useMainContext } from "../context/MainContext";
-import { useFeatureContext } from "../context/FeaturesContext";
 import { errorToast } from "./Toast";
 import { costObjectForFurnaceMaterial } from "../utils/helper";
+import { useMainStore } from "../stores/useMainStore";
+import { useFeaturesStore } from "../stores/useFeaturesStore";
 function FurnaceMaterials({ material, amount, isSmelting }) {
-  const { state: stateMain, dispatch: dispatchMain } = useMainContext();
-  const { state: stateFeatures, dispatch: dispatchFeatures } =
-    useFeatureContext();
-
-  const currentMaterial = stateMain.resources[material].amount;
-  const furnaceLimit = stateFeatures.furnaceLimit;
-
+  const resources = useMainStore((state) => state.resources);
+  const loseResource = useMainStore((state) => state.loseResource);
+  const furnaceLimit = useFeaturesStore((state) => state.furnaceLimit);
+  const addToFurnace = useFeaturesStore((state) => state.addToFurnace);
+  const currentMaterial = resources[material].amount;
+  // console.log(currentMaterial, resources[material]);
+  // console.log(amount);
   return (
     <div className="flex items-center justify-between bg-game-panel border border-game-border rounded-xs p-4">
       <div className="flex flex-col gap-1">
@@ -35,14 +35,8 @@ function FurnaceMaterials({ material, amount, isSmelting }) {
           onClick={() => {
             if (currentMaterial === 0) return;
             if (amount < furnaceLimit) {
-              dispatchFeatures({
-                type: "addToFurnace",
-                payload: { resource: material, amount: 1 },
-              });
-              dispatchMain({
-                type: "loseResource",
-                payload: { cost: costObjectForFurnaceMaterial(material, 1) },
-              });
+              addToFurnace({ resource: material, amount: 1 });
+              loseResource({ cost: costObjectForFurnaceMaterial(material, 1) });
             } else errorToast("Furnace is full");
           }}
         >
@@ -62,18 +56,9 @@ function FurnaceMaterials({ material, amount, isSmelting }) {
             if (amount < furnaceLimit) {
               const toAdd = Math.min(furnaceLimit - amount, currentMaterial);
               if (toAdd === 0) return;
-              dispatchFeatures({
-                type: "addToFurnace",
-                payload: {
-                  resource: material,
-                  amount: toAdd,
-                },
-              });
-              dispatchMain({
-                type: "loseResource",
-                payload: {
-                  cost: costObjectForFurnaceMaterial(material, toAdd),
-                },
+              addToFurnace({ resource: material, amount: toAdd });
+              loseResource({
+                cost: costObjectForFurnaceMaterial(material, toAdd),
               });
             }
           }}

@@ -1,11 +1,10 @@
+import { useArmoryStore } from "../../stores/useArmoryStore";
 import Cost from "../Cost";
 import Icon from "../Icon";
 import ProgressBarArmory from "../ProgressBarArmory";
-import { useArmoryContext } from "../../context/ArmoryContext";
 
 function Crafting() {
-  const { state: stateArmory } = useArmoryContext();
-
+  const craftingWindow = useArmoryStore((state) => state.craftingWindow); 
   return (
     // FIX 3: Added h-full and flex-col so it matches the left side perfectly
     <div className="w-1/2 p-6 bg-game-monolith rounded-xs border border-game-border flex flex-col gap-6 shadow-inner h-full">
@@ -16,7 +15,7 @@ function Crafting() {
       {/* FIX 4: Added min-h-0 here. This forces the scrollbar to appear instead of stretching infinitely downward! */}
       <div className="flex-1 min-h-0 flex flex-col overflow-y-auto gap-4 bg-game-panel rounded-xs border border-game-border p-4 custom-scrollbar">
         {/* WEAPONS */}
-        {stateArmory.craftingWindow.availableCrafts.weapons.map((el, i) => (
+        {craftingWindow.availableCrafts.weapons.map((el, i) => (
           <div
             key={i}
             className="flex flex-col gap-3 bg-game-monolith rounded-xs p-2 border border-game-border shadow-md transition-colors hover:border-gray-600 shrink-0"
@@ -51,7 +50,7 @@ function Crafting() {
         ))}
 
         {/* ARMOURS */}
-        {stateArmory.craftingWindow.availableCrafts.armours.map((el, i) => (
+        {craftingWindow.availableCrafts.armours.map((el, i) => (
           <div
             key={i}
             className="flex flex-col gap-3 bg-game-monolith rounded-xs p-2 border border-game-border shadow-md transition-colors hover:border-gray-600 shrink-0"

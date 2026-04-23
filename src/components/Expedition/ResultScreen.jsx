@@ -1,7 +1,7 @@
-import { useExpeditionContext } from "../../context/ExpeditionContext";
 import { motion } from "motion/react";
+import { useExpeditionStore } from "../../stores/useExpeditionStore";
 function ResultScreen() {
-  const { dispatch: dispatchExpedition } = useExpeditionContext();
+  const closeResults = useExpeditionStore((state) => state.closeResults);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -12,7 +12,7 @@ function ResultScreen() {
       <div>what you have looted : ....</div>
       <button
         className="py-1 px-2 bg-orange-900 rounded-md "
-        onClick={() => dispatchExpedition({ type: "closeResults" })}
+        onClick={() => closeResults()}
       >
         Close
       </button>

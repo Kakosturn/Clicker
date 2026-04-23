@@ -1,16 +1,17 @@
 //prettier-ignore
-import { useMainContext } from "../context/MainContext";
 import Wood from "./Resources/Wood/Wood";
 import Stone from "./Resources/Stone/Stone";
 import Meat from "./Resources/Meat/Meat";
 
 import IronOre from "./Resources/Iron/IronOre";
 import IronBar from "./Resources/Iron/IronBar";
+import { useMainStore } from "../stores/useMainStore";
 
 function Resources() {
-  const { state } = useMainContext();
-  const status = state.status;
+  const status = useMainStore((state) => state.status);
+
   // console.log(status);
+  console.log("resources comp rendered");
   return (
     <div
       className="

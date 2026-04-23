@@ -1,17 +1,18 @@
-import { useState } from "react";
+// import { useState } from "react";
 import Icon from "../../Icon";
 import Label from "../../Layout/Label";
 import { motion } from "motion/react";
-import { useMainContext } from "../../../context/MainContext";
-import { useUpgradeContext } from "../../../context/UpgradeContext";
+// import { useUpgradeContext } from "../../../context/UpgradeContext";
 import ResourceGridBox from "../../ResourceComponents/ResourceGridBox";
+import { useMainStore } from "../../../stores/useMainStore";
 
 function IronBar() {
-  const { state: stateMain } = useMainContext();
-  const { state: stateUpgrade } = useUpgradeContext();
-  const [clicksToObtain, setClicksToObtain] = useState(
-    stateMain.clicksToObtain.wood,
-  );
+  const resourceIncreased = useMainStore((state) => state.resourceIncreased);
+  const ironBar = useMainStore((state) => state.resources.ironBar.amount);
+  // const { state: stateUpgrade } = useUpgradeContext();
+  // const [clicksToObtain, setClicksToObtain] = useState(
+  //   stateMain.clicksToObtain.wood,
+  // );
   //console.log(clicksToObtain);
   return (
     <>
@@ -26,10 +27,10 @@ function IronBar() {
 
         {/* AMOUNT */}
         <motion.span
-          key={stateMain.resources.ironBar.amount}
+          key={ironBar}
           initial={{
             scale: 1.1,
-            color: stateMain.resourceIncreased ? "#ffffff" : "#ff0000",
+            color: resourceIncreased ? "#ffffff" : "#ff0000",
             textShadow: "0px 0px 8px #ffffff",
           }}
           animate={{
@@ -50,7 +51,7 @@ function IronBar() {
           shadow-inner
         "
         >
-          {stateMain.resources.ironBar.amount}
+          {ironBar}
         </motion.span>
       </ResourceGridBox>
     </>

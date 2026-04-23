@@ -1,27 +1,29 @@
 import { useEffect } from "react";
 import "./index.css";
-import { useMainContext } from "./context/MainContext";
+
 import Initial from "./Pages/Initial";
 import Layout from "./components/Layout/Layout";
 import Beginning from "./Pages/Beginning";
 import { beginningCheck } from "./utils/helper";
 import { Toaster } from "react-hot-toast";
+import { useMainStore } from "./stores/useMainStore";
 function App() {
-  const { state, dispatch } = useMainContext();
+  const reset = useMainStore((state) => state.reset);
+  const status = useMainStore((state) => state.status);
 
   //console.log(state.venatrix, state.status);
   useEffect(
     function () {
-      dispatch({ type: "reset" });
+      reset();
     },
-    [dispatch],
+    [reset],
   );
 
-  const bool = beginningCheck(state.status);
+  const bool = beginningCheck(status);
   //console.log(bool);
   return (
     <Layout>
-      {state.status === "ready" && <Initial />}
+      {status === "ready" && <Initial />}
       {bool && <Beginning />}
       <Toaster position="top-right" />
     </Layout>

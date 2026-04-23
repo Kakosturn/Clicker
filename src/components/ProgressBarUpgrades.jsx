@@ -1,26 +1,26 @@
 import { useState } from "react";
 import "./../index.css";
-import { progressButtonUpgrade } from "../utils/helper";
+// import { progressButtonUpgrade } from "../utils/helper";
 import { useUpgradeContext } from "../context/UpgradeContext";
-import { useMainContext } from "../context/MainContext";
-import { upgradeCost } from "../utils/helperUpgrade";
+// import { upgradeCost } from "../utils/helperUpgrade";
 import toast from "react-hot-toast";
 import { Cost } from "../utils/costClass";
 import Notification from "./Notification";
+import { useMainStore } from "../stores/useMainStore";
 function ProgressBarUpgrades({ type, secsToObtain, cost }) {
   ///STATE
 
   const [isRunning, setIsRunning] = useState(false);
 
-  const { state: stateUpgrade, dispatch: dispatchUpgrade } =
-    useUpgradeContext();
-  const { state: stateMain, dispatch: dispatchMain } = useMainContext();
+  const { dispatch: dispatchUpgrade } = useUpgradeContext();
+  const resources = useMainStore((state) => state.resources);
+  const loseResource = useMainStore((state) => state.loseResource);
   const currentMaterial = new Cost(
-    stateMain.resources.wood.amount,
-    stateMain.resources.stone.amount,
-    stateMain.resources.meat.amount,
-    stateMain.resources.ironOre.amount,
-    stateMain.resources.ironBar.amount,
+    resources.wood.amount,
+    resources.stone.amount,
+    resources.meat.amount,
+    resources.ironOre.amount,
+    resources.ironBar.amount,
   );
   //console.log(currentMaterial);
   //console.log(type);
@@ -67,7 +67,7 @@ function ProgressBarUpgrades({ type, secsToObtain, cost }) {
 
           setTimeout(() => {
             dispatchUpgrade({ type });
-            dispatchMain(upgradeCost(type, stateUpgrade));
+            loseResource({ cost: cost });
             setIsRunning(false);
           }, secsToObtain * 1000);
         }}

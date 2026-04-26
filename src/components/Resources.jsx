@@ -11,7 +11,7 @@ function Resources() {
   const status = useMainStore((state) => state.status);
 
   // console.log(status);
-  console.log("resources comp rendered");
+  // console.log("resources comp rendered");
   return (
     <div
       className="

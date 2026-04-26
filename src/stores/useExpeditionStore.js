@@ -19,6 +19,7 @@ const initialState = {
   meatSpentPerMove: meatUsedPerMovement,
   maxMeatAcquiredFromRefill: 10,
   refillStationMeat: 0,
+  playerMoveCount: 0,
   player: {
     hp: maxHp,
     armor: 0,
@@ -107,6 +108,14 @@ export const useExpeditionStore = create((set) => ({
             }
           : null,
       };
+    }),
+
+  //
+  ////////////////////////////////////////////////////////////////////////////////!!
+  //
+  playerMoveCounter: () =>
+    set((state) => {
+      return { playerMoveCount: state.playerMoveCount + 1 };
     }),
   //
   ////////////////////////////////////////////////////////////////////////////////!!
@@ -273,6 +282,15 @@ export const useExpeditionStore = create((set) => ({
 
       return {
         player: { ...state.player, hp: state.player.hp - dmg },
+      };
+    }),
+  //
+  ////////////////////////////////////////////////////////////////////////////////!!
+  //
+  applyMaxMeatUpgrade: (effect) =>
+    set((state) => {
+      return {
+        [effect.stat]: state[effect.stat] + effect.value,
       };
     }),
 }));

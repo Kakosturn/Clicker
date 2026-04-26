@@ -24,7 +24,7 @@ const initialState = {
   resources: {
     wood: { amount: 990, total: 101 },
     stone: { amount: 990, total: 101 },
-    meat: { amount: 9, total: 101 },
+    meat: { amount: 999, total: 101 },
     ironOre: { amount: 980, total: 100 },
     ironBar: { amount: 990, total: 100 },
   },

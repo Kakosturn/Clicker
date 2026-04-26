@@ -35,7 +35,7 @@ function Buildings() {
 
   // console.log(buildings);
   // console.log(stateFeatures.expeditionUnlocked);
-  console.log("buildings comp rendered");
+  // console.log("buildings comp rendered");
   useEffect(() => {
     if (
       buildings.find((el) => el.id === "shack").builtAmount >= 2 &&

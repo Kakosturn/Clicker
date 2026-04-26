@@ -32,6 +32,10 @@ function Expedition() {
   const maxMeatBrought = useExpeditionStore((state) => state.maxMeatBrought);
   const setMeatBrought = useExpeditionStore((state) => state.setMeatBrought);
   const runStart = useExpeditionStore((state) => state.runStart);
+  const playerMoveCounter = useExpeditionStore(
+    (state) => state.playerMoveCounter,
+  );
+  console.log(useExpeditionStore.getState());
   const currentTile = grid[playerPos.row]?.[playerPos.col];
   // const center = Math.floor(gridSize / 2);
 
@@ -123,6 +127,7 @@ function Expedition() {
                     meatSpent();
                     setPlayerPos({ row: tile.row, col: tile.col });
                     revealAround({ playerPos: playerPos });
+                    playerMoveCounter();
                   }
                 }}
                 style={{ width: tileSize, height: tileSize }}
@@ -169,9 +174,7 @@ function Expedition() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="bg-game-border hover:bg-game-ichor hover:text-game-monolith px-4 py-2 rounded-sm font-bold transition-colors"
-                    onClick={() =>
-                      setMeatBrought(maxMeatBrought)
-                    }
+                    onClick={() => setMeatBrought(maxMeatBrought)}
                   >
                     MAX
                   </motion.button>
@@ -206,7 +209,7 @@ function Expedition() {
                   if (meat >= meatBrought) {
                     runStart({
                       dmg: totalDamage,
-                      armor: totalArmor
+                      armor: totalArmor,
                     });
                     loseResource({
                       cost: new Cost(0, 0, meatBrought),
@@ -240,27 +243,21 @@ function Expedition() {
                     <Icon path={"meat.png"} type="plain" />
                     <span className="text-gray-400 w-16">Meat</span>
                   </div>
-                  <p className="text-game-rust text-xl">
-                    {meatBrought}
-                  </p>
+                  <p className="text-game-rust text-xl">{meatBrought}</p>
                 </div>
                 <div className="flex items-center gap-8">
                   <div className="flex gap-2 items-center justify-center">
                     <Icon path={"hp.png"} type="plain" />
                     <span className="text-gray-400 w-16">HP</span>
                   </div>
-                  <p className="text-game-rust  text-xl">
-                    {player.hp}
-                  </p>
+                  <p className="text-game-rust  text-xl">{player.hp}</p>
                 </div>
                 <div className="flex items-center gap-8">
                   <div className="flex gap-2 items-center justify-center">
                     <Icon path={"armor.png"} type="plain" />
                     <span className="text-gray-400 w-16">Armor</span>
                   </div>
-                  <p className="text-white  text-xl">
-                    {player.armor}
-                  </p>
+                  <p className="text-white  text-xl">{player.armor}</p>
                 </div>
               </div>
             </div>

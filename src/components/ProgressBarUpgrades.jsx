@@ -1,33 +1,28 @@
 import { useState } from "react";
 import "./../index.css";
-// import { progressButtonUpgrade } from "../utils/helper";
-import { useUpgradeContext } from "../context/UpgradeContext";
-// import { upgradeCost } from "../utils/helperUpgrade";
 import toast from "react-hot-toast";
 import { Cost } from "../utils/costClass";
 import Notification from "./Notification";
 import { useMainStore } from "../stores/useMainStore";
-function ProgressBarUpgrades({ type, secsToObtain, cost }) {
-  ///STATE
+import { useUpgradeStore } from "../stores/useUpgradeStore";
+import { upgradeList } from "../variables";
 
+function ProgressBarUpgrades({ type, secsToObtain, cost }) {
   const [isRunning, setIsRunning] = useState(false);
 
-  const { dispatch: dispatchUpgrade } = useUpgradeContext();
-  const resources = useMainStore((state) => state.resources);
+  const upgrade = upgradeList.find((el) => el.type === type);
+
+  const upgradeAction = useUpgradeStore((state) => state.upgrade);
+
+  // console.log(state);
+  // console.log(upgrade);
+  // console.log(type);
+
+  // We ONLY subscribe to the stable action function. No lag!
   const loseResource = useMainStore((state) => state.loseResource);
-  const currentMaterial = new Cost(
-    resources.wood.amount,
-    resources.stone.amount,
-    resources.meat.amount,
-    resources.ironOre.amount,
-    resources.ironBar.amount,
-  );
-  //console.log(currentMaterial);
-  //console.log(type);
 
   return (
     <div className="relative w-48 h-10 rounded-xl border-2 border-zinc-700 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">
-      {/* FILL BAR — same logic as buildings */}
       <div
         className={`
           absolute left-0 top-0 h-full
@@ -41,14 +36,12 @@ function ProgressBarUpgrades({ type, secsToObtain, cost }) {
         }}
       />
 
-      {/* Shine effect while running */}
       {isRunning && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="building-shine" />
         </div>
       )}
 
-      {/* BUTTON */}
       <button
         className={`
           relative z-10 w-full h-full font-semibold
@@ -56,6 +49,18 @@ function ProgressBarUpgrades({ type, secsToObtain, cost }) {
         `}
         disabled={isRunning}
         onClick={() => {
+          // 1. Grab the exact snapshot of resources right NOW (Bypasses React renders!)
+          const liveResources = useMainStore.getState().resources;
+
+          // 2. Build the cost check
+          const currentMaterial = new Cost(
+            liveResources.wood.amount,
+            liveResources.stone.amount,
+            liveResources.meat.amount,
+            liveResources.ironOre.amount,
+            liveResources.ironBar.amount,
+          );
+
           if (!currentMaterial.gte(cost)) {
             toast.custom(
               <Notification type="error" message="Not enough material" />,
@@ -66,7 +71,7 @@ function ProgressBarUpgrades({ type, secsToObtain, cost }) {
           setIsRunning(true);
 
           setTimeout(() => {
-            dispatchUpgrade({ type });
+            upgradeAction(upgrade);
             loseResource({ cost: cost });
             setIsRunning(false);
           }, secsToObtain * 1000);
@@ -79,3 +84,83 @@ function ProgressBarUpgrades({ type, secsToObtain, cost }) {
 }
 
 export default ProgressBarUpgrades;
+
+// import { useState } from "react";
+// import "./../index.css";
+// // import { progressButtonUpgrade } from "../utils/helper";
+// // import { upgradeCost } from "../utils/helperUpgrade";
+// import toast from "react-hot-toast";
+// import { Cost } from "../utils/costClass";
+// import Notification from "./Notification";
+// import { useMainStore } from "../stores/useMainStore";
+// function ProgressBarUpgrades({ type, secsToObtain, cost }) {
+//   ///STATE
+
+//   const [isRunning, setIsRunning] = useState(false);
+
+//   const resources = useMainStore((state) => state.resources);
+//   const loseResource = useMainStore((state) => state.loseResource);
+//   const currentMaterial = new Cost(
+//     resources.wood.amount,
+//     resources.stone.amount,
+//     resources.meat.amount,
+//     resources.ironOre.amount,
+//     resources.ironBar.amount,
+//   );
+//   //console.log(currentMaterial);
+//   //console.log(type);
+
+//   return (
+//     <div className="relative w-48 h-10 rounded-xl border-2 border-zinc-700 overflow-hidden bg-[#303030] hover:bg-[#4d4d4d]">
+//       {/* FILL BAR — same logic as buildings */}
+//       <div
+//         className={`
+//           absolute left-0 top-0 h-full
+//           bg-linear-to-r from-amber-600 via-orange-500 to-yellow-400
+//           shadow-[0_0_12px_rgba(255,180,80,0.7)]
+//           transition-[width] ease-linear
+//         `}
+//         style={{
+//           width: isRunning ? "100%" : "0%",
+//           transition: isRunning ? `width ${secsToObtain}s linear` : "none",
+//         }}
+//       />
+
+//       {/* Shine effect while running */}
+//       {isRunning && (
+//         <div className="absolute inset-0 overflow-hidden pointer-events-none">
+//           <div className="building-shine" />
+//         </div>
+//       )}
+
+//       {/* BUTTON */}
+//       <button
+//         className={`
+//           relative z-10 w-full h-full font-semibold
+//           ${isRunning ? "text-yellow-100" : "text-gray-200"}
+//         `}
+//         disabled={isRunning}
+//         onClick={() => {
+//           if (!currentMaterial.gte(cost)) {
+//             toast.custom(
+//               <Notification type="error" message="Not enough material" />,
+//             );
+//             return;
+//           }
+
+//           setIsRunning(true);
+
+//           setTimeout(() => {
+//             dispatchUpgrade({ type });
+//             loseResource({ cost: cost });
+//             setIsRunning(false);
+//           }, secsToObtain * 1000);
+//         }}
+//       >
+//         {isRunning ? "Upgrading..." : "Upgrade"}
+//       </button>
+//     </div>
+//   );
+// }
+
+// export default ProgressBarUpgrades;

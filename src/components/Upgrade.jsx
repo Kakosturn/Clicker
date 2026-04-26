@@ -5,6 +5,7 @@ import ProgressBarUpgrades from "./ProgressBarUpgrades";
 import Cost from "./Cost";
 function Upgrade({ secsToObtain, type, name, path, cost, tooltip }) {
   const objectKeys = Object.keys(cost);
+
   // console.log(cost);
   // console.log(objectKeys);
   return (

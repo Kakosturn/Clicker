@@ -3,17 +3,18 @@ import Icon from "../../Icon";
 import { motion } from "motion/react";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
-import { useUpgradeContext } from "../../../context/UpgradeContext";
 import Arrows from "../Arrows";
 import ResourceGridBox from "../../ResourceComponents/ResourceGridBox";
 import { useMainStore } from "../../../stores/useMainStore";
+import { useUpgradeStore } from "../../../stores/useUpgradeStore";
 function Meat() {
   const clicksToObtainMeat = useMainStore((state) => state.clicksToObtain.meat);
   const resourceIncreased = useMainStore((state) => state.resourceIncreased);
   const obtainedAmount = useMainStore((state) => state.obtainedAmount.meat);
   const meat = useMainStore((state) => state.resources.meat.amount);
-  const { state: stateUpgrade } = useUpgradeContext();
-
+  const multiplierSelfMeat = useUpgradeStore(
+    (state) => state.multiplierSelf.meat,
+  );
   const [clicksToObtain, setClicksToObtain] = useState(clicksToObtainMeat);
   return (
     <ResourceGridBox>
@@ -60,7 +61,7 @@ function Meat() {
           type={"gainResource"}
           clicksToObtain={clicksToObtain}
           setClicksToObtain={setClicksToObtain}
-          payload={obtainedAmount * stateUpgrade.multiplierSelf.meat}
+          payload={obtainedAmount * multiplierSelfMeat}
           resource={"meat"}
         />
       </div>

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { errorToast } from "../Toast";
-import { useUpgradeContext } from "../../context/UpgradeContext";
 import { useMainStore } from "../../stores/useMainStore";
 import { usePopulationStore } from "../../stores/usePopulationStore";
+import { useUpgradeStore } from "../../stores/useUpgradeStore";
 
 function Arrows({ resource }) {
   const assigned = usePopulationStore((state) => state.assigned);
@@ -12,8 +12,9 @@ function Arrows({ resource }) {
   const setAssigned = usePopulationStore((state) => state.setAssigned);
   const idle = usePopulationStore((state) => state.idle);
   const gainResource = useMainStore((state) => state.gainResource);
-  const { state: stateUpgrade } = useUpgradeContext();
-  // --- ANIMATION TRACKING ---
+  const multiplierVenatrix = useUpgradeStore(
+    (state) => state.multiplierVenatrix,
+  ); // --- ANIMATION TRACKING ---
   const [flash, setFlash] = useState({ active: false, color: "#B9FF24" }); // defaults to game-ichor
   const currentAssigned = assigned[resource];
   const prevAssigned = useRef(currentAssigned);
@@ -40,7 +41,7 @@ function Arrows({ resource }) {
   }, [currentAssigned]);
 
   const secsToGather =
-    ((10 * 1000) / currentAssigned) * stateUpgrade.multiplier[resource];
+    ((10 * 1000) / currentAssigned) * multiplierVenatrix[resource];
 
   useEffect(() => {
     if (currentAssigned > 0) {

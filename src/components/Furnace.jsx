@@ -33,7 +33,7 @@ function Furnace() {
   const oreInFurnace = Object.keys(furnaceInput).find(
     (el) => furnaceInput[el] > 0,
   );
-  console.log(oreInFurnace);
+  // console.log(oreInFurnace);
   const secsToSmelt =
     smeltResourceInSeconds[oreInFurnace] * furnaceInput[oreInFurnace] * 1000;
 

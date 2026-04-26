@@ -1,110 +1,110 @@
-import { createContext, useContext, useReducer } from "react";
-import { upgradeList } from "../variables";
-const initialState = {
-  multiplierSelf: {
-    wood: 1,
-    stone: 1,
-    meat: 1,
-    ironOre: 1,
-    gatheringUpgradeCounter: 0,
-  },
-  upgradeList: upgradeList,
-  // upgradesCompleted: {
-  //   upgrades: [],
-  //   lumberMill: {
-  //     completed: false,
-  //     tooltip: tooltipLumberMill,
-  //   },
-  //   quarry: {
-  //     completed: false,
-  //     tooltip: tooltipQuarry,
-  //   },
-  // },
-  multiplier: {
-    wood: 1,
-    stone: 1,
-    meat: 1,
-    ironOre: 1,
-  },
+// import { createContext, useContext, useReducer } from "react";
+// import { upgradeList } from "../variables";
+// const initialState = {
+//   multiplierSelf: {
+//     wood: 1,
+//     stone: 1,
+//     meat: 1,
+//     ironOre: 1,
+//     gatheringUpgradeCounter: 0,
+//   },
+//   upgradeList: upgradeList,
+//   // upgradesCompleted: {
+//   //   upgrades: [],
+//   //   lumberMill: {
+//   //     completed: false,
+//   //     tooltip: tooltipLumberMill,
+//   //   },
+//   //   quarry: {
+//   //     completed: false,
+//   //     tooltip: tooltipQuarry,
+//   //   },
+//   // },
+//   multiplier: {
+//     wood: 1,
+//     stone: 1,
+//     meat: 1,
+//     ironOre: 1,
+//   },
 
-  // lumberMill: false,
-  // quarry: false,
-  // gathering1: false,
-  // woodMultiplier: 1,
-  // stoneMultiplier: 1,
-  // meatMultiplier: 1,
-  // lumberMillCost: 100,
-  // quarryCost: 100,
-  // gathering1Cost: 1000,
-};
+//   // lumberMill: false,
+//   // quarry: false,
+//   // gathering1: false,
+//   // woodMultiplier: 1,
+//   // stoneMultiplier: 1,
+//   // meatMultiplier: 1,
+//   // lumberMillCost: 100,
+//   // quarryCost: 100,
+//   // gathering1Cost: 1000,
+// };
 
-const UpgradeContext = createContext();
+// const UpgradeContext = createContext();
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "upgradeLumberMill": {
-      return {
-        ...state,
-        upgradesCompleted: {
-          ...state.upgradesCompleted,
-          upgrades: [...state.upgradesCompleted.upgrades, "lumberMill"],
-          lumberMill: {
-            ...state.upgradesCompleted.lumberMill,
-            completed: true,
-          },
-        },
-        multiplier: { ...state.multiplier, wood: 1.2 },
-      };
-    }
-    case "upgradeQuarry": {
-      return {
-        ...state,
-        upgradesCompleted: {
-          ...state.upgradesCompleted,
-          upgrades: [...state.upgradesCompleted.upgrades, "quarry"],
-          quarry: {
-            ...state.upgradesCompleted.quarry,
-            completed: true,
-          },
-        },
-        multiplier: { ...state.multiplier, stone: 1.2 },
-      };
-    }
-    case "upgradeGathering/1": {
-      return {
-        ...state,
-        selfWoodMultiplier: 2,
-        selfStoneMultiplier: 2,
-        selfMeatMultiplier: 2,
-        gathering1: true,
-        upgradesCompleted: [...state.upgradesCompleted, "muscle"],
-      };
-    }
-    default: {
-      console.log("default case");
-      return { ...state };
-    }
-  }
-}
+// function reducer(state, action) {
+//   switch (action.type) {
+//     case "upgradeLumberMill": {
+//       return {
+//         ...state,
+//         upgradesCompleted: {
+//           ...state.upgradesCompleted,
+//           upgrades: [...state.upgradesCompleted.upgrades, "lumberMill"],
+//           lumberMill: {
+//             ...state.upgradesCompleted.lumberMill,
+//             completed: true,
+//           },
+//         },
+//         multiplier: { ...state.multiplier, wood: 1.2 },
+//       };
+//     }
+//     case "upgradeQuarry": {
+//       return {
+//         ...state,
+//         upgradesCompleted: {
+//           ...state.upgradesCompleted,
+//           upgrades: [...state.upgradesCompleted.upgrades, "quarry"],
+//           quarry: {
+//             ...state.upgradesCompleted.quarry,
+//             completed: true,
+//           },
+//         },
+//         multiplier: { ...state.multiplier, stone: 1.2 },
+//       };
+//     }
+//     case "upgradeGathering/1": {
+//       return {
+//         ...state,
+//         selfWoodMultiplier: 2,
+//         selfStoneMultiplier: 2,
+//         selfMeatMultiplier: 2,
+//         gathering1: true,
+//         upgradesCompleted: [...state.upgradesCompleted, "muscle"],
+//       };
+//     }
+//     default: {
+//       console.log("default case");
+//       return { ...state };
+//     }
+//   }
+// }
 
-function UpgradeProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+// function UpgradeProvider({ children }) {
+//   const [state, dispatch] = useReducer(reducer, initialState);
 
-  return (
-    <UpgradeContext.Provider value={{ state, dispatch }}>
-      {children}
-    </UpgradeContext.Provider>
-  );
-}
+//   return (
+//     <UpgradeContext.Provider value={{ state, dispatch }}>
+//       {children}
+//     </UpgradeContext.Provider>
+//   );
+// }
 
-function useUpgradeContext() {
-  const context = useContext(UpgradeContext);
-  //console.log(context);
-  if (context === undefined)
-    throw new Error(
-      "UpgradeContext was used outside of the UpgradeContext Provider",
-    );
-  return context;
-}
+// function useUpgradeContext() {
+//   const context = useContext(UpgradeContext);
+//   //console.log(context);
+//   if (context === undefined)
+//     throw new Error(
+//       "UpgradeContext was used outside of the UpgradeContext Provider",
+//     );
+//   return context;
+// }
 
-export { UpgradeProvider, useUpgradeContext };
+// export { UpgradeProvider, useUpgradeContext };

@@ -4,23 +4,22 @@ import { motion } from "motion/react";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
 
-import { useUpgradeContext } from "../../../context/UpgradeContext";
 import Arrows from "../Arrows";
 import ResourceGridBox from "../../ResourceComponents/ResourceGridBox";
 import { useMainStore } from "../../../stores/useMainStore";
+import { useUpgradeStore } from "../../../stores/useUpgradeStore";
 
 function Wood() {
- 
   const clicksToObtainWood = useMainStore((state) => state.clicksToObtain.wood);
   const resourceIncreased = useMainStore((state) => state.resourceIncreased);
   const obtainedAmount = useMainStore((state) => state.obtainedAmount.wood);
   const wood = useMainStore((state) => state.resources.wood.amount);
-  const { state: stateUpgrade } = useUpgradeContext();
-  const [clicksToObtain, setClicksToObtain] = useState(
-    clicksToObtainWood,
+  const multiplierSelfWood = useUpgradeStore(
+    (state) => state.multiplierSelf.wood,
   );
+  const [clicksToObtain, setClicksToObtain] = useState(clicksToObtainWood);
   // const deneme = [null, null];
-  console.log("wood comp rendered");
+  // console.log("wood comp rendered");
   return (
     <ResourceGridBox>
       {/* LEFT: icon + label */}
@@ -67,9 +66,7 @@ function Wood() {
           resource={"wood"}
           clicksToObtain={clicksToObtain}
           setClicksToObtain={setClicksToObtain}
-          payload={
-            obtainedAmount * stateUpgrade.multiplierSelf.wood
-          }
+          payload={obtainedAmount * multiplierSelfWood}
         />
       </div>
 

@@ -3,10 +3,10 @@ import Icon from "../../Icon";
 import { motion } from "motion/react";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
-import { useUpgradeContext } from "../../../context/UpgradeContext";
 import Arrows from "../Arrows";
 import ResourceGridBox from "../../ResourceComponents/ResourceGridBox";
 import { useMainStore } from "../../../stores/useMainStore";
+import { useUpgradeStore } from "../../../stores/useUpgradeStore";
 function Stone() {
   const clicksToObtainStone = useMainStore(
     (state) => state.clicksToObtain.stone,
@@ -14,8 +14,9 @@ function Stone() {
   const resourceIncreased = useMainStore((state) => state.resourceIncreased);
   const obtainedAmount = useMainStore((state) => state.obtainedAmount.stone);
   const stone = useMainStore((state) => state.resources.stone.amount);
-
-  const { state: stateUpgrade } = useUpgradeContext();
+  const multiplierSelfStone = useUpgradeStore(
+    (state) => state.multiplierSelf.stone,
+  );
   const [clicksToObtain, setClicksToObtain] = useState(clicksToObtainStone);
   return (
     <ResourceGridBox>
@@ -60,7 +61,7 @@ function Stone() {
           type={"gainResource"}
           clicksToObtain={clicksToObtain}
           setClicksToObtain={setClicksToObtain}
-          payload={obtainedAmount * stateUpgrade.multiplierSelf.stone}
+          payload={obtainedAmount * multiplierSelfStone}
           resource={"stone"}
         />
       </div>

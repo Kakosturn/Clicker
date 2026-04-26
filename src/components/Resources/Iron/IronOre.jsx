@@ -3,10 +3,10 @@ import Icon from "../../Icon";
 import Label from "../../Layout/Label";
 import ProgressBar from "../../ProgressBar";
 import { motion } from "motion/react";
-import { useUpgradeContext } from "../../../context/UpgradeContext";
 import Arrows from "../Arrows";
 import ResourceGridBox from "../../ResourceComponents/ResourceGridBox";
 import { useMainStore } from "../../../stores/useMainStore";
+import { useUpgradeStore } from "../../../stores/useUpgradeStore";
 
 function IronOre() {
   const clicksToObtainIronOre = useMainStore(
@@ -15,7 +15,9 @@ function IronOre() {
   const ironOre = useMainStore((state) => state.resources.ironOre.amount);
   const resourceIncreased = useMainStore((state) => state.resourceIncreased);
   const obtainedAmount = useMainStore((state) => state.obtainedAmount.ironOre);
-  const { state: stateUpgrade } = useUpgradeContext();
+  const multiplierSelfIronOre = useUpgradeStore(
+    (state) => state.multiplierSelf.ironOre,
+  );
   const [clicksToObtain, setClicksToObtain] = useState(clicksToObtainIronOre);
   //console.log(clicksToObtain);
   return (
@@ -63,7 +65,7 @@ function IronOre() {
           resource={"ironOre"}
           clicksToObtain={clicksToObtain}
           setClicksToObtain={setClicksToObtain}
-          payload={obtainedAmount * stateUpgrade.multiplierSelf.ironOre}
+          payload={obtainedAmount * multiplierSelfIronOre}
         />
       </div>
       {/* UPGRADE ARROWS */}

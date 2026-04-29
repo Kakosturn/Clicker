@@ -64,8 +64,8 @@ export const useMainStore = create((set) => ({
   // ==========================================
   // CORE SYSTEM ACTIONS
   // ==========================================
-  reset: () => set(initialState),
-
+  // reset: () => set(initialState),
+  reset: () => set((state) => ({ ...state })),
   // ==========================================
   // PROGRESSION & STORY ACTIONS
   // ==========================================

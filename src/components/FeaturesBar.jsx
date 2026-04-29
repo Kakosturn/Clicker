@@ -12,8 +12,11 @@ function FeaturesBar() {
   const [isExpeditionOpen, setIsExpeditionOpen] = useState(false);
   const furnaceUnlocked = useFeaturesStore((state) => state.furnaceUnlocked);
   const armoryUnlocked = useFeaturesStore((state) => state.armoryUnlocked);
-  const expeditionUnlocked = useFeaturesStore((state) => state.expeditionUnlocked);
-  
+  const expeditionUnlocked = useFeaturesStore(
+    (state) => state.expeditionUnlocked,
+  );
+  const state = useFeaturesStore();
+  console.log(state);
 
   // Reusable button style class
   const tabClassName = `

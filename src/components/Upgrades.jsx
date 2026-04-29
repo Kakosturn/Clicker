@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-
+import { useEffect } from "react";
 import { useUpgradeStore } from "../stores/useUpgradeStore";
-import { upgradeList } from "../variables";
 import Icon from "./Icon";
 import Upgrade from "./Upgrade";
+import { upgradeList } from "../utils/upgradeList";
 
 function Upgrades() {
   // console.log("upgrades rendered");
@@ -13,15 +12,6 @@ function Upgrades() {
   const upgradesVisible = useUpgradeStore((state) => state.upgradesVisible);
   const upgradeEvaluation = useUpgradeStore((state) => state.upgradeEvaluation);
   // 2. The Polling Interval
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // console.log("useEffect");
-      upgradeEvaluation();
-    }, 1000); // Checks once every second (1000ms)
-
-    // Cleanup the interval when the component closes
-    return () => clearInterval(interval);
-  }, [upgradeEvaluation]); // Re-start the interval if the player buys an upgrade
 
   // 3. Render your UI normally!
   return (
@@ -34,7 +24,7 @@ function Upgrades() {
             <Icon
               key={id}
               type="upgrade"
-              tooltip={upgrade.tooltip}
+              tooltip={upgrade.unlockedTooltip}
               path={upgrade.path}
             />
           );
@@ -50,19 +40,22 @@ function Upgrades() {
             type={upgrade.type}
             path={upgrade.path}
             cost={upgrade.cost}
-            tooltip={upgrade.tooltip}
+            tooltip={upgrade.unlockedTooltip}
             name={upgrade.name}
           />
         ))}
 
         {upgradesVisible.map((upgrade) => (
-          <div key={upgrade.id} className="opacity-50 grayscale p-2">
-            <Icon
-              type="upgrade"
-              tooltip={`Locked: ${upgrade.name}`}
-              path={upgrade.path}
-            />
-          </div>
+          <Upgrade
+            key={upgrade.id}
+            secsToObtain={upgrade.secsToAcquire}
+            type={upgrade.type}
+            path={upgrade.path}
+            cost={upgrade.cost}
+            tooltip={upgrade.visibleTooltip}
+            name={upgrade.name}
+            unlocked={false}
+          />
         ))}
       </div>
     </div>

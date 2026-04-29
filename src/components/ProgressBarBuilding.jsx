@@ -8,7 +8,7 @@ import { useBuildingStore } from "../stores/useBuildingStore.js";
 import { usePopulationStore } from "../stores/usePopulationStore.js";
 const ProgressBarBuilding = ({ popIncrease, type, cost, secsToBuild }) => {
   const [isRunning, setIsRunning] = useState(false);
-
+  // console.log(cost);
   const build = useBuildingStore((state) => state.build);
   const venatrixIncrease = usePopulationStore(
     (state) => state.venatrixIncrease,

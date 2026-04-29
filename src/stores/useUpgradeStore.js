@@ -1,4 +1,3 @@
-import { upgradeList } from "../variables";
 import { create } from "zustand";
 import { useMainStore } from "./useMainStore";
 import { useBuildingStore } from "./useBuildingStore";
@@ -6,6 +5,7 @@ import { useArmoryStore } from "./useArmoryStore";
 import { useExpeditionStore } from "./useExpeditionStore";
 import { usePopulationStore } from "./usePopulationStore";
 import { useFeaturesStore } from "./useFeaturesStore";
+import { upgradeList } from "../utils/upgradeList";
 const initialState = {
   multiplierSelf: {
     wood: 1,

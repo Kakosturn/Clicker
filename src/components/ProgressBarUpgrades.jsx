@@ -5,7 +5,7 @@ import { Cost } from "../utils/costClass";
 import Notification from "./Notification";
 import { useMainStore } from "../stores/useMainStore";
 import { useUpgradeStore } from "../stores/useUpgradeStore";
-import { upgradeList } from "../variables";
+import { upgradeList } from "../utils/upgradeList";
 
 function ProgressBarUpgrades({ type, secsToObtain, cost }) {
   const [isRunning, setIsRunning] = useState(false);

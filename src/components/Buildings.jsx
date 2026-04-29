@@ -9,6 +9,7 @@ import { useFeaturesStore } from "../stores/useFeaturesStore";
 
 function Buildings() {
   const buildings = useBuildingStore((state) => state.buildings);
+  console.log(buildings);
   const statusOfProgression = useMainStore(
     (state) => state.statusOfProgression,
   );

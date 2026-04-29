@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { between, selectNewsFeed } from "../utils/helper";
 import TextTransition, { presets } from "react-text-transition";
 import { useMainStore } from "../stores/useMainStore";
+import { saveGame } from "../utils/saveSystem";
 
 const mainNews = {
   "beginning/0":
@@ -39,6 +40,7 @@ function NewsFeed() {
           {randomTexts[index % randomTexts.length]}
         </TextTransition>
       </div>
+      <button onClick={saveGame}>save game</button>
     </div>
   );
 }
